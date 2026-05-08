@@ -1,4 +1,4 @@
-package com.company.springbootfullsample;
+package com.company.crmticketing;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

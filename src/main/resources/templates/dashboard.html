@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>داشبورد - مدیریت کاربران</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>📊 داشبورد مدیریت کاربران</h1>
+        <div class="user-info">
+            <span id="currentUser">👤 loading...</span>
+            <button onclick="logout()" class="logout-btn">🚪 خروج</button>
+        </div>
+    </div>
+
+    <div class="stats-cards">
+        <div class="stat-card">
+            <h3>👥 تعداد کاربران</h3>
+            <p id="totalUsers">0</p>
+        </div>
+        <div class="stat-card">
+            <h3>✅ کاربران فعال</h3>
+            <p id="activeUsers">0</p>
+        </div>
+        <div class="stat-card">
+            <h3>🔒 کاربران غیرفعال</h3>
+            <p id="disabledUsers">0</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <div class="table-header">
+            <h2>📋 لیست کاربران</h2>
+            <div class="filters">
+                <input type="text" id="searchInput" placeholder="🔍 جستجو..." onkeyup="filterTable()">
+                <select id="roleFilter" onchange="filterTable()">
+                    <option value="all">همه نقش‌ها</option>
+                    <option value="ROLE_ADMIN">ادمین</option>
+                    <option value="ROLE_USER">کاربر عادی</option>
+                </select>
+                <button onclick="refreshData()" class="refresh-btn">🔄 بروزرسانی</button>
+            </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table id="usersTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>نام کاربری</th>
+                    <th>ایمیل</th>
+                    <th>نام کامل</th>
+                    <th>وضعیت</th>
+                    <th>نقش‌ها</th>
+                    <th>عملیات</th>
+                </tr>
+                </thead>
+                <tbody id="usersTableBody">
+                <tr>
+                    <td colspan="7" style="text-align: center;">در حال بارگذاری...</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/app.js}"></script>
+</body>
+</html>

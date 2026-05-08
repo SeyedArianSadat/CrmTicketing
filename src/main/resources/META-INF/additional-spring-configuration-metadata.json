@@ -1,0 +1,29 @@
+{
+  "properties": [
+    {
+      "name": "spring.h2.console.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable H2 console."
+    },
+    {
+      "name": "spring.h2.console.path",
+      "type": "java.lang.String",
+      "description": "Path to H2 console."
+    },
+    {
+      "name": "spring.h2.console.settings.web-allow-others",
+      "type": "java.lang.Boolean",
+      "description": "Allow web access to H2 console."
+    },
+    {
+      "name": "spring.jackson.parser.allow-unquoted-field-names",
+      "type": "java.lang.Boolean",
+      "description": "Allow unquoted field names in JSON."
+    },
+    {
+      "name": "management.metrics.export.prometheus.enabled",
+      "type": "java.lang.Boolean",
+      "description": "Enable Prometheus metrics export."
+    }
+  ]
+}

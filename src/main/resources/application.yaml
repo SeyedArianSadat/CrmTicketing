@@ -1,3 +1,231 @@
 spring:
+  security:
+    filter:
+      order: 0
+
   application:
-    name: SpringBootFullSample
+    name: security-app
+
+  # ==================== PROFILES ====================
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  # ==================== DATABASE ====================
+#  datasource:
+#    url: jdbc:h2:mem:testdb;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;MODE=MySQL;INIT=RUNSCRIPT FROM 'classpath:init.sql'
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
+#    hikari:
+#      maximum-pool-size: 10
+#      minimum-idle: 5
+#      idle-timeout: 300000
+#      connection-timeout: 20000
+#      pool-name: HikariPool
+#      validation-timeout: 5000
+#      leak-detection-threshold: 60000
+
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+#      settings:
+#        web-allow-others: true
+
+#   ==================== JPA ====================
+#  jpa:
+#    database: H2
+#    hibernate:
+#      ddl-auto: create-drop
+#    show-sql: false
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        use_sql_comments: true
+#        jdbc:
+#          batch_size: 20
+#          batch_versioned_data: true
+#        order_inserts: true
+#        order_updates: true
+#        hbm2ddl:
+#          extra_physical_table_types: VIEW
+#        schema_update:
+#          unique_constraint_strategy: RECREATE_QUIETLY
+#    open-in-view: false  # مهم برای performance
+
+  # ==================== DATABASE (MYSQL) ====================
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/init.sql
+      continue-on-error: false
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/Crm_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root123
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      pool-name: HikariPool
+#      validation-timeout: 5000
+#      leak-detection-threshold: 60000
+
+  # ==================== JPA ====================
+  jpa:
+    database: MYSQL
+    hibernate:
+      ddl-auto: create
+    show-sql: false
+    properties:
+      hibernate:
+#        session_factory_name: myPersistenceUnit
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 20
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+    open-in-view: false
+    defer-datasource-initialization: true
+
+  # ==================== THYMELEAF ====================
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+
+  # ==================== WEB ====================
+  web:
+    resources:
+      static-locations: classpath:/static/
+      add-mappings: true
+      cache:
+        period: 3600
+    error:
+      include-binding-errors: always
+      include-message: always
+      include-stacktrace: never
+      include-exception: false
+      whitelabel:
+        enabled: true
+
+
+  # ==================== JACKSON ====================
+  jackson:
+    serialization:
+      indent-output: true
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null
+    time-zone: UTC
+    parser:
+      allow-unquoted-field-names: false
+
+  # ==================== MVC ====================
+  mvc:
+    log-resolved-exception: true
+
+  # ==================== TASK EXECUTION ====================
+  task:
+    execution:
+      pool:
+        core-size: 8
+        max-size: 16
+        queue-capacity: 100
+      thread-name-prefix: "async-"
+
+# ==================== MANAGEMENT (ACTUATOR) ====================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,httpexchanges
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: when-authorized
+      status:
+        http-mapping:
+          down: 503
+  info:
+    env:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# ==================== SERVER ====================
+server:
+  port: 8080
+  tomcat:
+    threads:
+      max: 200
+      min-spare: 10
+    connection-timeout: 20000
+    max-connections: 10000
+    accept-count: 100
+    uri-encoding: UTF-8
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+    min-response-size: 2048
+  shutdown: graceful
+
+# ==================== JWT ====================
+app:
+  jwt:
+    secret: ${JWT_SECRET:mySuperSecretKeyForJWTTokenGenerationWithHighSecurity1234567890!@#$%^&*()_+}
+    expiration: 3600000
+    refresh-expiration: 86400000
+
+# ==================== LOGGING ====================
+#logging:
+#  level:
+#    root: INFO
+#    com.company.springbootfullsample: DEBUG
+#    org.springframework.web: INFO
+#    org.springframework.security: INFO
+#    org.hibernate: WARN
+#    org.hibernate.SQL: DEBUG
+#    com.zaxxer.hikari: INFO
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+#    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+#  file:
+#    name: logs/application.log
+#  logback:
+#    rollingpolicy:
+#      max-file-size: 10MB
+#      max-history: 30
+#      total-size-cap: 100MB
+
+# ==================== SPRING DOCS (OpenAPI) ====================
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    doc-expansion: none
+    display-request-duration: true
+    filter: true
+    show-extensions: true
+    show-common-extensions: true
+    try-it-out-enabled: true
+  show-actuator: true
+  packages-to-scan: com.company.crmticketing.controller
+  paths-to-match: /api/v1/**
+  writer-with-default-pretty-printer: true

@@ -1,0 +1,74 @@
+# ============================================================================
+# Docker Compose برای Spring Boot + MySQL
+# ============================================================================
+# اجرا: docker-compose up -d
+# توقف: docker-compose down
+# بازسازی: docker-compose up -d --build
+# مشاهده لاگ: docker-compose logs -f
+# ============================================================================
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: Crm_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: Crm_db
+      MYSQL_USER: springuser
+      MYSQL_PASSWORD: springpass
+      TZ: Asia/Tehran
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      timeout: 20s
+      retries: 10
+      interval: 10s
+      start_period: 30s
+    networks:
+      - springboot_network
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --host-cache-size=0
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: Crm_app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/Crm_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root123
+      TZ: Asia/Tehran
+      JAVA_OPTS: "-Xmx512m -Xms256m"
+    networks:
+      - springboot_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  mysql_data:
+    driver: local
+    name: Crm_mysql_data
+
+networks:
+  springboot_network:
+    driver: bridge
+    name: Crm_network

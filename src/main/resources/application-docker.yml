@@ -1,0 +1,43 @@
+spring:
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:/init.sql
+      continue-on-error: false
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      pool-name: HikariPool
+#      validation-timeout: 5000
+#      leak-detection-threshold: 60000
+
+  jpa:
+    database: MYSQL
+    hibernate:
+      ddl-auto: create
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 20
+          batch_versioned_data: true
+        order_inserts: true
+        order_updates: true
+    open-in-view: false
+    defer-datasource-initialization: true
+
+app:
+  jwt:
+    secret: mySuperSecretKeyForJWTTokenGenerationWithHighSecurity1234567890!@#$%^&*()_+
+    expiration: 3600000
+    refresh-expiration: 86400000
