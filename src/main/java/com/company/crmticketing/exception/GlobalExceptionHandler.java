@@ -264,6 +264,115 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(TicketNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTicketNotFound(TicketNotFoundException ex, WebRequest request) {
+        log.error("❌ticket not found", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.error(
+                        ex.getMessage(),
+                        HttpStatus.NOT_FOUND.value(),
+                        getPath(request)
+                ));
+    }
+
+    @ExceptionHandler(TicketAlreadyExistException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTicketAlreadyExist(TicketAlreadyExistException ex, WebRequest request) {
+        log.error("❌ticket already exists", ex);
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ApiResponse.error(
+                        ex.getMessage(),
+                        HttpStatus.CONFLICT.value(),
+                        getPath(request)
+                ));
+    }
+
+    @ExceptionHandler(TicketDeletionException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTicketDeletion(TicketDeletionException ex, WebRequest request) {
+        log.error("❌ticket deletion", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_ACCEPTABLE)
+                .body(ApiResponse.error(
+                        ex.getMessage(),
+                        HttpStatus.NOT_ACCEPTABLE.value(),
+                        getPath(request)
+                ));
+    }
+
+    @ExceptionHandler(TicketCreationException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTicketCreation(TicketCreationException ex, WebRequest request) {
+        log.error("❌ticket creation", ex);
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(
+                        ex.getMessage(),
+                        HttpStatus.BAD_REQUEST.value(),
+                        getPath(request)
+                ));
+    }
+
+    @ExceptionHandler(TicketUpdateException.class)
+    public ResponseEntity<ApiResponse<Void>> handleTicketUpdate(TicketUpdateException ex, WebRequest request) {
+        log.error("❌ticket update", ex);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiResponse.error(
+                        ex.getMessage(),
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        getPath(request)
+                ));
+    }
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCustomerNotFound(CustomerNotFoundException ex, WebRequest request) {
+        log.error("Customer not found", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.error(
+                        ex.getMessage(),
+                        HttpStatus.NOT_FOUND.value(),
+                        getPath(request)
+                ));
+    }
+
+    @ExceptionHandler(CustomerRequestNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleCustomerRequestNotFound(CustomerRequestNotFoundException ex, WebRequest request) {
+        log.error("Customer request not found", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.error(
+                        ex.getMessage(),
+                        HttpStatus.NOT_FOUND.value(),
+                        getPath(request)
+                ));
+    }
+
+    @ExceptionHandler(AttachmentNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAttachmentNotFound(AttachmentNotFoundException ex, WebRequest request) {
+        log.error("Attachment not found", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.error(
+                        ex.getMessage(),
+                        HttpStatus.NOT_FOUND.value(),
+                        getPath(request)
+
+                ));
+    }
+
+    @ExceptionHandler(SupportAgentNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleSupportAgentNotFound(SupportAgentNotFoundException ex, WebRequest request) {
+        log.error("Support agent not found", ex);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.error(
+                        ex.getMessage(),
+                        HttpStatus.NOT_FOUND.value(),
+                        getPath(request)
+                ));
+    }
+
     // ==================== HELPER METHODS ====================
 
     private String getPath(WebRequest request) {

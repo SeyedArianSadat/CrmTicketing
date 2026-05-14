@@ -34,7 +34,7 @@ public class Message extends BaseEntity {
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "sender_user_id",nullable = false)
-    // private User senderUser;
+     @ManyToOne(fetch = FetchType.LAZY)
+     @JoinColumn(name = "sender_user_id",nullable = false)
+     private User senderUser;
 }

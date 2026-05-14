@@ -5,6 +5,6 @@ public record MessageResponseDto (
         String content,
         boolean internalNote,
         int requestId,
-        int ticketId
-        // int senderUserId
+        int ticketId,
+        int senderUserId
 ){}

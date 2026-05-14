@@ -42,9 +42,9 @@ public class Customer extends BaseEntity {
     @Column(name = "customer_phone")
     private String phone;
 
-    //@OneToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "user_id",unique = true)
-    // private User user;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",unique = true)
+    private User user;
 
     @OneToMany(mappedBy = "customer")
     private List<CustomerRequest> customerRequests = new ArrayList<>();

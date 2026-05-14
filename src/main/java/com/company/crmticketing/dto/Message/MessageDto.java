@@ -2,6 +2,7 @@ package com.company.crmticketing.dto.Message;
 
 import com.company.crmticketing.model.CustomerRequest;
 import com.company.crmticketing.model.Ticket;
+import com.company.crmticketing.model.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -28,6 +29,6 @@ public class MessageDto {
 
     private Ticket ticket;
 
-    // private User senderUser;
+    private User senderUser;
 
 }

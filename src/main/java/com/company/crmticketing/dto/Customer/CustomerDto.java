@@ -34,7 +34,7 @@ public class CustomerDto {
     @Size(min = 11, max = 11,message = "phone must be 11 character")
     private String phone;
 
-   // private User  user;
+    private User  user;
 
     private List<CustomerRequest> customerRequests=new ArrayList<>();
 
