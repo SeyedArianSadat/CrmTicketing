@@ -46,7 +46,7 @@ public class Customer extends BaseEntity {
     @JoinColumn(name = "user_id",unique = true)
     private User user;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
     private List<CustomerRequest> customerRequests = new ArrayList<>();
 
 }

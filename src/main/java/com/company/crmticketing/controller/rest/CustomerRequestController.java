@@ -1,4 +1,4 @@
-package com.company.crmticketing.controller;
+package com.company.crmticketing.controller.rest;
 
 import com.company.crmticketing.dto.CustomerRequest.CustomerRequestDto;
 import com.company.crmticketing.model.enums.RequestType;

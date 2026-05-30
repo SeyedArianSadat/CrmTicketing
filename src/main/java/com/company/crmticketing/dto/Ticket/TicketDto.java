@@ -5,7 +5,6 @@ import com.company.crmticketing.model.enums.Priority;
 import com.company.crmticketing.model.enums.RequestStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,6 @@ public class TicketDto {
     private Long ticketId;
 
     @NotBlank(message = "title is required")
-    @Pattern(regexp = "^[A-Z][a-z]*$")
     private String title;
 
     @NotNull(message = "priority is required")
@@ -32,10 +30,10 @@ public class TicketDto {
     @NotNull(message = "status is required")
     private RequestStatus requestStatus;
 
-    @NotBlank(message = "first response deadline required")
+    //@NotBlank(message = "first response deadline required")
     private LocalDateTime firstResponseDeadline;
 
-    @NotBlank(message = "resolution deadline required")
+    //@NotBlank(message = "resolution deadline required")
     private LocalDateTime resolutionDeadline;
 
     private CustomerRequest customerRequest;

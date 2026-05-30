@@ -1,4 +1,4 @@
-package com.company.crmticketing.controller;
+package com.company.crmticketing.controller.rest;
 
 import com.company.crmticketing.dto.permission.PermissionCreateDto;
 import com.company.crmticketing.dto.permission.PermissionResponseDto;

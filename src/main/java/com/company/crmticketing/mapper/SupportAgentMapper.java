@@ -1,9 +1,7 @@
 package com.company.crmticketing.mapper;
 
 
-import com.company.crmticketing.dto.SupportAgent.SupportAgentCreateDto;
 import com.company.crmticketing.dto.SupportAgent.SupportAgentDto;
-import com.company.crmticketing.dto.SupportAgent.SupportAgentResponseDto;
 import com.company.crmticketing.dto.SupportAgent.SupportAgentUpdateDto;
 import com.company.crmticketing.model.SupportAgent;
 import org.mapstruct.*;

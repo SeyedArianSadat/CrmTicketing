@@ -3,10 +3,8 @@ package com.company.crmticketing.mapper;
 
 
 
-import com.company.crmticketing.dto.Ticket.TicketDto;
 import com.company.crmticketing.dto.TicketHistory.TicketHistoryDto;
 import com.company.crmticketing.dto.TicketHistory.TicketHistoryUpdateDto;
-import com.company.crmticketing.model.Ticket;
 import com.company.crmticketing.model.TicketHistory;
 import org.mapstruct.*;
 

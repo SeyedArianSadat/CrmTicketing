@@ -12,10 +12,10 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CustomerMapper {
-//    @Mapping(source = "userId",target = "user")
+    //    @Mapping(source = "userId",target = "user")
     Customer toEntity(CustomerDto customerDto);
 
-//    @Mapping(target = "user", ignore = true)
+    //    @Mapping(target = "user", ignore = true)
     CustomerDto toDto(Customer customer);
 
 

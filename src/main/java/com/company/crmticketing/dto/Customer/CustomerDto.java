@@ -4,7 +4,6 @@ import com.company.crmticketing.model.CustomerRequest;
 import com.company.crmticketing.model.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +22,7 @@ public class CustomerDto {
     private Long CustomerId;
 
     @NotBlank
-    @Pattern(regexp = "^[A-Z][a-z]*$")
+
     private String customerName;
 
     @Email

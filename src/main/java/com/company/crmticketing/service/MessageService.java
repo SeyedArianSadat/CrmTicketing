@@ -79,19 +79,19 @@ public class MessageService extends BaseEntityService<Message, Long, MessageDto>
     }
 
     public Optional<MessageDto> findByIdWithUser(Long userId) {
-        log.debug("finding message by its id");
+        log.debug("finding message by its id and user");
         return messageRepository.findByIdWithUser(userId)
                 .map(messageMapper::toDto);
     }
 
     public Optional<MessageDto> findByIdWithTicket(Long ticketId) {
-        log.debug("finding message by its id");
+        log.debug("finding message by its id and ticket");
         return messageRepository.findByIdWithTicket(ticketId)
                 .map(messageMapper::toDto);
     }
 
     public Optional<MessageDto> findByIdWithTicketAndSender(Long ticketId) {
-        log.debug("finding message by its id");
+        log.debug("finding message by its id and sender");
         return messageRepository.findByIdWithTicketAndSender(ticketId)
                 .map(messageMapper::toDto);
     }

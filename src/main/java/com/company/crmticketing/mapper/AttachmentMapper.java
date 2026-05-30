@@ -2,10 +2,9 @@ package com.company.crmticketing.mapper;
 
 import com.company.crmticketing.dto.Attachment.AttachmentDto;
 import com.company.crmticketing.dto.Attachment.AttachmentUpdateDto;
-import com.company.crmticketing.dto.Customer.CustomerDto;
 import com.company.crmticketing.model.Attachment;
 
-import com.company.crmticketing.model.Customer;
+
 import org.mapstruct.*;
 
 import java.util.List;

@@ -39,7 +39,7 @@ public class TicketService extends BaseEntityService<Ticket, Long, TicketDto> {
     @Transactional
     public TicketDto createTicket(TicketDto ticketDto) {
         log.debug("Creating a ticket");
-        if (ticketDto.getTitle() != null) {
+        if (ticketRepository.existsByTitle(ticketDto.getTitle())) {
             throw new TicketAlreadyExistException(ticketDto.getTitle());
         }
         try {

@@ -1,4 +1,4 @@
-package com.company.crmticketing.controller;
+package com.company.crmticketing.controller.rest;
 
 import com.company.crmticketing.dto.Ticket.TicketDto;
 import com.company.crmticketing.model.enums.Priority;
@@ -49,7 +49,7 @@ public class TicketController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    // ────────────────── UPDATE ──────────────────
+ //    ────────────────── UPDATE ──────────────────
     @Operation(summary = "Update an existing ticket", description = "Partially updates a ticket. Only non-null fields from the DTO are applied.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Ticket updated successfully",
@@ -214,7 +214,7 @@ public class TicketController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Get all tickets with department and agent", description = "Returns a list of ticketsloading department and agent")
+    @Operation(summary = "Get all tickets with department and agent", description = "Returns a list of tickets loading department and agent")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List of tickets with department and agent"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")

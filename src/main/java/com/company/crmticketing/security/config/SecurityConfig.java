@@ -172,6 +172,7 @@ public class SecurityConfig {
                                 "/api/v1/users/reset-password",
                                 "/actuator/health",
                                 "/actuator/info",
+                                "/swagger-ui",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/v3/api-docs/**",
@@ -190,7 +191,8 @@ public class SecurityConfig {
                                 "/**/*.js",
                                 "/**/*.html",
                                 "/error",
-                                "/favicon.ico"
+                                "/favicon.ico",
+                                "/api/customers"
                         ).permitAll()
 
                         // Admin only

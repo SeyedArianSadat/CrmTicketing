@@ -19,8 +19,8 @@ public class MessageDto {
 
 
     @NotBlank(message = "content is required")
-    @Size(min = 10,max = 200,message = "explain content")
-   private String content;
+    @Size(min = 10, max = 200, message = "explain content")
+    private String content;
 
     @NotBlank
     private boolean internalNote;

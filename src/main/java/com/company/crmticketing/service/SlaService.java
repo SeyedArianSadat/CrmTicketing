@@ -31,11 +31,6 @@ public class SlaService extends BaseEntityService<Sla, Long, SlaDto> {
         this.slaMapper = slaMapper;
     }
 
-    @Override
-    protected String getEntityTypeName() {
-        return "Sla";
-    }
-
     @Transactional
     public SlaDto createSla(SlaDto slaDto) {
         log.debug("Creating a new sla");
@@ -77,5 +72,10 @@ public class SlaService extends BaseEntityService<Sla, Long, SlaDto> {
         log.debug("Finding a sla by priority level");
         return slaRepository.findByPriorityLevel(priority)
                 .map(slaMapper::toDto);
+    }
+
+    @Override
+    protected String getEntityTypeName() {
+        return "Sla";
     }
 }

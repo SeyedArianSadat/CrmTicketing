@@ -45,7 +45,7 @@ public class DepartmentService extends BaseEntityService<Department, Long, Depar
     }
 
     @Transactional
-    public DepartmentDto updateDepartment(Long departmentId,DepartmentDto departmentDto) {
+    public DepartmentDto updateDepartment(Long departmentId, DepartmentDto departmentDto) {
         log.debug("updating department");
         departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new DepartmentNotFoundException(departmentId));
@@ -72,30 +72,32 @@ public class DepartmentService extends BaseEntityService<Department, Long, Depar
         }
     }
 
-    @Override
-    protected String getEntityTypeName() {
-        return "Department";
-    }
-
     public Optional<DepartmentDto> findByDepartmentName(String departmentName) {
         log.debug("finding department");
         return departmentRepository.findByDepartmentName(departmentName)
                 .map(departmentMapper::toDto);
     }
+
     public Optional<DepartmentDto> findByIdWithSupportAgent(Long id) {
         log.debug("finding department with agent");
         return departmentRepository.findByIdWithSupportAgent(id)
                 .map(departmentMapper::toDto);
     }
+
     public Optional<DepartmentDto> findBtIdWithTicket(Long id) {
         log.debug("finding department with ticket");
         return departmentRepository.findByIdWithTickets(id)
                 .map(departmentMapper::toDto);
     }
+
     public Optional<DepartmentDto> findByIdWithSupportAgentAndTicket(Long id) {
         log.debug("finding department with ticket and its agent");
         return departmentRepository.findByIdWithAgentsAndTickets(id)
                 .map(departmentMapper::toDto);
     }
 
+    @Override
+    protected String getEntityTypeName() {
+        return "Department";
+    }
 }

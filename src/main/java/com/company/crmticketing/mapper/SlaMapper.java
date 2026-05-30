@@ -1,9 +1,7 @@
 package com.company.crmticketing.mapper;
 
 
-import com.company.crmticketing.dto.Sla.SlaCreateDto;
 import com.company.crmticketing.dto.Sla.SlaDto;
-import com.company.crmticketing.dto.Sla.SlaResponseDto;
 import com.company.crmticketing.dto.Sla.SlaUpdateDto;
 import com.company.crmticketing.model.Sla;
 import org.mapstruct.*;

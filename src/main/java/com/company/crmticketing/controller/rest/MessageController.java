@@ -1,4 +1,4 @@
-package com.company.crmticketing.controller;
+package com.company.crmticketing.controller.rest;
 
 import com.company.crmticketing.dto.Message.MessageDto;
 import com.company.crmticketing.service.MessageService;
@@ -58,7 +58,6 @@ public class MessageController {
     public ResponseEntity<MessageDto> updateMessage(
             @Parameter(description = "ID of the message to update (also must be set in request body)", required = true) @PathVariable Long id,
             @Valid @RequestBody MessageDto messageDto) {
-        // Ensure the path id matches the DTO id to avoid inconsistencies
         messageDto.setMessageId(id);
         log.info("REST request to update message {}: {}", id, messageDto);
         MessageDto updated = messageService.updateMessage(id, messageDto);

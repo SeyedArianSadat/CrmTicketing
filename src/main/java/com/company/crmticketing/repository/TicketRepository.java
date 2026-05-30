@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Repository
 public interface TicketRepository extends BaseEntityRepository<Ticket, Long> {
@@ -61,4 +60,6 @@ public interface TicketRepository extends BaseEntityRepository<Ticket, Long> {
             LEFT JOIN FETCH t.sla
             WHERE t.department.departmentId = :depId""")
     List<Ticket> findByDepartmentIdWithSla(@Param("depId") Long depId);
+
+    boolean existsByTitle(String title);
 }

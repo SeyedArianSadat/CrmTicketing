@@ -1,4 +1,4 @@
-package com.company.crmticketing.controller;
+package com.company.crmticketing.controller.rest;
 
 import com.company.crmticketing.dto.Attachment.AttachmentDto;
 import com.company.crmticketing.service.AttachmentService;

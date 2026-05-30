@@ -26,9 +26,9 @@ public class Department extends BaseEntity {
     @Column(name = "department_name",nullable = false)
     private String departmentName;
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department",cascade = CascadeType.ALL)
     private List<SupportAgent> supportAgents=new ArrayList<>();
 
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department",cascade = CascadeType.ALL)
     private List<Ticket> tickets=new ArrayList<>();
 }

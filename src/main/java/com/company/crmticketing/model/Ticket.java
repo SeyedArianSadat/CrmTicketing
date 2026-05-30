@@ -44,27 +44,27 @@ public class  Ticket extends BaseEntity {
     @Column(name = "resolution_deadline")
     private LocalDateTime resolutionDeadline;
 
-    @OneToOne(mappedBy = "ticket")
+    @OneToOne(mappedBy = "ticket", cascade = CascadeType.ALL)
     private CustomerRequest customerRequest;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "department_id", nullable = false)
+    @JoinColumn(name = "department_id")
     private Department department;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "agent_id", nullable = false)
+    @JoinColumn(name = "agent_id")
     private SupportAgent agentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sla_id", nullable = false)
+    @JoinColumn(name = "sla_id")
     private Sla sla;
 
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
     private List<Message> messages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
     private List<TicketHistory> ticketHistories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
     private List<Attachment> attachments = new ArrayList<>();
 }

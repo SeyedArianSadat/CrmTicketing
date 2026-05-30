@@ -50,6 +50,6 @@ public class CustomerRequest extends BaseEntity {
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
-    @OneToMany(mappedBy = "request")
+    @OneToMany(mappedBy = "request",cascade = CascadeType.ALL)
     private List<Message> messages=new ArrayList<Message>();
 }

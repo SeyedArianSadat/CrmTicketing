@@ -1,9 +1,7 @@
 package com.company.crmticketing.mapper;
 
 
-import com.company.crmticketing.dto.Department.DepartmentCreateDto;
 import com.company.crmticketing.dto.Department.DepartmentDto;
-import com.company.crmticketing.dto.Department.DepartmentResponseDto;
 import com.company.crmticketing.dto.Department.DepartmentUpdateDto;
 import com.company.crmticketing.model.Department;
 import org.mapstruct.*;
