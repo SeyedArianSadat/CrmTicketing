@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
 import java.util.Optional;
 
 @RestController
@@ -58,10 +59,9 @@ public class SlaController {
     public ResponseEntity<SlaDto> updateSla(
             @Parameter(description = "ID of the SLA to update (must also be present in the request body)", required = true) @PathVariable Long slaId,
             @Valid @RequestBody SlaDto slaDto) {
-        // Ensure the path id and DTO id are aligned (service uses the DTO's id)
         slaDto.setSlaId(slaId);
         log.info("REST request to update SLA {}: {}", slaId, slaDto);
-        SlaDto updated = slaService.updateSla(slaDto);
+        SlaDto updated = slaService.updateSla(slaId, slaDto);
         return ResponseEntity.ok(updated);
     }
 

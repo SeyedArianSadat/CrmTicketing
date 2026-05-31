@@ -62,7 +62,7 @@ public class SupportAgentController {
             @Valid @RequestBody SupportAgentDto agentDto) {
         log.info("REST request to update agent with id {}: {}", agentId, agentDto);
         agentDto.setAgentId(agentId);
-        SupportAgentDto updated = agentService.updateAgent(agentId,agentDto);
+        SupportAgentDto updated = agentService.updateAgent(agentId, agentDto);
         return ResponseEntity.ok(updated);
     }
 
@@ -122,9 +122,9 @@ public class SupportAgentController {
     public ResponseEntity<SupportAgentDto> findAgentByName(
             @Parameter(description = "Exact name of the agent", required = true) @RequestParam String name) {
         log.debug("REST request to find agent by name '{}'", name);
-        Optional<SupportAgentDto> agent = agentService.findAgentByName(name);
-        return agent.map(ResponseEntity::ok)
-                .orElseThrow(() -> new IllegalArgumentException("Agent with name not found"));
+        return agentService.findAgentByName(name)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new IllegalArgumentException("Agent not found: " + name));
     }
 
     // ────────────────── EAGER LOADING ENDPOINTS ──────────────────

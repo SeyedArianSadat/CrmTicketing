@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @SuperBuilder
 public class AttachmentDto {
-    private Long AttachmentId;
+    private Long attachmentId;
 
     @NotBlank(message = "file name is required")
     @Size(min=2,max = 30,message = "fileName name must be between 2 and 30 characters")

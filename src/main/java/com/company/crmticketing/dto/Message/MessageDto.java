@@ -22,7 +22,7 @@ public class MessageDto {
     @Size(min = 10, max = 200, message = "explain content")
     private String content;
 
-    @NotBlank
+
     private boolean internalNote;
 
     private CustomerRequest request;

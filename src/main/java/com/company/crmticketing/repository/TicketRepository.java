@@ -23,7 +23,6 @@ public interface TicketRepository extends BaseEntityRepository<Ticket, Long> {
             SELECT t from ticketEntity t
             LEFT JOIN fetch  t.department
             LEFT JOIN fetch  t.agentId
-            LEFT JOIN fetch  t.agentId
             LEFT JOIN fetch  t.customerRequest
             LEFT JOIN fetch  t.attachments
             where t.ticketId = :id""")

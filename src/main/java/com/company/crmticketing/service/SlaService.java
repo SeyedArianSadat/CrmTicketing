@@ -1,10 +1,12 @@
 package com.company.crmticketing.service;
 
 import com.company.crmticketing.dto.Sla.SlaDto;
+import com.company.crmticketing.dto.Sla.SlaUpdateDto;
 import com.company.crmticketing.mapper.SlaMapper;
 import com.company.crmticketing.model.Sla;
 import com.company.crmticketing.model.enums.Priority;
 import com.company.crmticketing.repository.SlaRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,15 +47,19 @@ public class SlaService extends BaseEntityService<Sla, Long, SlaDto> {
     }
 
     @Transactional
-    public SlaDto updateSla(SlaDto slaDto) {
+    public SlaDto updateSla(Long slaId,SlaDto slaDto) {
         log.debug("Updating a new sla");
+        Sla existing = slaRepository.findById(slaId).orElseThrow(() -> new EntityNotFoundException("SLA not found with id: " + slaId));
         try {
-            Sla sla = slaMapper.toEntity(slaDto);
-            slaRepository.save(sla);
-            return slaMapper.toDto(sla);
+            SlaUpdateDto updateDto = new SlaUpdateDto(slaDto.getPriorityLevel(), slaDto.getResponseTimeMinutes(), slaDto.getResolutionTimeMinutes(), slaDto.getDescription());
+            slaMapper.updateSlaFromDto(updateDto, existing);
+            slaRepository.save(existing);
+            return slaMapper.toDto(existing);
+        } catch (EntityNotFoundException e) {
+            throw e;
         } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new IllegalArgumentException("Sla could not be updated");
+            log.error("Sla could not be updated", e);
+            throw new IllegalArgumentException("Sla could not be updated", e);
         }
     }
 

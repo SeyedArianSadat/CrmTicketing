@@ -1,6 +1,7 @@
 package com.company.crmticketing.service;
 
 import com.company.crmticketing.dto.Message.MessageDto;
+import com.company.crmticketing.dto.Message.MessageUpdateDto;
 import com.company.crmticketing.exception.MessageNotFoundException;
 import com.company.crmticketing.mapper.MessageMapper;
 import com.company.crmticketing.model.Message;
@@ -47,15 +48,15 @@ public class MessageService extends BaseEntityService<Message, Long, MessageDto>
     @Transactional
     public MessageDto updateMessage(Long messageId, MessageDto messageDto) {
         log.debug("updating message");
-        messageRepository.findById(messageId)
-                .orElseThrow(() -> new MessageNotFoundException(messageId));
+        Message existing = messageRepository.findById(messageId).orElseThrow(() -> new MessageNotFoundException(messageId));
         try {
-            Message message = messageMapper.toEntity(messageDto);
-            messageRepository.save(message);
-            return messageDto;
+            MessageUpdateDto updateDto = new MessageUpdateDto(messageDto.getContent(), messageDto.isInternalNote());
+            messageMapper.updateMessageFromDto(updateDto, existing);
+            messageRepository.save(existing);
+            return messageMapper.toDto(existing);
         } catch (Exception e) {
             log.error("error updating message", e);
-            throw new IllegalStateException("error creating message", e);
+            throw new IllegalStateException("error updating message", e);
         }
     }
 

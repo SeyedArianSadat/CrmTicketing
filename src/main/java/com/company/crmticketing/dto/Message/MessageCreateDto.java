@@ -9,7 +9,6 @@ public record MessageCreateDto(
         @Size(min = 10,max = 200,message = "explain content")
         String content,
 
-        @NotBlank
         boolean internalNote
 
 ) {
