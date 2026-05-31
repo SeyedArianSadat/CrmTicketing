@@ -7,6 +7,7 @@ import com.company.crmticketing.model.enums.Channel;
 import com.company.crmticketing.model.enums.RequestStatus;
 import com.company.crmticketing.model.enums.RequestType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,13 +32,13 @@ public class CustomerRequestDto {
     @Size(min = 1, max = 100, message = "description must be between 1 to 100 character ")
     private String description;
 
-    @NotBlank(message = "channel is required")
+    @NotNull(message = "channel is required")
     private Channel channel;
 
-    @NotBlank(message = "requestType is required")
+    @NotNull(message = "requestType is required")
     private RequestType requestType;
 
-    @NotBlank(message = "requestStatus is required")
+    @NotNull(message = "requestStatus is required")
     private RequestStatus requestStatus;
 
     private Customer customer;

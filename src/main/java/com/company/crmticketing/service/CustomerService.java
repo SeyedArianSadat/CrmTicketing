@@ -2,6 +2,7 @@ package com.company.crmticketing.service;
 
 
 import com.company.crmticketing.dto.Customer.CustomerDto;
+import com.company.crmticketing.dto.Customer.CustomerUpdateDto;
 import com.company.crmticketing.exception.CustomerNotFoundException;
 import com.company.crmticketing.mapper.CustomerMapper;
 import com.company.crmticketing.model.Customer;
@@ -54,15 +55,15 @@ public class CustomerService extends BaseEntityService<Customer, Long, CustomerD
     @Transactional
     public CustomerDto updateCustomer(Long customerId, CustomerDto customerDto) {
         log.debug("update customer with customer");
-        customerRepository.findById(customerId)
-                .orElseThrow(() -> new CustomerNotFoundException(customerId));
+        Customer existing = customerRepository.findById(customerId).orElseThrow(() -> new CustomerNotFoundException(customerId));
         try {
-            Customer customer = customerMapper.toEntity(customerDto);
-            customerRepository.save(customer);
-            return customerMapper.toDto(customer);
+            CustomerUpdateDto updateDto = new CustomerUpdateDto(customerDto.getCustomerName(), customerDto.getEmail(), customerDto.getPhone());
+            customerMapper.updateCustomerFromDto(updateDto, existing);
+            customerRepository.save(existing);
+            return customerMapper.toDto(existing);
         } catch (Exception e) {
-            log.error("update customer with customer", e);
-            throw new IllegalArgumentException("update customer with customer");
+            log.error("update customer failed", e);
+            throw new IllegalArgumentException("update customer failed", e);
         }
     }
 

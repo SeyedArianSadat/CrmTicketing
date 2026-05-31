@@ -2,6 +2,7 @@ package com.company.crmticketing.service;
 
 
 import com.company.crmticketing.dto.CustomerRequest.CustomerRequestDto;
+import com.company.crmticketing.dto.CustomerRequest.CustomerRequestUpdateDto;
 import com.company.crmticketing.exception.CustomerRequestNotFoundException;
 import com.company.crmticketing.mapper.CustomerRequestMapper;
 import com.company.crmticketing.model.CustomerRequest;
@@ -49,12 +50,12 @@ public class CustomerRequestService extends BaseEntityService<CustomerRequest, L
     @Transactional
     public CustomerRequestDto updateCustomerRequest(Long requestId, CustomerRequestDto customerRequestDto) {
         log.debug("updating customer request");
-        customerRequestRepository.findById(requestId)
-                .orElseThrow(() -> new CustomerRequestNotFoundException(requestId));
+        CustomerRequest existing = customerRequestRepository.findById(requestId).orElseThrow(() -> new CustomerRequestNotFoundException(requestId));
         try {
-            CustomerRequest customerRequest = customerRequestMapper.toEntity(customerRequestDto);
-            customerRequestRepository.save(customerRequest);
-            return customerRequestMapper.toDto(customerRequest);
+            CustomerRequestUpdateDto updateDto = new CustomerRequestUpdateDto(customerRequestDto.getTitle(), customerRequestDto.getDescription(), customerRequestDto.getChannel(), customerRequestDto.getRequestStatus(), customerRequestDto.getRequestType());
+            customerRequestMapper.updateCustomerRequestFromDto(updateDto, existing);
+            customerRequestRepository.save(existing);
+            return customerRequestMapper.toDto(existing);
         } catch (Exception e) {
             log.error("error updating customer request", e);
             throw new IllegalArgumentException("error updating customer request", e);

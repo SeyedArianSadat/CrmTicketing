@@ -19,10 +19,9 @@ import java.util.List;
 @SuperBuilder
 public class CustomerDto {
 
-    private Long CustomerId;
+    private Long customerId;
 
     @NotBlank
-
     private String customerName;
 
     @Email
@@ -30,11 +29,11 @@ public class CustomerDto {
     private String email;
 
     @NotBlank
-    @Size(min = 11, max = 11,message = "phone must be 11 character")
+    @Size(min = 11, max = 11, message = "phone must be 11 character")
     private String phone;
 
-    private User  user;
+    private User user;
 
-    private List<CustomerRequest> customerRequests=new ArrayList<>();
+    private List<CustomerRequest> customerRequests = new ArrayList<>();
 
 }

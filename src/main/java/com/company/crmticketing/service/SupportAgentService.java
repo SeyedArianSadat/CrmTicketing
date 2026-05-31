@@ -2,6 +2,7 @@ package com.company.crmticketing.service;
 
 
 import com.company.crmticketing.dto.SupportAgent.SupportAgentDto;
+import com.company.crmticketing.dto.SupportAgent.SupportAgentUpdateDto;
 import com.company.crmticketing.exception.SupportAgentNotFoundException;
 import com.company.crmticketing.mapper.SupportAgentMapper;
 import com.company.crmticketing.model.SupportAgent;
@@ -42,22 +43,22 @@ public class SupportAgentService extends BaseEntityService<SupportAgent, Long, S
             return supportAgentMapper.toDto(supportAgent);
         } catch (Exception e) {
             log.error("error creating agent", e);
-            throw new NullPointerException("error creating agent");
+            throw new IllegalArgumentException("error creating agent", e);
         }
     }
 
     @Transactional
-    public SupportAgentDto updateAgent(Long agentId,SupportAgentDto supportAgentDto) {
+    public SupportAgentDto updateAgent(Long agentId, SupportAgentDto supportAgentDto) {
         log.debug("updating agent");
-        supportAgentRepository.findById(agentId)
-                .orElseThrow(() -> new SupportAgentNotFoundException(agentId));
+        SupportAgent existing = supportAgentRepository.findById(agentId).orElseThrow(() -> new SupportAgentNotFoundException(agentId));
         try {
-            SupportAgent supportAgent = supportAgentMapper.toEntity(supportAgentDto);
-            supportAgentRepository.save(supportAgent);
-            return supportAgentMapper.toDto(supportAgent);
+            SupportAgentUpdateDto updateDto = new SupportAgentUpdateDto(supportAgentDto.getAgentName());
+            supportAgentMapper.updateSupportAgentFromDto(updateDto, existing);
+            supportAgentRepository.save(existing);
+            return supportAgentMapper.toDto(existing);
         } catch (Exception e) {
             log.error("error updating agent", e);
-            throw new NullPointerException("error updating agent");
+            throw new IllegalStateException("error updating agent", e);
         }
     }
 

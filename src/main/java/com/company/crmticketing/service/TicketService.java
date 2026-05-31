@@ -2,6 +2,7 @@ package com.company.crmticketing.service;
 
 
 import com.company.crmticketing.dto.Ticket.TicketDto;
+import com.company.crmticketing.dto.Ticket.TicketUpdateDto;
 import com.company.crmticketing.exception.*;
 import com.company.crmticketing.mapper.TicketMapper;
 import com.company.crmticketing.model.Ticket;
@@ -55,12 +56,12 @@ public class TicketService extends BaseEntityService<Ticket, Long, TicketDto> {
     @Transactional
     public TicketDto updateTicket(Long ticketId, TicketDto ticketDto) {
         log.debug("Updating a ticket");
-        ticketRepository.findById(ticketId)
-                .orElseThrow(() -> new TicketNotFoundException(ticketId));
+        Ticket existing = ticketRepository.findById(ticketId).orElseThrow(() -> new TicketNotFoundException(ticketId));
         try {
-            Ticket ticket = ticketMapper.toEntity(ticketDto);
-            ticketRepository.save(ticket);
-            return ticketMapper.toDto(ticket);
+            TicketUpdateDto updateDto = new TicketUpdateDto(ticketDto.getTitle(), ticketDto.getResolutionDeadline(), ticketDto.getFirstResponseDeadline(), ticketDto.getPriority(), ticketDto.getRequestStatus(), ticketDto.getCustomerRequest());
+            ticketMapper.updateTicketFromDto(updateDto, existing);
+            ticketRepository.save(existing);
+            return ticketMapper.toDto(existing);
         } catch (Exception e) {
             log.error("Updating a ticket failed", e);
             throw new TicketUpdateException("Updating a ticket failed");

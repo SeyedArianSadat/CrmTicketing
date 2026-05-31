@@ -1,6 +1,7 @@
 package com.company.crmticketing.service;
 
 import com.company.crmticketing.dto.Attachment.AttachmentDto;
+import com.company.crmticketing.dto.Attachment.AttachmentUpdateDto;
 import com.company.crmticketing.exception.AttachmentNotFoundException;
 import com.company.crmticketing.mapper.AttachmentMapper;
 import com.company.crmticketing.model.Attachment;
@@ -48,16 +49,15 @@ public class AttachmentService extends BaseEntityService<Attachment, Long, Attac
 
     @Transactional
     public AttachmentDto updateAttachment(Long attachmentId, AttachmentDto attachmentDto) {
-        log.debug("update attachment");
-        attachmentRepository.findById(attachmentId)
-                .orElseThrow(() -> new AttachmentNotFoundException(attachmentId));
+        Attachment existing = attachmentRepository.findById(attachmentId).orElseThrow(() -> new AttachmentNotFoundException(attachmentId));
         try {
-            Attachment attachment = attachmentMapper.toEntity(attachmentDto);
-            attachmentRepository.save(attachment);
-            return attachmentMapper.toDto(attachment);
+            AttachmentUpdateDto updateDto = new AttachmentUpdateDto(attachmentDto.getFileName(), attachmentDto.getFilePath());
+            attachmentMapper.updateAttachmentFromDto(updateDto, existing);
+            attachmentRepository.save(existing);
+            return attachmentMapper.toDto(existing);
         } catch (Exception e) {
             log.error("update attachment failed", e);
-            throw new IllegalArgumentException("update attachment failed");
+            throw new IllegalArgumentException("update attachment failed", e);
         }
     }
 

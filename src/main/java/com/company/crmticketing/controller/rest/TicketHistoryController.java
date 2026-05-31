@@ -62,7 +62,7 @@ public class TicketHistoryController {
     public ResponseEntity<TicketHistoryDto> updateTicketHistory(
             @Parameter(description = "ID of ticketHistory to update", required = true) @PathVariable Long id,
             @Valid @RequestBody TicketHistoryDto ticketHistoryDto) {
-        log.info("Rest request to updateTicketHistory: {}", id, ticketHistoryDto);
+        log.info("Rest request to updateTicketHistory id: {}, body: {}", id, ticketHistoryDto);
         TicketHistoryDto updatedTicketHistory = ticketHistoryService.updateTicketHistory(id, ticketHistoryDto);
         return ResponseEntity.status(HttpStatus.OK).body(updatedTicketHistory);
     }

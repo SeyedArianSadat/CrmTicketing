@@ -1,6 +1,7 @@
 package com.company.crmticketing.service;
 
 import com.company.crmticketing.dto.Department.DepartmentDto;
+import com.company.crmticketing.dto.Department.DepartmentUpdateDto;
 import com.company.crmticketing.exception.DepartmentNotFoundException;
 import com.company.crmticketing.mapper.DepartmentMapper;
 import com.company.crmticketing.model.Department;
@@ -47,15 +48,15 @@ public class DepartmentService extends BaseEntityService<Department, Long, Depar
     @Transactional
     public DepartmentDto updateDepartment(Long departmentId, DepartmentDto departmentDto) {
         log.debug("updating department");
-        departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new DepartmentNotFoundException(departmentId));
+        Department existing = departmentRepository.findById(departmentId).orElseThrow(() -> new DepartmentNotFoundException(departmentId));
         try {
-            Department department = departmentMapper.toEntity(departmentDto);
-            departmentRepository.save(department);
-            return departmentMapper.toDto(department);
+            DepartmentUpdateDto updateDto = new DepartmentUpdateDto(departmentDto.getDepartmentName());
+            departmentMapper.updateDepartmentFromDto(updateDto, existing);
+            departmentRepository.save(existing);
+            return departmentMapper.toDto(existing);
         } catch (Exception e) {
             log.error("failed to update department", e);
-            throw new DepartmentNotFoundException(departmentDto.getDepartmentId());
+            throw new DepartmentNotFoundException(departmentId);
         }
     }
 

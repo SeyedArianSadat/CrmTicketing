@@ -20,7 +20,7 @@ import java.util.List;
 public class Department extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long departmentId;
+    private Long departmentId;
 
     @NotBlank
     @Column(name = "department_name",nullable = false)

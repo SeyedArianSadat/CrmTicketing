@@ -36,8 +36,8 @@ public class TicketHistoryService extends BaseEntityService<TicketHistory, Long,
     @Transactional
     public TicketHistoryDto createTicketHistory(TicketHistoryDto ticketHistoryDto) {
         log.debug("create ticket history");
-        if (ticketHistoryDto.getTicket().getTicketId() != null) {
-            throw new TicketNotFoundException(ticketHistoryDto.getTicket().getTicketId());
+        if (ticketHistoryDto.getTicket() == null || ticketHistoryDto.getTicket().getTicketId() == null) {
+            throw new IllegalArgumentException("ticket history must references to ticket");
         }
         try {
             TicketHistory ticketHistory = ticketHistoryMapper.toEntity(ticketHistoryDto);
@@ -45,22 +45,22 @@ public class TicketHistoryService extends BaseEntityService<TicketHistory, Long,
             return ticketHistoryMapper.toDto(ticketHistory);
         } catch (Exception e) {
             log.error("create ticket history failed", e);
-            throw new TicketNotFoundException(ticketHistoryDto.getTicket().getTicketId());
+            throw new IllegalArgumentException("create ticket failed,", e);
         }
     }
 
     @Transactional
     public TicketHistoryDto updateTicketHistory(Long ticketHistoryId, TicketHistoryDto ticketHistoryDto) {
         log.debug("update ticket history");
-        ticketHistoryRepository.findById(ticketHistoryId)
-                .orElseThrow(() -> new TicketNotFoundException(ticketHistoryDto.getTicket().getTicketId()));
+
+        TicketHistory existing = ticketHistoryRepository.findById(ticketHistoryId).orElseThrow(() -> new TicketNotFoundException(ticketHistoryId));
         try {
-            TicketHistory ticketHistory = ticketHistoryMapper.toEntity(ticketHistoryDto);
-            ticketHistoryRepository.save(ticketHistory);
-            return ticketHistoryMapper.toDto(ticketHistory);
+            ticketHistoryMapper.updateTicketHistoryFromDto(new com.company.crmticketing.dto.TicketHistory.TicketHistoryUpdateDto(ticketHistoryDto.getFieldChanged(), ticketHistoryDto.getOldValue(), ticketHistoryDto.getNewValue()), existing);
+            ticketHistoryRepository.save(existing);
+            return ticketHistoryMapper.toDto(existing);
         } catch (Exception e) {
             log.error("update ticket history failed", e);
-            throw new TicketNotFoundException(ticketHistoryDto.getTicket().getTicketId());
+            throw new IllegalArgumentException("update ticket history failed", e);
         }
     }
 

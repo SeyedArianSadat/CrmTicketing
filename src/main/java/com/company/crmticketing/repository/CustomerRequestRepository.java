@@ -18,11 +18,11 @@ public interface CustomerRequestRepository extends BaseEntityRepository<Customer
 
     Optional<CustomerRequest> findByRequestType(RequestType requestType);
 
-    @Query("select c from customerRequestEntity c join fetch c.ticket where c.ticket= :id")
+    @Query("select c from customerRequestEntity c join fetch c.ticket where c.ticket.ticketId= :id")
     Optional<CustomerRequest> findCustomerRequestByTicket(@Param("id") Long id);
 
     @Query("select distinct c from customerRequestEntity c join fetch  c.messages m where m.messageId= :messageId")
-    Optional<CustomerRequest> findCustomerRequestByMessages(@Param("id") Long id);
+    Optional<CustomerRequest> findCustomerRequestByMessages(@Param("messageId") Long messageId);
 
 
     @Query("""

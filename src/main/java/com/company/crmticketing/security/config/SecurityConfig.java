@@ -191,8 +191,7 @@ public class SecurityConfig {
                                 "/**/*.js",
                                 "/**/*.html",
                                 "/error",
-                                "/favicon.ico",
-                                "/api/customers"
+                                "/favicon.ico"
                         ).permitAll()
 
                         // Admin only

@@ -1,7 +1,7 @@
 package com.company.crmticketing.exception;
 
 public class CustomerNotFoundException extends RuntimeException {
-    public CustomerNotFoundException(Long CustomerId) {
-        super("Customer with id " + CustomerId + " not found");
+    public CustomerNotFoundException(Long customerId) {
+        super("Customer with id " + customerId + " not found");
     }
 }
