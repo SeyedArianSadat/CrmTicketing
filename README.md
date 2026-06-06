@@ -99,7 +99,7 @@ src/
 
 | Tool | Minimum Version | Purpose |
 |---|---|---|
-| Java | 21 | Run the application |
+| Java | 17 | Run the application |
 | Maven | 3.9 | Build the application |
 | Docker | 24 | Container deployment |
 | Docker Compose | 2.x | Multi-container orchestration |
