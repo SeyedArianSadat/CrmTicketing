@@ -49,7 +49,7 @@ A full-stack customer relationship and support ticketing backend built with **Sp
 
 | Layer | Technology |
 |---|---|
-| Language | Java 21 |
+| Language | Java 17 |
 | Framework | Spring Boot 4.0.5 |
 | Security | Spring Security + JJWT 0.12.6 |
 | Persistence | Spring Data JPA / Hibernate |
