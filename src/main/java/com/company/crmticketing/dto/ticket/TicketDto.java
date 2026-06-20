@@ -1,6 +1,6 @@
-package com.company.crmticketing.dto.Ticket;
+package com.company.crmticketing.dto.ticket;
 
-import com.company.crmticketing.model.*;
+
 import com.company.crmticketing.model.enums.Priority;
 import com.company.crmticketing.model.enums.RequestStatus;
 import jakarta.validation.constraints.NotBlank;
@@ -11,8 +11,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @NoArgsConstructor
 @Getter
@@ -36,17 +35,12 @@ public class TicketDto {
     //@NotBlank(message = "resolution deadline required")
     private LocalDateTime resolutionDeadline;
 
-    private CustomerRequest customerRequest;
+    private Long customerRequestId;
 
-    private Department department;
+    private Long departmentId;
 
-    private SupportAgent agentId;
+    private Long agentId;
 
-    private Sla sla;
+    private Long slaId;
 
-    private List<Message> messages = new ArrayList<>();
-
-    private List<TicketHistory> ticketHistories = new ArrayList<>();
-
-    private List<Attachment> attachments = new ArrayList<>();
 }
