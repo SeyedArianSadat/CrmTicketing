@@ -1,0 +1,51 @@
+<form th:action="@{/ui/slas}"
+      method="post">
+
+    <div class="mb-3">
+
+        <label>Priority</label>
+
+        <select class="form-select"
+                th:field="*{priorityLevel}">
+
+            <option value="LOW">LOW</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="HIGH">HIGH</option>
+
+        </select>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label>Response Time</label>
+
+        <input type="number"
+               class="form-control"
+               th:field="*{responseTimeMinutes}">
+    </div>
+
+    <div class="mb-3">
+
+        <label>Resolution Time</label>
+
+        <input type="number"
+               class="form-control"
+               th:field="*{resolutionTimeMinutes}">
+    </div>
+
+    <div class="mb-3">
+
+        <label>Description</label>
+
+        <textarea class="form-control"
+                  th:field="*{description}">
+        </textarea>
+
+    </div>
+
+    <button class="btn btn-success">
+        Save
+    </button>
+
+</form>

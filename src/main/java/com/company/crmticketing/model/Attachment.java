@@ -18,10 +18,10 @@ public class Attachment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long attachmentId;
 
-    @Column(name = "file_name",length = 50)
+    @Column(name = "file_name",length = 500)
     private String fileName;
 
-    @Column(name = "file_path", length = 50)
+    @Column(name = "file_path", length = 500)
     private String filePath;
 
     @ManyToOne(fetch = FetchType.LAZY)

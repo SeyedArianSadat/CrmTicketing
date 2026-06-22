@@ -1,6 +1,6 @@
 package com.company.crmticketing.controller.rest;
 
-import com.company.crmticketing.dto.Sla.SlaDto;
+import com.company.crmticketing.dto.sla.SlaDto;
 import com.company.crmticketing.model.enums.Priority;
 import com.company.crmticketing.service.SlaService;
 import io.swagger.v3.oas.annotations.Operation;

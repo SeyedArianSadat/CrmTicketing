@@ -1,6 +1,6 @@
 package com.company.crmticketing.controller;
 
-import com.company.crmticketing.dto.Ticket.TicketDto;
+import com.company.crmticketing.dto.ticket.TicketDto;
 import com.company.crmticketing.service.TicketService;
 import com.company.crmticketing.service.DepartmentService;
 import com.company.crmticketing.service.SupportAgentService;

@@ -1,7 +1,7 @@
 package com.company.crmticketing.service;
 
-import com.company.crmticketing.dto.Message.MessageDto;
-import com.company.crmticketing.dto.Message.MessageUpdateDto;
+import com.company.crmticketing.dto.message.MessageDto;
+import com.company.crmticketing.dto.message.MessageUpdateDto;
 import com.company.crmticketing.exception.MessageNotFoundException;
 import com.company.crmticketing.mapper.MessageMapper;
 import com.company.crmticketing.model.Message;

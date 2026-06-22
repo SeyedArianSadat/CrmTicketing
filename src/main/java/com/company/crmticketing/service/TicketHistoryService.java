@@ -1,7 +1,7 @@
 package com.company.crmticketing.service;
 
 
-import com.company.crmticketing.dto.TicketHistory.TicketHistoryDto;
+import com.company.crmticketing.dto.ticketHistory.TicketHistoryDto;
 import com.company.crmticketing.exception.TicketNotFoundException;
 import com.company.crmticketing.mapper.TicketHistoryMapper;
 import com.company.crmticketing.model.TicketHistory;
@@ -36,7 +36,7 @@ public class TicketHistoryService extends BaseEntityService<TicketHistory, Long,
     @Transactional
     public TicketHistoryDto createTicketHistory(TicketHistoryDto ticketHistoryDto) {
         log.debug("create ticket history");
-        if (ticketHistoryDto.getTicket() == null || ticketHistoryDto.getTicket().getTicketId() == null) {
+        if (ticketHistoryDto.getTicketId() == null) {
             throw new IllegalArgumentException("ticket history must references to ticket");
         }
         try {
@@ -55,7 +55,7 @@ public class TicketHistoryService extends BaseEntityService<TicketHistory, Long,
 
         TicketHistory existing = ticketHistoryRepository.findById(ticketHistoryId).orElseThrow(() -> new TicketNotFoundException(ticketHistoryId));
         try {
-            ticketHistoryMapper.updateTicketHistoryFromDto(new com.company.crmticketing.dto.TicketHistory.TicketHistoryUpdateDto(ticketHistoryDto.getFieldChanged(), ticketHistoryDto.getOldValue(), ticketHistoryDto.getNewValue()), existing);
+            ticketHistoryMapper.updateTicketHistoryFromDto(new com.company.crmticketing.dto.ticketHistory.TicketHistoryUpdateDto(ticketHistoryDto.getFieldChanged(), ticketHistoryDto.getOldValue(), ticketHistoryDto.getNewValue()), existing);
             ticketHistoryRepository.save(existing);
             return ticketHistoryMapper.toDto(existing);
         } catch (Exception e) {

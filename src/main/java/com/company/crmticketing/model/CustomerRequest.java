@@ -24,7 +24,7 @@ import java.util.List;
 public class CustomerRequest extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long RequestId;
+    private Long requestId;
 
     @NotBlank
     @Column(name = "title",nullable = false)

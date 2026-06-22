@@ -1,8 +1,8 @@
 package com.company.crmticketing.mapper;
 
 
-import com.company.crmticketing.dto.CustomerRequest.CustomerRequestDto;
-import com.company.crmticketing.dto.CustomerRequest.CustomerRequestUpdateDto;
+import com.company.crmticketing.dto.customerRequest.CustomerRequestDto;
+import com.company.crmticketing.dto.customerRequest.CustomerRequestUpdateDto;
 import com.company.crmticketing.model.CustomerRequest;
 import org.mapstruct.*;
 
@@ -12,17 +12,22 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CustomerRequestMapper {
-    //    @Mapping(source = "customer_id",target = "customer")
-//    @Mapping(source = "ticket_id",target = "ticket")
+
+    @Mapping(target = "customer", ignore = true)
+    @Mapping(target = "ticket", ignore = true)
+    @Mapping(target = "messages", ignore = true)
     CustomerRequest toEntity(CustomerRequestDto customerRequestDtoDto);
 
-    //    @Mapping(target = "customer",ignore = true)
-//    @Mapping(target = "ticket",ignore = true)
+    @Mapping(target = "customerId", ignore = true)
+    @Mapping(target = "ticketId", ignore = true)
     CustomerRequestDto toDto(CustomerRequest customerRequest);
 
     List<CustomerRequestDto> toCustomerDtoList(List<CustomerRequest> customerRequests);
 
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "customer", ignore = true)
+    @Mapping(target = "ticket", ignore = true)
+    @Mapping(target = "messages", ignore = true)
     void updateCustomerRequestFromDto(CustomerRequestUpdateDto updateDto, @MappingTarget CustomerRequest customerRequest);
 }

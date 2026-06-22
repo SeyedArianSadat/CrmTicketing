@@ -1,6 +1,6 @@
 package com.company.crmticketing.controller.rest;
 
-import com.company.crmticketing.dto.Attachment.AttachmentDto;
+import com.company.crmticketing.dto.attachment.AttachmentDto;
 import com.company.crmticketing.service.AttachmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

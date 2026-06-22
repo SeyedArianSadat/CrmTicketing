@@ -1,8 +1,8 @@
 package com.company.crmticketing.controller.rest;
 
 
-import com.company.crmticketing.dto.Ticket.TicketDto;
-import com.company.crmticketing.dto.TicketHistory.TicketHistoryDto;
+import com.company.crmticketing.dto.ticket.TicketDto;
+import com.company.crmticketing.dto.ticketHistory.TicketHistoryDto;
 import com.company.crmticketing.service.TicketHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

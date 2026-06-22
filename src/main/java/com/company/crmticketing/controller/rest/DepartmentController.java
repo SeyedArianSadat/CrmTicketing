@@ -1,6 +1,6 @@
 package com.company.crmticketing.controller.rest;
 
-import com.company.crmticketing.dto.Department.DepartmentDto;
+import com.company.crmticketing.dto.department.DepartmentDto;
 import com.company.crmticketing.service.DepartmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

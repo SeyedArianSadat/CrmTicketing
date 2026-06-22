@@ -14,15 +14,15 @@ import java.util.Optional;
 public interface TicketRepository extends BaseEntityRepository<Ticket, Long> {
     Optional<Ticket> findByTitle(String title);
 
-    Optional<Ticket> findByPriority(Priority priority);
+    List<Ticket> findByPriority(Priority priority);
 
-    Optional<Ticket> findByRequestStatus(RequestStatus requestStatus);
+    List<Ticket> findByRequestStatus(RequestStatus requestStatus);
 
 
     @Query("""
-            SELECT t from ticketEntity t
+            SELECT DISTINCT t from ticketEntity t
             LEFT JOIN fetch  t.department
-            LEFT JOIN fetch  t.agentId
+            LEFT JOIN fetch  t.agent
             LEFT JOIN fetch  t.customerRequest
             LEFT JOIN fetch  t.attachments
             where t.ticketId = :id""")
@@ -48,14 +48,14 @@ public interface TicketRepository extends BaseEntityRepository<Ticket, Long> {
     Optional<Ticket> findByIdWithTicketHistories(@Param("id") Long id);
 
     @Query("""
-            SELECT t from ticketEntity t
+            SELECT DISTINCT t from ticketEntity t
             LEFT JOIN FETCH t.department
-            LEFT JOIN FETCH t.agentId""")
+            LEFT JOIN FETCH t.agent""")
     List<Ticket> findAllWithDepartmentAndAgent();
 
 
     @Query("""
-            SELECT t from ticketEntity t
+            SELECT DISTINCT t from ticketEntity t
             LEFT JOIN FETCH t.sla
             WHERE t.department.departmentId = :depId""")
     List<Ticket> findByDepartmentIdWithSla(@Param("depId") Long depId);

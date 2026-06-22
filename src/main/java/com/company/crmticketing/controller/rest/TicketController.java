@@ -1,6 +1,6 @@
 package com.company.crmticketing.controller.rest;
 
-import com.company.crmticketing.dto.Ticket.TicketDto;
+import com.company.crmticketing.dto.ticket.TicketDto;
 import com.company.crmticketing.model.enums.Priority;
 import com.company.crmticketing.model.enums.RequestStatus;
 import com.company.crmticketing.service.TicketService;
@@ -62,6 +62,7 @@ public class TicketController {
     public ResponseEntity<TicketDto> updateTicket(
             @Parameter(description = "ID of the ticket to update", required = true) @PathVariable Long id,
             @Valid @RequestBody TicketDto ticketDto) {
+        ticketDto.setTicketId(id);
         log.info("REST request to update ticket {}: {}", id, ticketDto);
         TicketDto updated = ticketService.updateTicket(id, ticketDto);
         return ResponseEntity.ok(updated);
@@ -135,12 +136,11 @@ public class TicketController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping("/search/by-priority")
-    public ResponseEntity<TicketDto> findByPriority(
+    public ResponseEntity<List<TicketDto>> findByPriority(
             @Parameter(description = "Priority value (e.g. HIGH, MEDIUM, LOW)", required = true) @RequestParam Priority priority) {
         log.debug("REST request to find ticket by priority {}", priority);
-        Optional<TicketDto> ticket = ticketService.findByPriority(priority);
-        return ticket.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        List<TicketDto> tickets = ticketService.findByPriority(priority);
+        return ResponseEntity.ok(tickets);
     }
 
     @Operation(summary = "Find a ticket by request status")
@@ -150,12 +150,11 @@ public class TicketController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @GetMapping("/search/by-status")
-    public ResponseEntity<TicketDto> findByRequestStatus(
+    public ResponseEntity<List<TicketDto>> findByRequestStatus(
             @Parameter(description = "Request status value", required = true) @RequestParam RequestStatus requestStatus) {
         log.debug("REST request to find ticket by status {}", requestStatus);
-        Optional<TicketDto> ticket = ticketService.findByRequestStatus(requestStatus);
-        return ticket.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        List<TicketDto> tickets = ticketService.findByRequestStatus(requestStatus);
+        return ResponseEntity.ok( tickets);
     }
 
     // ────────────────── FIND WITH EAGER RELATIONS ──────────────────

@@ -13,16 +13,30 @@ import java.util.List;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface TicketMapper {
 
+    @Mapping(target = "customerRequest",ignore = true)
+    @Mapping(target = "department", ignore = true)
+    @Mapping(target = "sla", ignore = true)
+    @Mapping(target = "agent", ignore = true)
+    @Mapping(target = "ticketHistories",ignore = true)
+    @Mapping(target = "messages",ignore = true)
+    @Mapping(target = "attachments",ignore = true)
+    Ticket toEntity(TicketDto ticketDto);
+
     @Mapping(target = "customerRequestId",ignore = true)
     @Mapping(target = "departmentId", ignore = true)
     @Mapping(target = "slaId", ignore = true)
     @Mapping(target = "agentId", ignore = true)
-    Ticket toEntity(TicketDto ticketDto);
-
     TicketDto toDto(Ticket ticket);
 
     List<TicketDto> toTicketDtoList(List<Ticket> tickets);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "customerRequest",ignore = true)
+    @Mapping(target = "department", ignore = true)
+    @Mapping(target = "sla", ignore = true)
+    @Mapping(target = "messages",ignore = true)
+    @Mapping(target = "agent", ignore = true)
+    @Mapping(target = "ticketHistories",ignore = true)
+    @Mapping(target = "attachments",ignore = true)
     void updateTicketFromDto(TicketUpdateDto updateDto, @MappingTarget Ticket ticket);
 }

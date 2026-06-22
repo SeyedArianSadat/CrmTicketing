@@ -53,18 +53,18 @@ public class  Ticket extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "agent_id")
-    private SupportAgent agentId;
+    private SupportAgent agent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sla_id")
     private Sla sla;
 
-    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Message> messages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<TicketHistory> ticketHistories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Attachment> attachments = new ArrayList<>();
 }

@@ -3,8 +3,8 @@ package com.company.crmticketing.mapper;
 
 
 
-import com.company.crmticketing.dto.TicketHistory.TicketHistoryDto;
-import com.company.crmticketing.dto.TicketHistory.TicketHistoryUpdateDto;
+import com.company.crmticketing.dto.ticketHistory.TicketHistoryDto;
+import com.company.crmticketing.dto.ticketHistory.TicketHistoryUpdateDto;
 import com.company.crmticketing.model.TicketHistory;
 import org.mapstruct.*;
 
@@ -14,14 +14,15 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface TicketHistoryMapper {
-//    @Mapping(source = "ticketId", target = "ticket")
+    @Mapping(target = "ticket", ignore = true)
     TicketHistory toEntity(TicketHistoryDto ticketHistoryDto);
 
-//    @Mapping(target = "ticket", ignore = true)
+    @Mapping(target = "ticketId", ignore = true)
     TicketHistoryDto toDto(TicketHistory ticketHistory);
 
     List<TicketHistoryDto> toTicketHistoryDtoList(List<TicketHistory> ticketHistories);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "ticket", ignore = true)
     void updateTicketHistoryFromDto(TicketHistoryUpdateDto updateDto, @MappingTarget TicketHistory ticketHistory);
 }

@@ -1,7 +1,7 @@
 package com.company.crmticketing.service;
 
-import com.company.crmticketing.dto.Sla.SlaDto;
-import com.company.crmticketing.dto.Sla.SlaUpdateDto;
+import com.company.crmticketing.dto.sla.SlaDto;
+import com.company.crmticketing.dto.sla.SlaUpdateDto;
 import com.company.crmticketing.mapper.SlaMapper;
 import com.company.crmticketing.model.Sla;
 import com.company.crmticketing.model.enums.Priority;

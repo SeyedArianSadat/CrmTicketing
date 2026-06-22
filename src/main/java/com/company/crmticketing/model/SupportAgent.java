@@ -36,6 +36,6 @@ public class SupportAgent extends BaseEntity {
     @JoinColumn(name = "department_id",nullable = false)
     private Department department;
 
-    @OneToMany(mappedBy = "agentId",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "agent",cascade = CascadeType.ALL)
     private List<Ticket> assignedTickets=new ArrayList<>();
 }

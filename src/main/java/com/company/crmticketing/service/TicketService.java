@@ -1,8 +1,8 @@
 package com.company.crmticketing.service;
 
 
-import com.company.crmticketing.dto.Ticket.TicketDto;
-import com.company.crmticketing.dto.Ticket.TicketUpdateDto;
+import com.company.crmticketing.dto.ticket.TicketDto;
+import com.company.crmticketing.dto.ticket.TicketUpdateDto;
 import com.company.crmticketing.exception.*;
 import com.company.crmticketing.mapper.TicketMapper;
 import com.company.crmticketing.model.Ticket;
@@ -58,7 +58,7 @@ public class TicketService extends BaseEntityService<Ticket, Long, TicketDto> {
         log.debug("Updating a ticket");
         Ticket existing = ticketRepository.findById(ticketId).orElseThrow(() -> new TicketNotFoundException(ticketId));
         try {
-            TicketUpdateDto updateDto = new TicketUpdateDto(ticketDto.getTitle(), ticketDto.getResolutionDeadline(), ticketDto.getFirstResponseDeadline(), ticketDto.getPriority(), ticketDto.getRequestStatus(), ticketDto.getCustomerRequest());
+            TicketUpdateDto updateDto = new TicketUpdateDto(ticketDto.getTitle(), ticketDto.getResolutionDeadline(), ticketDto.getFirstResponseDeadline(), ticketDto.getPriority(), ticketDto.getRequestStatus(), ticketDto.getCustomerRequestId());
             ticketMapper.updateTicketFromDto(updateDto, existing);
             ticketRepository.save(existing);
             return ticketMapper.toDto(existing);
@@ -88,16 +88,16 @@ public class TicketService extends BaseEntityService<Ticket, Long, TicketDto> {
                 .map(ticketMapper::toDto);
     }
 
-    public Optional<TicketDto> findByPriority(Priority priority) {
+    public List<TicketDto> findByPriority(Priority priority) {
         log.debug("Finding a ticket by priority");
-        return ticketRepository.findByPriority(priority)
-                .map(ticketMapper::toDto);
+        List<Ticket> ticketsPriority= ticketRepository.findByPriority(priority);
+        return ticketMapper.toTicketDtoList(ticketsPriority);
     }
 
-    public Optional<TicketDto> findByRequestStatus(RequestStatus requestStatus) {
+    public List<TicketDto> findByRequestStatus(RequestStatus requestStatus) {
         log.debug("Finding a ticket by request status");
-        return ticketRepository.findByRequestStatus(requestStatus)
-                .map(ticketMapper::toDto);
+        List<Ticket> ticketsRequestStatus=ticketRepository.findByRequestStatus(requestStatus);
+        return ticketMapper.toTicketDtoList(ticketsRequestStatus);
     }
 
     public Optional<TicketDto> findByIdWithAllDetails(Long id) {
@@ -130,9 +130,9 @@ public class TicketService extends BaseEntityService<Ticket, Long, TicketDto> {
         return ticketMapper.toTicketDtoList(ticketsDepartmentAgents);
     }
 
-    public List<TicketDto> findAllWithDepartmentIdWithSla(Long slaId) {
+    public List<TicketDto> findAllWithDepartmentIdWithSla(Long departmentId) {
         log.debug("Finding all tickets with sla");
-        List<Ticket> ticketsDepartmentSla = ticketRepository.findByDepartmentIdWithSla(slaId);
+        List<Ticket> ticketsDepartmentSla = ticketRepository.findByDepartmentIdWithSla(departmentId);
         return ticketMapper.toTicketDtoList(ticketsDepartmentSla);
     }
 

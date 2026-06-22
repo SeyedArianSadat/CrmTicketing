@@ -1,8 +1,8 @@
 package com.company.crmticketing.service;
 
 
-import com.company.crmticketing.dto.CustomerRequest.CustomerRequestDto;
-import com.company.crmticketing.dto.CustomerRequest.CustomerRequestUpdateDto;
+import com.company.crmticketing.dto.customerRequest.CustomerRequestDto;
+import com.company.crmticketing.dto.customerRequest.CustomerRequestUpdateDto;
 import com.company.crmticketing.exception.CustomerRequestNotFoundException;
 import com.company.crmticketing.mapper.CustomerRequestMapper;
 import com.company.crmticketing.model.CustomerRequest;

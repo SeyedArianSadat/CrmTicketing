@@ -1,6 +1,6 @@
 package com.company.crmticketing.controller.rest;
 
-import com.company.crmticketing.dto.CustomerRequest.CustomerRequestDto;
+import com.company.crmticketing.dto.customerRequest.CustomerRequestDto;
 import com.company.crmticketing.model.enums.RequestType;
 import com.company.crmticketing.service.CustomerRequestService;
 import io.swagger.v3.oas.annotations.Operation;

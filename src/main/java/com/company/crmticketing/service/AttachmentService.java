@@ -1,7 +1,7 @@
 package com.company.crmticketing.service;
 
-import com.company.crmticketing.dto.Attachment.AttachmentDto;
-import com.company.crmticketing.dto.Attachment.AttachmentUpdateDto;
+import com.company.crmticketing.dto.attachment.AttachmentDto;
+import com.company.crmticketing.dto.attachment.AttachmentUpdateDto;
 import com.company.crmticketing.exception.AttachmentNotFoundException;
 import com.company.crmticketing.mapper.AttachmentMapper;
 import com.company.crmticketing.model.Attachment;

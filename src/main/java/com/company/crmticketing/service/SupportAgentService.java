@@ -1,8 +1,8 @@
 package com.company.crmticketing.service;
 
 
-import com.company.crmticketing.dto.SupportAgent.SupportAgentDto;
-import com.company.crmticketing.dto.SupportAgent.SupportAgentUpdateDto;
+import com.company.crmticketing.dto.supportAgent.SupportAgentDto;
+import com.company.crmticketing.dto.supportAgent.SupportAgentUpdateDto;
 import com.company.crmticketing.exception.SupportAgentNotFoundException;
 import com.company.crmticketing.mapper.SupportAgentMapper;
 import com.company.crmticketing.model.SupportAgent;

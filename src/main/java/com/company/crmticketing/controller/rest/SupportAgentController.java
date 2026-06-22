@@ -1,6 +1,6 @@
 package com.company.crmticketing.controller.rest;
 
-import com.company.crmticketing.dto.SupportAgent.SupportAgentDto;
+import com.company.crmticketing.dto.supportAgent.SupportAgentDto;
 import com.company.crmticketing.exception.SupportAgentNotFoundException;
 import com.company.crmticketing.service.SupportAgentService;
 import io.swagger.v3.oas.annotations.Operation;

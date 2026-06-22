@@ -1,7 +1,7 @@
 package com.company.crmticketing.mapper;
 
-import com.company.crmticketing.dto.Attachment.AttachmentDto;
-import com.company.crmticketing.dto.Attachment.AttachmentUpdateDto;
+import com.company.crmticketing.dto.attachment.AttachmentDto;
+import com.company.crmticketing.dto.attachment.AttachmentUpdateDto;
 import com.company.crmticketing.model.Attachment;
 
 
@@ -13,16 +13,16 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface AttachmentMapper {
-    //    @Mapping(target = "attachmentId",ignore = true)
-//    @Mapping(target = "deleted", constant = "false")
-//    @Mapping(target = "ticket",ignore = true)
+
+    @Mapping(target = "ticket", ignore = true)
     Attachment toEntity(AttachmentDto attachmentDto);
 
-    //    @Mapping(target = "ticket",ignore = true)
+    @Mapping(target = "ticketId", ignore = true)
     AttachmentDto toDto(Attachment attachment);
 
     List<AttachmentDto> toAttachmentDtoList(List<Attachment> attachments);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "ticket", ignore = true)
     void updateAttachmentFromDto(AttachmentUpdateDto updateDto, @MappingTarget Attachment attachment);
 }

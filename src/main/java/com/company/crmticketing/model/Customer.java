@@ -39,14 +39,14 @@ public class Customer extends BaseEntity {
     private String email;
 
     @NotBlank
-    @Column(name = "customer_phone")
+    @Column(name = "phone")
     private String phone;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",unique = true)
     private User user;
 
-    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<CustomerRequest> customerRequests = new ArrayList<>();
 
 }

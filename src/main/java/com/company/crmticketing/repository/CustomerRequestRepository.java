@@ -30,7 +30,7 @@ public interface CustomerRequestRepository extends BaseEntityRepository<Customer
             left join fetch c.ticket
             left join fetch c.messages
             left join fetch c.customer
-            where c.RequestId = :id""")
+            where c.requestId = :id""")
     Optional<CustomerRequest> findCustomerRequestByIdWithAllDetails(@Param("id") Long id);
 
 
