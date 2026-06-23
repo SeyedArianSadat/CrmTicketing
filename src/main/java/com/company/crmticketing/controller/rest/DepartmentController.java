@@ -17,10 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
+
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/departments")
+@RequestMapping("/api/v1/departments")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Department Management", description = "Endpoints for managing departments")
@@ -76,6 +78,18 @@ public class DepartmentController {
         log.info("REST request to delete department {}", departmentId);
         departmentService.deleteDepartmentById(departmentId);
         return ResponseEntity.noContent().build();
+    }
+    // ────────────────── FIND ALL (simple) ──────────────────
+    @Operation(summary = "Get all department", description = "Returns a list of all department without any eager loaded relations")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of departments"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @GetMapping
+    public ResponseEntity<List<DepartmentDto>> getAllSlas() {
+        log.debug("REST request to get all slas");
+        List<DepartmentDto> departments = departmentService.findAllDtos();
+        return ResponseEntity.ok(departments);
     }
 
     // ────────────────── FIND BY NAME ──────────────────

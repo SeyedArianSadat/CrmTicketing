@@ -19,10 +19,11 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/customer-requests")
+@RequestMapping("/api/v1/customer-requests")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Customer Request Management", description = "Endpoints for managing customer requests (tickets)")
@@ -78,6 +79,19 @@ public class CustomerRequestController {
         customerRequestService.deleteByRequestId(requestId);
         return ResponseEntity.noContent().build();
     }
+    // ────────────────── FIND ALL (simple) ──────────────────
+    @Operation(summary = "Get all customerRequests", description = "Returns a list of all customer request without any eager loaded relations")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of customer request"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @GetMapping
+    public ResponseEntity<List<CustomerRequestDto>> getAllCustomerRequest() {
+        log.debug("REST request to get all customerRequests");
+        List<CustomerRequestDto> customerRequests = customerRequestService.findAllDtos();
+        return ResponseEntity.ok(customerRequests);
+    }
+
 
     // ────────────────── FIND BY TITLE ──────────────────
     @Operation(summary = "Find a customer request by title")

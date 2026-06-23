@@ -586,7 +586,6 @@ A minimal Thymeleaf-based admin interface is included for quick user management 
 | Landing | `http://localhost:8080/` | Home page with login status |
 | Login | `http://localhost:8080/login` | Username/password login form |
 | Dashboard | `http://localhost:8080/dashboard` | User list with enable/disable controls |
-| Tickets | `http://localhost:8080/ui/tickets` | Ticket list and management |
 
 The UI communicates with the REST API using the JWT token stored in `localStorage`.
 

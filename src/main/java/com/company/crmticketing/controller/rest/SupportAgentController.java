@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/agents")
+@RequestMapping("/api/v1/agents")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Support Agent Management", description = "Endpoints for managing support agents")

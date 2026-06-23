@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/customers")
+@RequestMapping("/api/v1/customers")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Customer Management", description = "Endpoints for managing customers")
@@ -79,6 +79,20 @@ public class CustomerController {
         customerService.deleteByCustomerId(customerId);
         return ResponseEntity.noContent().build();
     }
+
+    // ────────────────── FIND ALL (simple) ──────────────────
+    @Operation(summary = "Get all customer ", description = "Returns a list of all customer  without any eager loaded relations")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of customer "),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @GetMapping
+    public ResponseEntity<List<CustomerDto>> getAllCustomer() {
+        log.debug("REST request to get all customer");
+        List<CustomerDto> customers = customerService.findAllDtos();
+        return ResponseEntity.ok(customers);
+    }
+
 
     // ────────────────── FIND BY NAME ──────────────────
     @Operation(summary = "Find a customer by name")

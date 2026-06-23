@@ -19,10 +19,11 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/slas")
+@RequestMapping("/api/v1/slas")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "SLA Management", description = "Endpoints for managing Service Level Agreements (SLAs)")
@@ -79,6 +80,20 @@ public class SlaController {
         slaService.deleteBySlaId(slaId);
         return ResponseEntity.noContent().build();
     }
+
+    // ────────────────── FIND ALL (simple) ──────────────────
+    @Operation(summary = "Get all slas", description = "Returns a list of all slas without any eager loaded relations")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of slas"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @GetMapping
+    public ResponseEntity<List<SlaDto>> getAllSlas() {
+        log.debug("REST request to get all slas");
+        List<SlaDto> slas = slaService.findAllDtos();
+        return ResponseEntity.ok(slas);
+    }
+
 
     // ────────────────── FIND BY PRIORITY ──────────────────
     @Operation(summary = "Find an SLA by priority level")

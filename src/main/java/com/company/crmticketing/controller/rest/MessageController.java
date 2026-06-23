@@ -18,10 +18,11 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/messages")
+@RequestMapping("/api/v1/messages")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Message Management", description = "Endpoints for creating, updating, deleting and retrieving messages")
@@ -78,6 +79,19 @@ public class MessageController {
         messageService.deleteMessageById(id);
         return ResponseEntity.noContent().build();
     }
+    // ────────────────── FIND ALL (simple) ──────────────────
+    @Operation(summary = "Get all messages", description = "Returns a list of all messages without any eager loaded relations")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of message"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @GetMapping
+    public ResponseEntity<List<MessageDto>> getAllMessages() {
+        log.debug("REST request to get all slas");
+        List<MessageDto> messages = messageService.findAllDtos();
+        return ResponseEntity.ok(messages);
+    }
+
 
     // ────────────────── FIND BY CONTENT ──────────────────
     @Operation(summary = "Find a message by its content")

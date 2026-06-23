@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/attachments")
+@RequestMapping("/api/v1/attachments")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Attachment Management", description = "Endpoints for managing file attachments")
@@ -79,6 +79,19 @@ public class AttachmentController {
         attachmentService.deleteByAttachmentId(attachmentId);
         return ResponseEntity.noContent().build();
     }
+    // ────────────────── FIND ALL (simple) ──────────────────
+    @Operation(summary = "Get all attachment ", description = "Returns a list of all attachment  without any eager loaded relations")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of attachment "),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @GetMapping
+    public ResponseEntity<List<AttachmentDto>> getAllAttachments() {
+        log.debug("REST request to get all customer");
+        List<AttachmentDto> attachments = attachmentService.findAllDtos();
+        return ResponseEntity.ok(attachments);
+    }
+
 
     // ────────────────── FIND BY FILE NAME ──────────────────
     @Operation(summary = "Find an attachment by file name")
