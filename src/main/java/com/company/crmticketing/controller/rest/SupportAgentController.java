@@ -1,5 +1,6 @@
 package com.company.crmticketing.controller.rest;
 
+import com.company.crmticketing.dto.supportAgent.SupportAgentCreateDto;
 import com.company.crmticketing.dto.supportAgent.SupportAgentDto;
 import com.company.crmticketing.exception.SupportAgentNotFoundException;
 import com.company.crmticketing.service.SupportAgentService;
@@ -41,7 +42,7 @@ public class SupportAgentController {
             @ApiResponse(responseCode = "401", description = "Unauthorized – Bearer token missing or invalid")
     })
     @PostMapping
-    public ResponseEntity<SupportAgentDto> createAgent(@Valid @RequestBody SupportAgentDto agentDto) {
+    public ResponseEntity<SupportAgentDto> createAgent(@Valid @RequestBody SupportAgentCreateDto agentDto) {
         log.info("REST request to create agent: {}", agentDto);
         SupportAgentDto created = agentService.createAgent(agentDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);

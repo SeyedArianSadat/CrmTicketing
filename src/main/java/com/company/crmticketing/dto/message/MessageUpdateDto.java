@@ -2,5 +2,8 @@ package com.company.crmticketing.dto.message;
 
 public record MessageUpdateDto (
         String content,
-        boolean internalNot
+        Boolean internalNote,
+        Long requestId,
+        Long ticketId,
+        Long senderUserId
 ){}

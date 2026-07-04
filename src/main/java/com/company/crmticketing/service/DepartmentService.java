@@ -1,5 +1,6 @@
 package com.company.crmticketing.service;
 
+import com.company.crmticketing.dto.department.DepartmentCreateDto;
 import com.company.crmticketing.dto.department.DepartmentDto;
 import com.company.crmticketing.dto.department.DepartmentUpdateDto;
 import com.company.crmticketing.exception.DepartmentNotFoundException;
@@ -33,12 +34,18 @@ public class DepartmentService extends BaseEntityService<Department, Long, Depar
     }
 
     @Transactional
-    public DepartmentDto createDepartment(DepartmentDto departmentDto) {
+    public DepartmentDto createDepartment(DepartmentCreateDto createDto) {
+
         log.debug("creating department");
+
         try {
-            Department department = departmentMapper.toEntity(departmentDto);
-            departmentRepository.save(department);
-            return departmentMapper.toDto(department);
+
+            Department department = departmentMapper.toEntity(createDto);
+
+            Department saved = departmentRepository.save(department);
+
+            return departmentMapper.toDto(saved);
+
         } catch (Exception e) {
             log.error("failed to create department", e);
             throw new IllegalArgumentException("failed to create department", e);
@@ -46,31 +53,36 @@ public class DepartmentService extends BaseEntityService<Department, Long, Depar
     }
 
     @Transactional
-    public DepartmentDto updateDepartment(Long departmentId, DepartmentDto departmentDto) {
+    public DepartmentDto updateDepartment(
+            Long departmentId,
+            DepartmentUpdateDto updateDto) {
+
         log.debug("updating department");
-        Department existing = departmentRepository.findById(departmentId).orElseThrow(() -> new DepartmentNotFoundException(departmentId));
+
+        Department existing = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new DepartmentNotFoundException(departmentId));
+
         try {
-            DepartmentUpdateDto updateDto = new DepartmentUpdateDto(departmentDto.getDepartmentName());
+
             departmentMapper.updateDepartmentFromDto(updateDto, existing);
-            departmentRepository.save(existing);
-            return departmentMapper.toDto(existing);
+
+            Department saved = departmentRepository.save(existing);
+
+            return departmentMapper.toDto(saved);
+
         } catch (Exception e) {
             log.error("failed to update department", e);
-            throw new DepartmentNotFoundException(departmentId);
+            throw new IllegalArgumentException("failed to update department", e);
         }
     }
 
     @Transactional
     public void deleteDepartmentById(Long DepartmentId) {
         log.debug("deleting department");
-        if (!departmentRepository.existsById(DepartmentId)) {
+        if (!existsActive(DepartmentId)) {
             throw new DepartmentNotFoundException(DepartmentId);
         }
-        try {
-            departmentRepository.deleteById(DepartmentId);
-        } catch (Exception e) {
-            log.error("failed to delete department", e);
-        }
+        softDelete(DepartmentId);
     }
 
     public Optional<DepartmentDto> findByDepartmentName(String departmentName) {

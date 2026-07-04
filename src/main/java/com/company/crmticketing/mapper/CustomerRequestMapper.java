@@ -1,6 +1,7 @@
 package com.company.crmticketing.mapper;
 
 
+import com.company.crmticketing.dto.customerRequest.CustomerRequestCreateDto;
 import com.company.crmticketing.dto.customerRequest.CustomerRequestDto;
 import com.company.crmticketing.dto.customerRequest.CustomerRequestUpdateDto;
 import com.company.crmticketing.model.CustomerRequest;
@@ -16,10 +17,10 @@ public interface CustomerRequestMapper {
     @Mapping(target = "customer", ignore = true)
     @Mapping(target = "ticket", ignore = true)
     @Mapping(target = "messages", ignore = true)
-    CustomerRequest toEntity(CustomerRequestDto customerRequestDtoDto);
+    CustomerRequest toEntity(CustomerRequestCreateDto customerRequestDtoDto);
 
-    @Mapping(target = "customerId", ignore = true)
-    @Mapping(target = "ticketId", ignore = true)
+    @Mapping(target = "customerId", source = "customer.customerId")
+    @Mapping(target = "ticketId", source = "ticket.ticketId")
     CustomerRequestDto toDto(CustomerRequest customerRequest);
 
     List<CustomerRequestDto> toCustomerDtoList(List<CustomerRequest> customerRequests);

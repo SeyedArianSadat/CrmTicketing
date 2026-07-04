@@ -1,6 +1,8 @@
 package com.company.crmticketing.controller.rest;
 
+import com.company.crmticketing.dto.customer.CustomerCreateDto;
 import com.company.crmticketing.dto.customer.CustomerDto;
+import com.company.crmticketing.dto.customer.CustomerUpdateDto;
 import com.company.crmticketing.service.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +42,7 @@ public class CustomerController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PostMapping
-    public ResponseEntity<CustomerDto> createCustomer(@Valid @RequestBody CustomerDto customerDto) {
+    public ResponseEntity<CustomerDto> createCustomer(@Valid @RequestBody CustomerCreateDto customerDto) {
         log.info("REST request to create customer: {}", customerDto);
         CustomerDto created = customerService.createCustomer(customerDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -57,14 +59,14 @@ public class CustomerController {
     })
     @PutMapping("/{customerId}")
     public ResponseEntity<CustomerDto> updateCustomer(
-            @Parameter(description = "ID of the customer to update", required = true) @PathVariable Long customerId,
-            @Valid @RequestBody CustomerDto customerDto) {
-        customerDto.setCustomerId(customerId);
-        log.info("REST request to update customer {}: {}", customerId, customerDto);
-        CustomerDto updated = customerService.updateCustomer(customerId, customerDto);
+            @PathVariable Long customerId,
+            @Valid @RequestBody CustomerUpdateDto customerDto) {
+
+        CustomerDto updated =
+                customerService.updateCustomer(customerId, customerDto);
+
         return ResponseEntity.ok(updated);
     }
-
     // ────────────────── DELETE ──────────────────
     @Operation(summary = "Delete a customer by ID")
     @ApiResponses(value = {

@@ -1,11 +1,16 @@
 package com.company.crmticketing.service;
 
 
+import com.company.crmticketing.dto.ticketHistory.TicketHistoryCreateDto;
 import com.company.crmticketing.dto.ticketHistory.TicketHistoryDto;
+import com.company.crmticketing.dto.ticketHistory.TicketHistoryUpdateDto;
 import com.company.crmticketing.exception.TicketNotFoundException;
 import com.company.crmticketing.mapper.TicketHistoryMapper;
 import com.company.crmticketing.model.TicketHistory;
 import com.company.crmticketing.repository.TicketHistoryRepository;
+import com.company.crmticketing.model.Ticket;
+import com.company.crmticketing.repository.TicketRepository;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,9 +24,10 @@ import java.util.Optional;
 public class TicketHistoryService extends BaseEntityService<TicketHistory, Long, TicketHistoryDto> {
     private final TicketHistoryRepository ticketHistoryRepository;
     private final TicketHistoryMapper ticketHistoryMapper;
+    private final TicketRepository ticketRepository;
 
     public TicketHistoryService(TicketHistoryRepository ticketHistoryRepository
-            , TicketHistoryMapper ticketHistoryMapper) {
+            , TicketHistoryMapper ticketHistoryMapper, TicketRepository ticketRepository) {
         super(ticketHistoryRepository,
                 ticketHistoryMapper::toDto,
                 dto -> {
@@ -31,50 +37,55 @@ public class TicketHistoryService extends BaseEntityService<TicketHistory, Long,
                 });
         this.ticketHistoryRepository = ticketHistoryRepository;
         this.ticketHistoryMapper = ticketHistoryMapper;
+        this.ticketRepository = ticketRepository;
     }
 
     @Transactional
-    public TicketHistoryDto createTicketHistory(TicketHistoryDto ticketHistoryDto) {
-        log.debug("create ticket history");
-        if (ticketHistoryDto.getTicketId() == null) {
-            throw new IllegalArgumentException("ticket history must references to ticket");
+    public TicketHistoryDto createTicketHistory(TicketHistoryCreateDto createDto) {
+
+        log.debug("Create ticket history");
+
+        if (createDto.ticketId() == null) {
+            throw new IllegalArgumentException("Ticket id is required");
         }
-        try {
-            TicketHistory ticketHistory = ticketHistoryMapper.toEntity(ticketHistoryDto);
-            ticketHistoryRepository.save(ticketHistory);
-            return ticketHistoryMapper.toDto(ticketHistory);
-        } catch (Exception e) {
-            log.error("create ticket history failed", e);
-            throw new IllegalArgumentException("create ticket failed,", e);
-        }
+
+        TicketHistory ticketHistory = ticketHistoryMapper.toEntity(createDto);
+
+        Ticket ticket = ticketRepository.findById(createDto.ticketId())
+                .orElseThrow(() -> new TicketNotFoundException(createDto.ticketId()));
+
+        ticketHistory.setTicket(ticket);
+
+        TicketHistory saved = ticketHistoryRepository.save(ticketHistory);
+
+        return ticketHistoryMapper.toDto(saved);
     }
 
     @Transactional
-    public TicketHistoryDto updateTicketHistory(Long ticketHistoryId, TicketHistoryDto ticketHistoryDto) {
-        log.debug("update ticket history");
+    public TicketHistoryDto updateTicketHistory(
+            Long ticketHistoryId,
+            TicketHistoryUpdateDto updateDto
+    ) {
 
-        TicketHistory existing = ticketHistoryRepository.findById(ticketHistoryId).orElseThrow(() -> new TicketNotFoundException(ticketHistoryId));
-        try {
-            ticketHistoryMapper.updateTicketHistoryFromDto(new com.company.crmticketing.dto.ticketHistory.TicketHistoryUpdateDto(ticketHistoryDto.getFieldChanged(), ticketHistoryDto.getOldValue(), ticketHistoryDto.getNewValue()), existing);
-            ticketHistoryRepository.save(existing);
-            return ticketHistoryMapper.toDto(existing);
-        } catch (Exception e) {
-            log.error("update ticket history failed", e);
-            throw new IllegalArgumentException("update ticket history failed", e);
-        }
+        log.debug("Update ticket history");
+
+        TicketHistory existing = ticketHistoryRepository.findById(ticketHistoryId)
+                .orElseThrow(() -> new TicketNotFoundException(ticketHistoryId));
+
+        ticketHistoryMapper.updateTicketHistoryFromDto(updateDto, existing);
+
+        ticketHistoryRepository.save(existing);
+
+        return ticketHistoryMapper.toDto(existing);
     }
 
     @Transactional
     public void deleteByTicketHistoryId(Long ticketHistoryId) {
         log.debug("delete ticket history");
-        if (!ticketHistoryRepository.existsById(ticketHistoryId)) {
+        if (!existsActive(ticketHistoryId)) {
             throw new TicketNotFoundException(ticketHistoryId);
         }
-        try {
-            ticketHistoryRepository.deleteById(ticketHistoryId);
-        } catch (Exception e) {
-            log.error("delete ticket history failed", e);
-        }
+        softDelete(ticketHistoryId);
     }
 
     public Optional<TicketHistoryDto> findByFieldChanged(String fieldChanged) {

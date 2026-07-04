@@ -1,6 +1,7 @@
 package com.company.crmticketing.mapper;
 
 
+import com.company.crmticketing.dto.customer.CustomerCreateDto;
 import com.company.crmticketing.dto.customer.CustomerDto;
 import com.company.crmticketing.dto.customer.CustomerUpdateDto;
 import com.company.crmticketing.model.Customer;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface CustomerMapper {
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "customerRequests", ignore = true)
-    Customer toEntity(CustomerDto customerDto);
+    Customer toEntity(CustomerCreateDto customerCreatDto);
 
     @Mapping(target = "userId", ignore = true)
     CustomerDto toDto(Customer customer);

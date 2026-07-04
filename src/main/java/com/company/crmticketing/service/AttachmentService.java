@@ -1,11 +1,15 @@
 package com.company.crmticketing.service;
 
+import com.company.crmticketing.dto.attachment.AttachmentCreateDto;
 import com.company.crmticketing.dto.attachment.AttachmentDto;
 import com.company.crmticketing.dto.attachment.AttachmentUpdateDto;
 import com.company.crmticketing.exception.AttachmentNotFoundException;
+import com.company.crmticketing.exception.TicketNotFoundException;
 import com.company.crmticketing.mapper.AttachmentMapper;
 import com.company.crmticketing.model.Attachment;
+import com.company.crmticketing.model.Ticket;
 import com.company.crmticketing.repository.AttachmentRepository;
+import com.company.crmticketing.repository.TicketRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +24,10 @@ import java.util.Optional;
 public class AttachmentService extends BaseEntityService<Attachment, Long, AttachmentDto> {
     private final AttachmentRepository attachmentRepository;
     private final AttachmentMapper attachmentMapper;
+    private final TicketRepository ticketRepository;
 
     public AttachmentService(AttachmentRepository attachmentRepository
-            , AttachmentMapper attachmentMapper) {
+            , AttachmentMapper attachmentMapper, TicketRepository ticketRepository) {
         super(attachmentRepository,
                 attachmentMapper::toDto,
                 dto -> {
@@ -32,46 +37,65 @@ public class AttachmentService extends BaseEntityService<Attachment, Long, Attac
                 });
         this.attachmentRepository = attachmentRepository;
         this.attachmentMapper = attachmentMapper;
+        this.ticketRepository = ticketRepository;
     }
 
     @Transactional
-    public AttachmentDto createAttachment(AttachmentDto attachmentDto) {
+    public AttachmentDto createAttachment(AttachmentCreateDto dto) {
+
         log.debug("create attachment");
+
         try {
-            Attachment attachment = attachmentMapper.toEntity(attachmentDto);
-            attachmentRepository.save(attachment);
-            return attachmentMapper.toDto(attachment);
+
+            Attachment attachment = attachmentMapper.toEntity(dto);
+
+            if (dto.ticketId() != null) {
+
+                Ticket ticket = ticketRepository
+                        .findById(dto.ticketId())
+                        .orElseThrow(() ->
+                                new TicketNotFoundException(dto.ticketId()));
+
+                attachment.setTicket(ticket);
+            }
+
+            Attachment saved = attachmentRepository.save(attachment);
+
+            return attachmentMapper.toDto(saved);
+
         } catch (Exception e) {
+
             log.error("create attachment failed", e);
-            throw new IllegalArgumentException("create attachment failed");
+
+            throw new IllegalArgumentException("create attachment failed", e);
         }
     }
 
     @Transactional
-    public AttachmentDto updateAttachment(Long attachmentId, AttachmentDto attachmentDto) {
-        Attachment existing = attachmentRepository.findById(attachmentId).orElseThrow(() -> new AttachmentNotFoundException(attachmentId));
-        try {
-            AttachmentUpdateDto updateDto = new AttachmentUpdateDto(attachmentDto.getFileName(), attachmentDto.getFilePath());
-            attachmentMapper.updateAttachmentFromDto(updateDto, existing);
-            attachmentRepository.save(existing);
-            return attachmentMapper.toDto(existing);
-        } catch (Exception e) {
-            log.error("update attachment failed", e);
-            throw new IllegalArgumentException("update attachment failed", e);
+    public AttachmentDto updateAttachment(Long attachmentId, AttachmentUpdateDto updateDto) {
+
+        Attachment existing = attachmentRepository.findById(attachmentId)
+                .orElseThrow(() -> new AttachmentNotFoundException(attachmentId));
+
+        attachmentMapper.updateAttachmentFromDto(updateDto, existing);
+
+        if (updateDto.ticketId() != null) {
+            Ticket ticket = ticketRepository.findById(updateDto.ticketId())
+                    .orElseThrow(() -> new TicketNotFoundException(updateDto.ticketId()));
+
+            existing.setTicket(ticket);
         }
+
+        Attachment saved = attachmentRepository.save(existing);
+        return attachmentMapper.toDto(saved);
     }
 
     @Transactional
     public void deleteByAttachmentId(Long attachmentId) {
-        if (!attachmentRepository.existsById(attachmentId)) {
+        if (!existsActive(attachmentId)) {
             throw new AttachmentNotFoundException(attachmentId);
         }
-        try {
-            attachmentRepository.deleteById(attachmentId);
-        } catch (Exception e) {
-            log.error("delete attachment failed", e);
-            throw new IllegalArgumentException("delete attachment failed");
-        }
+        softDelete(attachmentId);
     }
 
     public Optional<AttachmentDto> findAttachmentByFileName(String fileName) {

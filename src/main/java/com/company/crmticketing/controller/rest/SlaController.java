@@ -1,6 +1,8 @@
 package com.company.crmticketing.controller.rest;
 
+import com.company.crmticketing.dto.sla.SlaCreateDto;
 import com.company.crmticketing.dto.sla.SlaDto;
+import com.company.crmticketing.dto.sla.SlaUpdateDto;
 import com.company.crmticketing.model.enums.Priority;
 import com.company.crmticketing.service.SlaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,9 +43,9 @@ public class SlaController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PostMapping
-    public ResponseEntity<SlaDto> createSla(@Valid @RequestBody SlaDto slaDto) {
-        log.info("REST request to create SLA: {}", slaDto);
-        SlaDto created = slaService.createSla(slaDto);
+    public ResponseEntity<SlaDto> createSla(@Valid @RequestBody SlaCreateDto createDto) {
+        log.info("REST request to create SLA: {}", createDto);
+        SlaDto created = slaService.createSla(createDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -59,10 +61,10 @@ public class SlaController {
     @PutMapping("/{slaId}")
     public ResponseEntity<SlaDto> updateSla(
             @Parameter(description = "ID of the SLA to update (must also be present in the request body)", required = true) @PathVariable Long slaId,
-            @Valid @RequestBody SlaDto slaDto) {
-        slaDto.setSlaId(slaId);
-        log.info("REST request to update SLA {}: {}", slaId, slaDto);
-        SlaDto updated = slaService.updateSla(slaId, slaDto);
+            @Valid @RequestBody SlaUpdateDto updateDto) {
+
+        log.info("REST request to update SLA {}: {}", slaId, updateDto);
+        SlaDto updated = slaService.updateSla(slaId, updateDto);
         return ResponseEntity.ok(updated);
     }
 

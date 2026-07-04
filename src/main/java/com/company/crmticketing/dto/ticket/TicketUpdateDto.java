@@ -6,11 +6,24 @@ import com.company.crmticketing.model.enums.RequestStatus;
 import java.time.LocalDateTime;
 
 public record TicketUpdateDto(
+
         String title,
+
         LocalDateTime resolutionDeadline,
+
         LocalDateTime firstResponseDeadline,
+
         Priority priority,
+
         RequestStatus requestStatus,
-        Long customerRequest
+
+        Long customerRequestId,
+
+        Long departmentId,
+
+        Long agentId,
+
+        Long slaId
+
 ) {
 }

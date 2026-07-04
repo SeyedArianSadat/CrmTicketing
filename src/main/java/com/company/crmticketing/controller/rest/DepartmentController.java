@@ -1,6 +1,8 @@
 package com.company.crmticketing.controller.rest;
 
+import com.company.crmticketing.dto.department.DepartmentCreateDto;
 import com.company.crmticketing.dto.department.DepartmentDto;
+import com.company.crmticketing.dto.department.DepartmentUpdateDto;
 import com.company.crmticketing.service.DepartmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,12 +42,15 @@ public class DepartmentController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PostMapping
-    public ResponseEntity<DepartmentDto> createDepartment(@Valid @RequestBody DepartmentDto departmentDto) {
-        log.info("REST request to create department: {}", departmentDto);
-        DepartmentDto created = departmentService.createDepartment(departmentDto);
+    public ResponseEntity<DepartmentDto> createDepartment(
+            @Valid @RequestBody DepartmentCreateDto createDto) {
+
+        log.info("REST request to create department: {}", createDto);
+
+        DepartmentDto created = departmentService.createDepartment(createDto);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
-
     // ────────────────── UPDATE ──────────────────
     @Operation(summary = "Update an existing department", description = "Updates a department by its ID.")
     @ApiResponses(value = {
@@ -58,10 +63,11 @@ public class DepartmentController {
     @PutMapping("/{departmentId}")
     public ResponseEntity<DepartmentDto> updateDepartment(
             @Parameter(description = "ID of the department to update", required = true) @PathVariable Long departmentId,
-            @Valid @RequestBody DepartmentDto departmentDto) {
-        departmentDto.setDepartmentId(departmentId);
+            @Valid @RequestBody DepartmentUpdateDto departmentDto) {
         log.info("REST request to update department {}: {}", departmentId, departmentDto);
-        DepartmentDto updated = departmentService.updateDepartment(departmentId, departmentDto);
+        DepartmentDto updated =
+                departmentService.updateDepartment(departmentId, departmentDto);
+
         return ResponseEntity.ok(updated);
     }
 

@@ -1,6 +1,7 @@
 package com.company.crmticketing.service;
 
 
+import com.company.crmticketing.dto.customer.CustomerCreateDto;
 import com.company.crmticketing.dto.customer.CustomerDto;
 import com.company.crmticketing.dto.customer.CustomerUpdateDto;
 import com.company.crmticketing.exception.CustomerNotFoundException;
@@ -40,45 +41,60 @@ public class CustomerService extends BaseEntityService<Customer, Long, CustomerD
     }
 
     @Transactional
-    public CustomerDto createCustomer(CustomerDto customerDto) {
-        log.debug("create customer with customer");
+    public CustomerDto createCustomer(CustomerCreateDto dto) {
+
+        log.debug("Creating customer");
+
         try {
-            Customer customer = customerMapper.toEntity(customerDto);
+
+            Customer customer = customerMapper.toEntity(dto);
+
             customerRepository.save(customer);
+
             return customerMapper.toDto(customer);
+
         } catch (Exception e) {
-            log.error("create customer with customer", e);
-            throw new IllegalArgumentException("create customer with customer");
+
+            log.error("Error creating customer", e);
+
+            throw new IllegalArgumentException("Error creating customer", e);
         }
     }
 
     @Transactional
-    public CustomerDto updateCustomer(Long customerId, CustomerDto customerDto) {
-        log.debug("update customer with customer");
-        Customer existing = customerRepository.findById(customerId).orElseThrow(() -> new CustomerNotFoundException(customerId));
+    public CustomerDto updateCustomer(Long customerId,
+                                      CustomerUpdateDto dto) {
+
+        log.debug("Updating customer");
+
+        Customer existing =
+                customerRepository.findById(customerId)
+                        .orElseThrow(() ->
+                                new CustomerNotFoundException(customerId));
+
         try {
-            CustomerUpdateDto updateDto = new CustomerUpdateDto(customerDto.getCustomerName(), customerDto.getEmail(), customerDto.getPhone());
-            customerMapper.updateCustomerFromDto(updateDto, existing);
+
+            customerMapper.updateCustomerFromDto(dto, existing);
+
             customerRepository.save(existing);
+
             return customerMapper.toDto(existing);
+
         } catch (Exception e) {
-            log.error("update customer failed", e);
-            throw new IllegalArgumentException("update customer failed", e);
+
+            log.error("Error updating customer", e);
+
+            throw new IllegalArgumentException("Error updating customer", e);
         }
     }
 
     @Transactional
     public void deleteByCustomerId(Long customerId) {
         log.debug("delete customer with customer");
-        if (!customerRepository.existsById(customerId)) {
+        if (!existsActive(customerId)) {
             throw new CustomerNotFoundException(customerId);
         }
-        try {
-            customerRepository.deleteById(customerId);
-        } catch (Exception e) {
-            log.error("delete customer with customer", e);
-            throw new IllegalArgumentException("delete customer with customer");
-        }
+        softDelete(customerId);
     }
 
     public Optional<CustomerDto> findByCustomerName(String customerName) {

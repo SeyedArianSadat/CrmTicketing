@@ -12,6 +12,8 @@ public record TicketHistoryCreateDto(
         String oldValue,
 
         @NotBlank(message = "new value is required")
-        String newValue
+        String newValue,
+
+        Long ticketId
 ) {
 }

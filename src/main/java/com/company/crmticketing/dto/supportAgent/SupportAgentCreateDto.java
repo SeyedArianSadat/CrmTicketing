@@ -7,6 +7,10 @@ public record SupportAgentCreateDto(
         @NotBlank(message = "agent name is required")
         @Size(max = 20)
 
-        String agentName
+        String agentName,
+
+        Long userId,
+
+        Long departmentId
 ) {
 }

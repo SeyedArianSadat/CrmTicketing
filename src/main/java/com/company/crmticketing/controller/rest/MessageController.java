@@ -1,6 +1,8 @@
 package com.company.crmticketing.controller.rest;
 
+import com.company.crmticketing.dto.message.MessageCreateDto;
 import com.company.crmticketing.dto.message.MessageDto;
+import com.company.crmticketing.dto.message.MessageUpdateDto;
 import com.company.crmticketing.service.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,9 +42,13 @@ public class MessageController {
             @ApiResponse(responseCode = "401", description = "Unauthorized – Bearer token missing or invalid")
     })
     @PostMapping
-    public ResponseEntity<MessageDto> createMessage(@Valid @RequestBody MessageDto messageDto) {
-        log.info("REST request to create message: {}", messageDto);
-        MessageDto created = messageService.createMessage(messageDto);
+    public ResponseEntity<MessageDto> createMessage(
+            @Valid @RequestBody MessageCreateDto createDto) {
+
+        log.info("REST request to create message: {}", createDto);
+
+        MessageDto created = messageService.createMessage(createDto);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -57,11 +63,17 @@ public class MessageController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<MessageDto> updateMessage(
-            @Parameter(description = "ID of the message to update (also must be set in request body)", required = true) @PathVariable Long id,
-            @Valid @RequestBody MessageDto messageDto) {
-        messageDto.setMessageId(id);
-        log.info("REST request to update message {}: {}", id, messageDto);
-        MessageDto updated = messageService.updateMessage(id, messageDto);
+
+            @Parameter(description = "ID of the message to update", required = true)
+            @PathVariable Long id,
+
+            @Valid
+            @RequestBody MessageUpdateDto updateDto) {
+
+        log.info("REST request to update message {}: {}", id, updateDto);
+
+        MessageDto updated = messageService.updateMessage(id, updateDto);
+
         return ResponseEntity.ok(updated);
     }
 

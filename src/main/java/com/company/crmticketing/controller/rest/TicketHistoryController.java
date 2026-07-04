@@ -2,7 +2,9 @@ package com.company.crmticketing.controller.rest;
 
 
 import com.company.crmticketing.dto.ticket.TicketDto;
+import com.company.crmticketing.dto.ticketHistory.TicketHistoryCreateDto;
 import com.company.crmticketing.dto.ticketHistory.TicketHistoryDto;
+import com.company.crmticketing.dto.ticketHistory.TicketHistoryUpdateDto;
 import com.company.crmticketing.service.TicketHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,10 +45,11 @@ public class TicketHistoryController {
             @ApiResponse(responseCode = "401", description = "Unauthorized – Bearer token missing or invalid")
     })
     @PostMapping
-    public ResponseEntity<TicketHistoryDto> createTicketHistory(@Valid @RequestBody TicketHistoryDto ticketHistoryDto) {
-        log.info("Rest request to createTicketHistory: {}", ticketHistoryDto);
-        TicketHistoryDto createdTicketHistory = ticketHistoryService.createTicketHistory(ticketHistoryDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdTicketHistory);
+    public ResponseEntity<TicketHistoryDto> createTicketHistory(@Valid @RequestBody TicketHistoryCreateDto createDto) {
+        log.info("Rest request to createTicketHistory: {}", createDto);
+        TicketHistoryDto created =
+                ticketHistoryService.createTicketHistory(createDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     // ────────────────── UPDATE ──────────────────
@@ -58,13 +61,14 @@ public class TicketHistoryController {
             @ApiResponse(responseCode = "400", description = "Invalid input"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @PutMapping(",{id}")
+    @PutMapping("{id}")
     public ResponseEntity<TicketHistoryDto> updateTicketHistory(
             @Parameter(description = "ID of ticketHistory to update", required = true) @PathVariable Long id,
-            @Valid @RequestBody TicketHistoryDto ticketHistoryDto) {
-        log.info("Rest request to updateTicketHistory id: {}, body: {}", id, ticketHistoryDto);
-        TicketHistoryDto updatedTicketHistory = ticketHistoryService.updateTicketHistory(id, ticketHistoryDto);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedTicketHistory);
+            @Valid @RequestBody TicketHistoryUpdateDto updateDto) {
+        log.info("Rest request to updateTicketHistory id: {}, body: {}", id, updateDto);
+        TicketHistoryDto updated =
+                ticketHistoryService.updateTicketHistory(id, updateDto);
+        return ResponseEntity.status(HttpStatus.OK).body(updated);
     }
 
     // ────────────────── DELETE ──────────────────
@@ -120,7 +124,7 @@ public class TicketHistoryController {
             @ApiResponse(responseCode = "404", description = "No ticketHistory with that title"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @GetMapping("/search/by-fieldChanged")
+    @GetMapping("/search/fieldChanged")
     public ResponseEntity<TicketHistoryDto> findByFieldChanged(
             @Parameter(description = "Exact FieldChanged of the ticket", required = true) @RequestParam String fieldChanged) {
         log.debug("REST request to find ticket by FieldChanged '{}'", fieldChanged);
@@ -149,7 +153,7 @@ public class TicketHistoryController {
             @ApiResponse(responseCode = "200", description = "List of ticketHistories with ticket"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @GetMapping("/with-tickets")
+    @GetMapping("/tickets")
     public ResponseEntity<List<TicketHistoryDto>> getAllWithTicket() {
         log.debug("REST request to get all ticketHistories with its ticket");
         List<TicketHistoryDto> ticketHistories = ticketHistoryService.findAllWithTicket();

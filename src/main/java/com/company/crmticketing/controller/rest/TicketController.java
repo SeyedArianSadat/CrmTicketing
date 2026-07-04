@@ -1,6 +1,8 @@
 package com.company.crmticketing.controller.rest;
 
+import com.company.crmticketing.dto.ticket.TicketCreateDto;
 import com.company.crmticketing.dto.ticket.TicketDto;
+import com.company.crmticketing.dto.ticket.TicketUpdateDto;
 import com.company.crmticketing.model.enums.Priority;
 import com.company.crmticketing.model.enums.RequestStatus;
 import com.company.crmticketing.service.TicketService;
@@ -34,40 +36,49 @@ public class TicketController {
     private final TicketService ticketService;
 
     // ────────────────── CREATE ──────────────────
-    @Operation(summary = "Create a new ticket", description = "Creates a ticket. Title must be unique.")
+    @Operation(summary = "Create a new ticket", description = "Creates a new ticket.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Ticket created successfully",
                     content = @Content(schema = @Schema(implementation = TicketDto.class))),
-            @ApiResponse(responseCode = "409", description = "Ticket with the same title already exists"),
-            @ApiResponse(responseCode = "400", description = "Invalid input"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized – Bearer token missing or invalid")
-    })
-    @PostMapping
-    public ResponseEntity<TicketDto> createTicket(@Valid @RequestBody TicketDto ticketDto) {
-        log.info("REST request to create ticket: {}", ticketDto);
-        TicketDto created = ticketService.createTicket(ticketDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
-    }
-
- //    ────────────────── UPDATE ──────────────────
-    @Operation(summary = "Update an existing ticket", description = "Partially updates a ticket. Only non-null fields from the DTO are applied.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Ticket updated successfully",
-                    content = @Content(schema = @Schema(implementation = TicketDto.class))),
-            @ApiResponse(responseCode = "404", description = "Ticket not found"),
-            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "400", description = "Invalid request"),
+            @ApiResponse(responseCode = "409", description = "Ticket already exists"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @PutMapping("/{id}")
-    public ResponseEntity<TicketDto> updateTicket(
-            @Parameter(description = "ID of the ticket to update", required = true) @PathVariable Long id,
-            @Valid @RequestBody TicketDto ticketDto) {
-        ticketDto.setTicketId(id);
-        log.info("REST request to update ticket {}: {}", id, ticketDto);
-        TicketDto updated = ticketService.updateTicket(id, ticketDto);
-        return ResponseEntity.ok(updated);
-    }
+    @PostMapping
+    public ResponseEntity<TicketDto> createTicket(
+            @Valid @RequestBody TicketCreateDto createDto) {
 
+        log.info("REST request to create ticket");
+
+        TicketDto created = ticketService.createTicket(createDto);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(created);
+    }
+ //    ────────────────── UPDATE ──────────────────
+ @Operation(summary = "Update ticket")
+ @ApiResponses(value = {
+         @ApiResponse(responseCode = "200", description = "Ticket updated successfully",
+                 content = @Content(schema = @Schema(implementation = TicketDto.class))),
+         @ApiResponse(responseCode = "404", description = "Ticket not found"),
+         @ApiResponse(responseCode = "400", description = "Invalid request"),
+         @ApiResponse(responseCode = "401", description = "Unauthorized")
+ })
+ @PutMapping("/{id}")
+ public ResponseEntity<TicketDto> updateTicket(
+         @Parameter(description = "Ticket id")
+         @PathVariable Long id,
+
+         @Valid
+         @RequestBody TicketUpdateDto updateDto) {
+
+     log.info("REST request to update ticket {}", id);
+
+     TicketDto updated = ticketService.updateTicket(id, updateDto);
+
+     return ResponseEntity.ok(updated);
+ }
     // ────────────────── DELETE ──────────────────
     @Operation(summary = "Delete a ticket by ID")
     @ApiResponses(value = {
@@ -120,7 +131,7 @@ public class TicketController {
             @ApiResponse(responseCode = "404", description = "No ticket with that title"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @GetMapping("/search/by-title")
+    @GetMapping("/search/title")
     public ResponseEntity<TicketDto> findByTitle(
             @Parameter(description = "Exact title of the ticket", required = true) @RequestParam String title) {
         log.debug("REST request to find ticket by title '{}'", title);
@@ -135,7 +146,7 @@ public class TicketController {
             @ApiResponse(responseCode = "404", description = "No ticket with that priority"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @GetMapping("/search/by-priority")
+    @GetMapping("/search/priority")
     public ResponseEntity<List<TicketDto>> findByPriority(
             @Parameter(description = "Priority value (e.g. HIGH, MEDIUM, LOW)", required = true) @RequestParam Priority priority) {
         log.debug("REST request to find ticket by priority {}", priority);
@@ -149,7 +160,7 @@ public class TicketController {
             @ApiResponse(responseCode = "404", description = "No ticket with that status"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @GetMapping("/search/by-status")
+    @GetMapping("/search/status")
     public ResponseEntity<List<TicketDto>> findByRequestStatus(
             @Parameter(description = "Request status value", required = true) @RequestParam RequestStatus requestStatus) {
         log.debug("REST request to find ticket by status {}", requestStatus);
@@ -218,7 +229,7 @@ public class TicketController {
             @ApiResponse(responseCode = "200", description = "List of tickets with department and agent"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @GetMapping("/with-department-agent")
+    @GetMapping("/with/department/agent")
     public ResponseEntity<List<TicketDto>> getAllWithDepartmentAndAgent() {
         log.debug("REST request to get all tickets with department and agent");
         List<TicketDto> tickets = ticketService.findAllWithDepartmentWithAgents();
@@ -231,7 +242,7 @@ public class TicketController {
             @ApiResponse(responseCode = "404", description = "Ticket not found for that department"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
-    @GetMapping("/by-department/{depId}/sla")
+    @GetMapping("/department/{depId}/sla")
     public ResponseEntity<List<TicketDto>> getTicketByDepartmentWithSla(
             @Parameter(description = "Department ID", required = true) @PathVariable Long depId) {
         log.debug("REST request to get ticket for department {} with SLA", depId);

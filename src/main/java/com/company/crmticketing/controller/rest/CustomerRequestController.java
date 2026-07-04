@@ -1,6 +1,8 @@
 package com.company.crmticketing.controller.rest;
 
+import com.company.crmticketing.dto.customerRequest.CustomerRequestCreateDto;
 import com.company.crmticketing.dto.customerRequest.CustomerRequestDto;
+import com.company.crmticketing.dto.customerRequest.CustomerRequestUpdateDto;
 import com.company.crmticketing.model.enums.RequestType;
 import com.company.crmticketing.service.CustomerRequestService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,9 +43,10 @@ public class CustomerRequestController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PostMapping
-    public ResponseEntity<CustomerRequestDto> createCustomerRequest(@Valid @RequestBody CustomerRequestDto customerRequestDto) {
-        log.info("REST request to create customer request: {}", customerRequestDto);
-        CustomerRequestDto created = customerRequestService.createCustomerRequest(customerRequestDto);
+    public ResponseEntity<CustomerRequestDto> createCustomerRequest(
+            @Valid @RequestBody CustomerRequestCreateDto dto) {
+        log.info("REST request to create customer request: {}", dto);
+        CustomerRequestDto created = customerRequestService.createCustomerRequest(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -59,7 +62,7 @@ public class CustomerRequestController {
     @PutMapping("/{requestId}")
     public ResponseEntity<CustomerRequestDto> updateCustomerRequest(
             @Parameter(description = "ID of the customer request to update", required = true) @PathVariable Long requestId,
-            @Valid @RequestBody CustomerRequestDto customerRequestDto) {
+            @Valid @RequestBody CustomerRequestUpdateDto customerRequestDto) {
         log.info("REST request to update customer request {}: {}", requestId, customerRequestDto);
         CustomerRequestDto updated = customerRequestService.updateCustomerRequest(requestId, customerRequestDto);
         return ResponseEntity.ok(updated);

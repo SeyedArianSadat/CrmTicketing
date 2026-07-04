@@ -1,6 +1,7 @@
 package com.company.crmticketing.mapper;
 
 
+import com.company.crmticketing.dto.department.DepartmentCreateDto;
 import com.company.crmticketing.dto.department.DepartmentDto;
 import com.company.crmticketing.dto.department.DepartmentUpdateDto;
 import com.company.crmticketing.model.Department;
@@ -14,7 +15,7 @@ import java.util.List;
 public interface DepartmentMapper {
     @Mapping(target = "supportAgents", ignore = true)
     @Mapping(target = "tickets", ignore = true)
-    Department toEntity(DepartmentDto departmentDto);
+    Department toEntity(DepartmentCreateDto departmentDto);
 
     DepartmentDto toDto(Department department);
 

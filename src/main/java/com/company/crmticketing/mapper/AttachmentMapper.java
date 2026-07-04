@@ -1,5 +1,6 @@
 package com.company.crmticketing.mapper;
 
+import com.company.crmticketing.dto.attachment.AttachmentCreateDto;
 import com.company.crmticketing.dto.attachment.AttachmentDto;
 import com.company.crmticketing.dto.attachment.AttachmentUpdateDto;
 import com.company.crmticketing.model.Attachment;
@@ -15,9 +16,9 @@ import java.util.List;
 public interface AttachmentMapper {
 
     @Mapping(target = "ticket", ignore = true)
-    Attachment toEntity(AttachmentDto attachmentDto);
+    Attachment toEntity(AttachmentCreateDto attachmentDto);
 
-    @Mapping(target = "ticketId", ignore = true)
+    @Mapping(target = "ticketId", source = "ticket.ticketId")
     AttachmentDto toDto(Attachment attachment);
 
     List<AttachmentDto> toAttachmentDtoList(List<Attachment> attachments);

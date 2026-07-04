@@ -50,11 +50,8 @@ public class BaseEntity {
     @LastModifiedBy
     private String updatedBy;
 
-    @PreUpdate
     @PreRemove
-    protected void onUpdate() {
-        if (deleted) {
-            throw new UnsupportedOperationException("Hard delete is not allowed. Use soft delete instead.");
-        }
+    protected void preventHardDelete() {
+        throw new UnsupportedOperationException("Hard delete is not allowed. Use soft delete instead.");
     }
 }

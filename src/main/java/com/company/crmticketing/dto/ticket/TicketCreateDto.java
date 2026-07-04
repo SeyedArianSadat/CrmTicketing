@@ -18,10 +18,18 @@ public record TicketCreateDto(
         @NotNull(message = "status is required")
         RequestStatus requestStatus,
 
-        @NotNull(message = "first response deadline required")
+//       @NotNull(message = "first response deadline required")
         LocalDateTime firstResponseDeadline,
 
-        @NotNull(message = "resolution deadline required")
-        LocalDateTime resolutionDeadline
+//      @NotNull(message = "resolution deadline required")
+        LocalDateTime resolutionDeadline  ,
+
+        Long customerRequestId,
+
+        Long departmentId,
+
+        Long agentId,
+
+        Long slaId
 ) {
 }

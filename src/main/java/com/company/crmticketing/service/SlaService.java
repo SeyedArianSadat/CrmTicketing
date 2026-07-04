@@ -1,5 +1,6 @@
 package com.company.crmticketing.service;
 
+import com.company.crmticketing.dto.sla.SlaCreateDto;
 import com.company.crmticketing.dto.sla.SlaDto;
 import com.company.crmticketing.dto.sla.SlaUpdateDto;
 import com.company.crmticketing.mapper.SlaMapper;
@@ -34,44 +35,50 @@ public class SlaService extends BaseEntityService<Sla, Long, SlaDto> {
     }
 
     @Transactional
-    public SlaDto createSla(SlaDto slaDto) {
-        log.debug("Creating a new sla");
+    public SlaDto createSla(SlaCreateDto createDto) {
+
+        log.debug("Creating new SLA");
+
         try {
-            Sla sla = slaMapper.toEntity(slaDto);
+
+            Sla sla = slaMapper.toEntity(createDto);
+
             slaRepository.save(sla);
+
             return slaMapper.toDto(sla);
+
         } catch (Exception e) {
-            log.error(e.getMessage());
-            throw new IllegalArgumentException("Sla could not be created");
+
+            log.error("SLA could not be created", e);
+
+            throw new IllegalArgumentException("SLA could not be created");
+
         }
     }
 
     @Transactional
-    public SlaDto updateSla(Long slaId,SlaDto slaDto) {
-        log.debug("Updating a new sla");
-        Sla existing = slaRepository.findById(slaId).orElseThrow(() -> new EntityNotFoundException("SLA not found with id: " + slaId));
-        try {
-            SlaUpdateDto updateDto = new SlaUpdateDto(slaDto.getPriorityLevel(), slaDto.getResponseTimeMinutes(), slaDto.getResolutionTimeMinutes(), slaDto.getDescription());
-            slaMapper.updateSlaFromDto(updateDto, existing);
-            slaRepository.save(existing);
-            return slaMapper.toDto(existing);
-        } catch (EntityNotFoundException e) {
-            throw e;
-        } catch (Exception e) {
-            log.error("Sla could not be updated", e);
-            throw new IllegalArgumentException("Sla could not be updated", e);
-        }
+    public SlaDto updateSla(Long slaId, SlaUpdateDto updateDto) {
+
+        log.debug("Updating SLA");
+
+        Sla existing = slaRepository.findById(slaId)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("SLA not found with id: " + slaId));
+
+        slaMapper.updateSlaFromDto(updateDto, existing);
+
+        slaRepository.save(existing);
+
+        return slaMapper.toDto(existing);
     }
 
     @Transactional
     public void deleteBySlaId(Long slaId) {
         log.debug("Deleting sla");
-        try {
-            slaRepository.deleteById(slaId);
-        } catch (Exception e) {
-            log.error("Sla could not be deleted");
-            throw new UnsupportedOperationException("Sla could not be deleted");
+        if (!existsActive(slaId)) {
+            throw new EntityNotFoundException("SLA not found with id: " + slaId);
         }
+        softDelete(slaId);
     }
 
     public Optional<SlaDto> findByPriorityLevel(Priority priority) {

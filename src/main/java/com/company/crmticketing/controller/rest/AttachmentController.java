@@ -1,6 +1,8 @@
 package com.company.crmticketing.controller.rest;
 
+import com.company.crmticketing.dto.attachment.AttachmentCreateDto;
 import com.company.crmticketing.dto.attachment.AttachmentDto;
+import com.company.crmticketing.dto.attachment.AttachmentUpdateDto;
 import com.company.crmticketing.service.AttachmentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,9 +42,14 @@ public class AttachmentController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @PostMapping
-    public ResponseEntity<AttachmentDto> createAttachment(@Valid @RequestBody AttachmentDto attachmentDto) {
-        log.info("REST request to create attachment: {}", attachmentDto);
-        AttachmentDto created = attachmentService.createAttachment(attachmentDto);
+    public ResponseEntity<AttachmentDto> createAttachment(
+            @Valid @RequestBody AttachmentCreateDto attachmentCreateDto) {
+
+        log.info("REST request to create attachment: {}", attachmentCreateDto);
+
+        AttachmentDto created =
+                attachmentService.createAttachment(attachmentCreateDto);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -57,11 +64,14 @@ public class AttachmentController {
     })
     @PutMapping("/{attachmentId}")
     public ResponseEntity<AttachmentDto> updateAttachment(
-            @Parameter(description = "ID of the attachment to update", required = true) @PathVariable Long attachmentId,
-            @Valid @RequestBody AttachmentDto attachmentDto) {
-        attachmentDto.setAttachmentId(attachmentId);
-        log.info("REST request to update attachment {}: {}", attachmentId, attachmentDto);
-        AttachmentDto updated = attachmentService.updateAttachment(attachmentId, attachmentDto);
+            @PathVariable Long attachmentId,
+            @Valid @RequestBody AttachmentUpdateDto updateDto) {
+
+        log.info("REST request to update attachment {}: {}", attachmentId, updateDto);
+
+        AttachmentDto updated =
+                attachmentService.updateAttachment(attachmentId, updateDto);
+
         return ResponseEntity.ok(updated);
     }
 

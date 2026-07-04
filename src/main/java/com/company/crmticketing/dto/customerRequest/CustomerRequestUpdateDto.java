@@ -9,5 +9,6 @@ public record CustomerRequestUpdateDto (
         String description,
         Channel channel,
         RequestStatus requestStatus,
-        RequestType requestType
+        RequestType requestType,
+        Long customerId
 ){}

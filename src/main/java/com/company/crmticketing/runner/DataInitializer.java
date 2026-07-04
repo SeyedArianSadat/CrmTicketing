@@ -1,14 +1,23 @@
 package com.company.crmticketing.runner;
 
+import com.company.crmticketing.dto.attachment.AttachmentCreateDto;
+import com.company.crmticketing.dto.customer.CustomerCreateDto;
+import com.company.crmticketing.dto.customerRequest.CustomerRequestCreateDto;
+import com.company.crmticketing.dto.department.DepartmentCreateDto;
+import com.company.crmticketing.dto.message.MessageCreateDto;
 import com.company.crmticketing.dto.permission.PermissionCreateDto;
 import com.company.crmticketing.dto.permission.PermissionResponseDto;
 import com.company.crmticketing.dto.profile.UserProfileDto;
 import com.company.crmticketing.dto.role.RoleCreateDto;
+import com.company.crmticketing.dto.sla.SlaCreateDto;
+import com.company.crmticketing.dto.supportAgent.SupportAgentCreateDto;
+import com.company.crmticketing.dto.ticket.TicketCreateDto;
+import com.company.crmticketing.dto.ticketHistory.TicketHistoryCreateDto;
 import com.company.crmticketing.dto.user.UserRegistrationDto;
-import com.company.crmticketing.service.PermissionService;
-import com.company.crmticketing.service.ProfileService;
-import com.company.crmticketing.service.RoleService;
-import com.company.crmticketing.service.UserService;
+import com.company.crmticketing.model.enums.Priority;
+import com.company.crmticketing.model.enums.RequestStatus;
+import com.company.crmticketing.model.enums.RequestType;
+import com.company.crmticketing.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +25,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,6 +40,15 @@ public class DataInitializer implements CommandLineRunner {
     private final RoleService roleService;
     private final UserService userService;
     private final ProfileService profileService;
+    private final DepartmentService departmentService;
+    private final SupportAgentService supportAgentService;
+    private final SlaService slaService;
+    private final CustomerService customerService;
+    private final CustomerRequestService customerRequestService;
+    private final TicketService ticketService;
+    private final TicketHistoryService ticketHistoryService;
+    private final AttachmentService attachmentService;
+    private final MessageService messageService;
 
     @Override
     @Transactional
@@ -39,6 +58,15 @@ public class DataInitializer implements CommandLineRunner {
             initPermissions();
             initRoles();
             initAdminUser();
+            initDepartment();
+            initSla();
+            initSupportAgent();
+            initCustomer();
+            initCustomerRequest();
+            initTicket();
+            initAttachment();
+            initTicketHistory();
+            initMessage();
             log.info("✅ Initial data loaded successfully");
 
             showAdminProfile();
@@ -155,6 +183,266 @@ public class DataInitializer implements CommandLineRunner {
         log.info("   Username: admin");
         log.info("   Password: Admin@123");
         log.info("   Email: admin@example.com");
+    }
+
+    private void initDepartment() {
+
+        log.info("Creating default department...");
+
+        try {
+
+            departmentService.createDepartment(
+                    new DepartmentCreateDto("IT")
+            );
+
+            log.info("Department created");
+
+        } catch (Exception e) {
+                log.error("Department initialization failed", e);
+            }
+
+        }
+
+    private void initSla() {
+
+        log.info("Creating default SLA...");
+
+        try {
+
+            slaService.createSla(
+                    new SlaCreateDto(
+                            Priority.HIGH,
+                            30,
+                            240,
+                            "Default SLA"
+                    )
+            );
+            log.info("SLA created");
+
+        } catch (Exception e) {
+
+            log.info("SLA already exists");
+
+        }
+    }
+
+    private void initSupportAgent() {
+
+        log.info("Creating default support agent...");
+
+        try {
+
+            var user = userService.getUserByUsername("admin");
+
+            var department = departmentService
+                    .findByDepartmentName("IT")
+                    .orElseThrow();
+
+            supportAgentService.createAgent(
+                    new SupportAgentCreateDto(
+                            "Admin Agent",
+                            user.id(),
+                            department.getDepartmentId()
+                    )
+            );
+
+            log.info("Support agent created");
+
+        } catch (Exception e) {
+
+            log.info("Support agent already exists");
+
+        }
+    }
+
+    private void initCustomer() {
+
+        log.info("Creating default customer...");
+
+        try {
+
+            var admin = userService.getUserByUsername("admin");
+
+            customerService.createCustomer(
+                    new CustomerCreateDto(
+                            "Default Customer",
+                            "customer@example.com",
+                            "09123456789",
+                            admin.id()
+                    )
+            );
+
+            log.info("Customer created");
+
+        }catch (Exception e) {
+            log.error("Customer initialization failed", e);
+        }
+    }
+
+    private void initCustomerRequest() {
+
+        log.info("Creating default customer request...");
+
+        try {
+
+            var customer = customerService
+                    .findByCustomerName("Default Customer")
+                    .orElseThrow();
+
+            customerRequestService.createCustomerRequest(
+
+                    new CustomerRequestCreateDto(
+
+                            "Internet Problem",
+                            "Internet connection is very slow.",
+                            RequestType.SUGGESTION,
+                            customer.getCustomerId()
+
+                    )
+            );
+
+            log.info("Customer request created");
+
+        } catch (Exception e) {
+            log.error("CustomerRequest initialization failed", e);
+        }
+    }
+
+    private void initTicket() {
+
+        log.info("Creating default ticket...");
+
+        try {
+
+            var request = customerRequestService
+                    .findByTitle("Internet Problem")
+                    .orElseThrow(() -> new RuntimeException("CustomerRequest not found"));
+
+            var department = departmentService
+                    .findByDepartmentName("IT")
+                    .orElseThrow(() -> new RuntimeException("Department not found"));
+
+            var agent = supportAgentService
+                    .findAgentByName("Admin Agent")
+                    .orElseThrow(() -> new RuntimeException("Agent not found"));
+
+            var sla = slaService
+                    .findByPriorityLevel(Priority.HIGH)
+                    .orElseThrow(() -> new RuntimeException("SLA not found"));
+
+            ticketService.createTicket(
+                    new TicketCreateDto(
+                            "Internet Ticket",
+                            Priority.HIGH,
+                            RequestStatus.OPEN,
+                            LocalDateTime.now().plusMinutes(30),
+                            LocalDateTime.now().plusHours(4),
+                            request.getRequestId(),
+                            department.getDepartmentId(),
+                            agent.getAgentId(),
+                            sla.getSlaId()
+                    )
+            );
+
+            log.info("Ticket created");
+
+        } catch (Exception e) {
+            log.error("Ticket initialization failed", e);
+        }
+
+        }
+
+    private void initAttachment() {
+
+        log.info("Creating default attachment...");
+
+        try {
+
+            var ticket = ticketService
+                    .findByTitle("Internet Ticket")
+                    .orElseThrow();
+
+            attachmentService.createAttachment(
+
+                    new AttachmentCreateDto(
+
+                            "error-image.png",
+                            "/uploads/error-image.png",
+                            ticket.getTicketId()
+
+                    )
+            );
+
+            log.info("Attachment created");
+
+        } catch (Exception e) {
+            log.error("Attachment initialization failed", e);
+        }
+    }
+
+    private void initMessage() {
+
+        log.info("Creating default message...");
+
+        try {
+
+            var ticket = ticketService
+                    .findByTitle("Internet Ticket")
+                    .orElseThrow();
+
+            var request = customerRequestService
+                    .findByTitle("Internet Problem")
+                    .orElseThrow();
+
+            var admin = userService.getUserByUsername("admin");
+
+
+            messageService.createMessage(
+
+                    new MessageCreateDto(
+
+                            "We are currently investigating your issue.",
+                            false,
+                            request.getRequestId(),
+                            ticket.getTicketId(),
+                            admin.id()
+
+                    )
+            );
+
+            log.info("Message created");
+
+        } catch (Exception e) {
+
+            log.info("Message already exists");
+
+        }
+    }
+
+    private void initTicketHistory() {
+
+        log.info("Creating default ticket history...");
+
+        try {
+
+            var ticket = ticketService
+                    .findByTitle("Internet Ticket")
+                    .orElseThrow();
+
+            ticketHistoryService.createTicketHistory(
+
+                    new TicketHistoryCreateDto(
+                            "Status",
+                            "OPEN",
+                            "IN_PROGRESS",
+                            ticket.getTicketId()
+                    )
+            );
+            log.info("Ticket history created");
+
+        } catch (Exception e) {
+            log.error("TicketHistory initialization failed", e);
+        }
     }
 
     private void showAdminProfile() {

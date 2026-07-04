@@ -4,11 +4,7 @@ import com.company.crmticketing.model.BaseEntity;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.OptimisticLockException;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ConcurrentModificationException;
@@ -19,22 +15,37 @@ import java.util.function.Consumer;
 @NoRepositoryBean
 public interface BaseEntityRepository<T extends BaseEntity, ID> extends JpaRepository<T, ID> {
 
-    @Query("select e from #{#entityName} e where e.id = :id and e.deleted = false")
-    Optional<T> findActiveById(@Param("id") ID id);
+    default Optional<T> findActiveById(ID id) {
+        return findById(id).filter(entity -> !entity.isDeleted());
+    }
 
-    @Query("select e from #{#entityName} e where e.id = :id")
-    Optional<T> findByIdIncludingDeleted(@Param("id") ID id);
+    default Optional<T> findByIdIncludingDeleted(ID id) {
+        return findById(id);
+    }
 
-    @Query("select e from #{#entityName} e where e.deleted = false")
-    List<T> findAllActive();
+    default List<T> findAllActive() {
+        return findAll().stream()
+                .filter(entity -> !entity.isDeleted())
+                .toList();
+    }
 
-    @Modifying
-    @Transactional
-    @Query("update #{#entityName} e set e.deleted = true, e.deletedAt = :now, " +
-            "e.version = e.version + 1 where e.id = :id and e.version = :currentVersion")
-    int softDeleteByIdWithVersion(@Param("id") ID id,
-                                  @Param("now") LocalDateTime now,
-                                  @Param("currentVersion") Long currentVersion);
+    default int softDeleteByIdWithVersion(ID id, LocalDateTime now, Long currentVersion) {
+        T entity = findByIdIncludingDeleted(id)
+                .orElseThrow(() -> new EntityNotFoundException("Entity not found with id: " + id));
+
+        if (entity.isDeleted()) {
+            return 0;
+        }
+
+        if (entity.getVersion() != null && !entity.getVersion().equals(currentVersion)) {
+            return 0;
+        }
+
+        entity.setDeleted(true);
+        entity.setDeletedAt(now);
+        save(entity);
+        return 1;
+    }
 
 
     default T updateWithConflictMessage(ID id, Consumer<T> updateLogic) {
@@ -91,7 +102,9 @@ public interface BaseEntityRepository<T extends BaseEntity, ID> extends JpaRepos
         return false;
     }
 
-    @Query("select count(e) from #{#entityName} e where e.deleted = false")
-    long countActive();
+    default long countActive() {
+        return findAll().stream()
+                .filter(entity -> !entity.isDeleted())
+                .count();
+    }
 }
-

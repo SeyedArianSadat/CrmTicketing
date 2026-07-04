@@ -16,5 +16,7 @@ public record CustomerCreateDto(
 
         @NotBlank
         @Size(min = 11, max = 11,message = "phone must be 11 character")
-        String phone
+        String phone,
+
+        Long userId
 ){}
