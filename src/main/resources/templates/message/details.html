@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/layout :: head('Message Detail')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+
+    <h2>Message Detail</h2>
+
+    <table class="table">
+
+        <tr>
+            <th>ID</th>
+            <td th:text="${message.messageId}"></td>
+        </tr>
+
+        <tr>
+            <th>Content</th>
+            <td th:text="${message.content}"></td>
+        </tr>
+
+        <tr>
+            <th>Internal Note</th>
+            <td th:text="${message.internalNote}"></td>
+        </tr>
+
+        <tr>
+            <th>Request</th>
+            <td th:text="${message.requestId}"></td>
+        </tr>
+
+        <tr>
+            <th>Ticket</th>
+            <td th:text="${message.ticketId}"></td>
+        </tr>
+
+        <tr>
+            <th>Sender User</th>
+            <td th:text="${message.senderUserId}"></td>
+        </tr>
+
+    </table>
+
+    <a th:href="@{/messages}" class="btn btn-secondary">
+        Back
+    </a>
+
+</div>
+
+</body>
+</html>

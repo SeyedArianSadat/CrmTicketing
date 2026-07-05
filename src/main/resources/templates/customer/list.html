@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head('Customers')"></head>
+
+<body>
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <h2>Customers</h2>
+
+        <a th:href="@{/customers/create}"
+           class="btn btn-success">
+            <i class="bi bi-plus-circle"></i>
+            New Customer
+        </a>
+
+    </div>
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <table class="table table-hover align-middle">
+
+                <thead class="table-dark">
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>User Id</th>
+                    <th width="250">Actions</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="customer : ${customers}">
+
+                    <td th:text="${customer.customerId}"></td>
+
+                    <td th:text="${customer.customerName}"></td>
+
+                    <td th:text="${customer.email}"></td>
+
+                    <td th:text="${customer.phone}"></td>
+
+                    <td th:text="${customer.userId}"></td>
+
+                    <td>
+
+                        <a th:href="@{/customers/{id}(id=${customer.customerId})}"
+                           class="btn btn-sm btn-primary">
+                            View
+                        </a>
+
+                        <a th:href="@{/customers/edit/{id}(id=${customer.customerId})}"
+                           class="btn btn-sm btn-warning">
+                            Edit
+                        </a>
+
+                        <a th:href="@{/customers/delete/{id}(id=${customer.customerId})}"
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirm('Delete this customer?')">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(customers)}">
+
+                    <td colspan="6" class="text-center text-muted">
+
+                        No customers found.
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

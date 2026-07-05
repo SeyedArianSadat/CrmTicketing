@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head('Edit Support Agent')"></head>
+
+<body>
+
+<div class="container mt-5">
+
+  <div class="card shadow">
+
+    <div class="card-header">
+
+      <h3>Edit Support Agent</h3>
+
+    </div>
+
+    <div class="card-body">
+
+      <form th:action="@{/agents/edit/{id}(id=${agent.agentId})}"
+            th:object="${agent}"
+            method="post">
+
+        <input class="form-control" th:field="*{agentName}">
+
+        <input class="form-control" type="number" th:field="*{userId}">
+
+        <input class="form-control" type="number" th:field="*{departmentId}">
+
+        <button class="btn btn-warning">Update</button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+
+</html>

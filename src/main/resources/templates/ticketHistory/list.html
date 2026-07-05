@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/layout :: head('Ticket Histories')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Ticket Histories</h2>
+
+        <a th:href="@{/ticketHistories/create}"
+           class="btn btn-success">
+            Create Ticket History
+        </a>
+    </div>
+
+    <table class="table table-striped table-bordered">
+
+        <thead>
+
+        <tr>
+            <th>ID</th>
+            <th>Field Changed</th>
+            <th>Old Value</th>
+            <th>New Value</th>
+            <th>Ticket ID</th>
+            <th width="230">Actions</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        <tr th:each="history : ${ticketHistories}">
+
+            <td th:text="${history.ticketHistoryId}"></td>
+
+            <td th:text="${history.fieldChanged}"></td>
+
+            <td th:text="${history.oldValue}"></td>
+
+            <td th:text="${history.newValue}"></td>
+
+            <td th:text="${history.ticketId}"></td>
+
+            <td>
+
+                <a th:href="@{/ticketHistories/{id}(id=${history.ticketHistoryId})}"
+                   class="btn btn-info btn-sm">
+                    Details
+                </a>
+
+                <a th:href="@{/ticketHistories/edit/{id}(id=${history.ticketHistoryId})}"
+                   class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+
+                <form th:action="@{/ticketHistories/delete/{id}(id=${history.ticketHistoryId})}"
+                      method="post"
+                      style="display:inline;">
+
+                    <button class="btn btn-danger btn-sm"
+                            onclick="return confirm('Delete this ticket history?')">
+                        Delete
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>

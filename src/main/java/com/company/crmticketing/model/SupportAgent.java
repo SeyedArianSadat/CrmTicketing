@@ -27,8 +27,8 @@ public class SupportAgent extends BaseEntity {
     @Column(name = "agent_name",length = 50)
     private String agentName;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id",nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 

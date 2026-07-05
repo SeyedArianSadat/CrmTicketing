@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head('tickets')"></head>
+
+<body>
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+            <h3>Ticket Details</h3>
+        </div>
+
+        <div class="card-body">
+
+            <table class="table">
+
+                <tr>
+                    <th>ID</th>
+                    <td th:text="${ticket.ticketId}"></td>
+                </tr>
+
+                <tr>
+                    <th>Title</th>
+                    <td th:text="${ticket.title}"></td>
+                </tr>
+
+                <tr>
+                    <th>Status</th>
+                    <td th:text="${ticket.requestStatus}"></td>
+                </tr>
+
+                <tr>
+                    <th>Priority</th>
+                    <td th:text="${ticket.priority}"></td>
+                </tr>
+
+                <tr>
+                    <th>Department Id</th>
+                    <td th:text="${ticket.departmentId}"></td>
+                </tr>
+
+                <tr>
+                    <th>Agent Id</th>
+                    <td th:text="${ticket.agentId}"></td>
+                </tr>
+
+                <tr>
+                    <th>Sla Id</th>
+                    <td th:text="${ticket.slaId}"></td>
+                </tr>
+
+                <tr>
+                    <th>Customer Request</th>
+                    <td th:text="${ticket.customerRequestId}"></td>
+                </tr>
+
+            </table>
+
+        </div>
+
+        <div class="card-footer">
+
+            <a href="/tickets"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

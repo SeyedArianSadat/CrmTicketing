@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/layout :: head('Attachments')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+
+    <h2>Attachments</h2>
+
+    <a th:href="@{/attachments/create}" class="btn btn-primary mb-3">
+        Create Attachment
+    </a>
+
+    <table class="table table-bordered table-hover">
+
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>File Name</th>
+            <th>File Path</th>
+            <th>Ticket ID</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="attachment : ${attachments}">
+
+            <td th:text="${attachment.attachmentId}"></td>
+
+            <td th:text="${attachment.fileName}"></td>
+
+            <td th:text="${attachment.filePath}"></td>
+
+            <td th:text="${attachment.ticketId}"></td>
+
+            <td>
+
+                <a class="btn btn-info btn-sm"
+                   th:href="@{/attachments/{id}(id=${attachment.attachmentId})}">
+                    Detail
+                </a>
+
+                <a class="btn btn-warning btn-sm"
+                   th:href="@{/attachments/edit/{id}(id=${attachment.attachmentId})}">
+                    Edit
+                </a>
+
+                <form th:action="@{/attachments/delete/{id}(id=${attachment.attachmentId})}"
+                      method="post"
+                      style="display:inline;">
+
+                    <button class="btn btn-danger btn-sm"
+                            onclick="return confirm('Delete attachment?')">
+                        Delete
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>

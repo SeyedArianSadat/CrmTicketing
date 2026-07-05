@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/layout :: head('Messages')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+
+    <h2>Messages</h2>
+
+    <a th:href="@{/messages/create}" class="btn btn-primary mb-3">
+        Create Message
+    </a>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Content</th>
+            <th>Internal</th>
+            <th>Request</th>
+            <th>Ticket</th>
+            <th>Sender</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="message : ${messages}">
+            <td th:text="${message.messageId}"></td>
+            <td th:text="${message.content}"></td>
+            <td th:text="${message.internalNote}"></td>
+            <td th:text="${message.requestId}"></td>
+            <td th:text="${message.ticketId}"></td>
+            <td th:text="${message.senderUserId}"></td>
+
+            <td>
+
+                <a class="btn btn-info btn-sm"
+                   th:href="@{/messages/{id}(id=${message.messageId})}">
+                    Detail
+                </a>
+
+                <a class="btn btn-warning btn-sm"
+                   th:href="@{/messages/edit/{id}(id=${message.messageId})}">
+                    Edit
+                </a>
+
+                <form th:action="@{/messages/delete/{id}(id=${message.messageId})}"
+                      method="post"
+                      style="display:inline">
+
+                    <button class="btn btn-danger btn-sm"
+                            onclick="return confirm('Delete message?')">
+                        Delete
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>

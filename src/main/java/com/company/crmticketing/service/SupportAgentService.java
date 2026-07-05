@@ -4,6 +4,7 @@ package com.company.crmticketing.service;
 import com.company.crmticketing.dto.supportAgent.SupportAgentCreateDto;
 import com.company.crmticketing.dto.supportAgent.SupportAgentDto;
 import com.company.crmticketing.dto.supportAgent.SupportAgentUpdateDto;
+import com.company.crmticketing.dto.ticket.TicketDto;
 import com.company.crmticketing.exception.DepartmentNotFoundException;
 import com.company.crmticketing.exception.SupportAgentNotFoundException;
 import com.company.crmticketing.exception.UserNotFoundException;
@@ -48,37 +49,31 @@ public class SupportAgentService extends BaseEntityService<SupportAgent, Long, S
     @Transactional
     public SupportAgentDto createAgent(SupportAgentCreateDto dto) {
 
-        log.debug("creating agent");
+        System.out.println(dto.agentName());
+        System.out.println(dto.userId());
+        System.out.println(dto.departmentId());
 
-        try {
+        SupportAgent supportAgent = supportAgentMapper.toEntity(dto);
 
-            SupportAgent supportAgent = supportAgentMapper.toEntity(dto);
+        Department department = departmentRepository
+                .findById(dto.departmentId())
+                .orElseThrow(() ->
+                        new DepartmentNotFoundException(dto.departmentId()));
 
-            Department department = departmentRepository
-                    .findById(dto.departmentId())
-                    .orElseThrow(() ->
-                            new DepartmentNotFoundException(dto.departmentId()));
+        User user = userRepository
+                .findById(dto.userId())
+                .orElseThrow(() ->
+                        new UserNotFoundException(dto.userId()));
 
-            User user = userRepository
-                    .findById(dto.userId())
-                    .orElseThrow(() ->
-                            new UserNotFoundException(dto.userId()));
+        supportAgent.setDepartment(department);
+        supportAgent.setUser(user);
 
-            supportAgent.setDepartment(department);
-            supportAgent.setUser(user);
+        SupportAgent saved = supportAgentRepository.save(supportAgent);
 
-            SupportAgent saved = supportAgentRepository.save(supportAgent);
-
-            return supportAgentMapper.toDto(saved);
-
-        } catch (Exception e) {
-            log.error("error creating agent", e);
-            throw new IllegalArgumentException("error creating agent", e);
-        }
+        return supportAgentMapper.toDto(saved);
     }
-
     @Transactional
-    public SupportAgentDto updateAgent(Long agentId, SupportAgentDto supportAgentDto) {
+    public SupportAgentDto updateAgent(Long agentId, SupportAgentDto dto) {
 
         log.debug("updating agent");
 
@@ -88,23 +83,23 @@ public class SupportAgentService extends BaseEntityService<SupportAgent, Long, S
         try {
 
             SupportAgentUpdateDto updateDto =
-                    new SupportAgentUpdateDto(supportAgentDto.getAgentName());
+                    new SupportAgentUpdateDto(dto.getAgentName());
 
             supportAgentMapper.updateSupportAgentFromDto(updateDto, existing);
 
-            if (supportAgentDto.getDepartmentId() != null) {
+            if (dto.getDepartmentId() != null) {
                 Department department = departmentRepository
-                        .findById(supportAgentDto.getDepartmentId())
+                        .findById(dto.getDepartmentId())
                         .orElseThrow(() ->
-                                new DepartmentNotFoundException(supportAgentDto.getDepartmentId()));
+                                new DepartmentNotFoundException(dto.getDepartmentId()));
                 existing.setDepartment(department);
             }
 
-            if (supportAgentDto.getUserId() != null) {
+            if (dto.getUserId() != null) {
                 User user = userRepository
-                        .findById(supportAgentDto.getUserId())
+                        .findById(dto.getUserId())
                         .orElseThrow(() ->
-                                new UserNotFoundException(supportAgentDto.getUserId()));
+                                new UserNotFoundException(dto.getUserId()));
                 existing.setUser(user);
             }
 
@@ -160,6 +155,14 @@ public class SupportAgentService extends BaseEntityService<SupportAgent, Long, S
         log.debug("finding all agent with tickets");
         List<SupportAgent> supportAgentsAssignedTicket = supportAgentRepository.findAllByAssignedTickets(agentId);
         return supportAgentMapper.toDtoList(supportAgentsAssignedTicket);
+    }
+    public Optional<SupportAgentDto> findById(Long agentId) {
+
+        log.debug("find ticket by id");
+
+        return supportAgentRepository.findById(agentId)
+                .map(supportAgentMapper::toDto);
+
     }
 
 

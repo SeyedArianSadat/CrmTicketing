@@ -179,6 +179,30 @@ public class TicketService extends BaseEntityService<Ticket, Long, TicketDto> {
         );
     }
 
+    public Optional<TicketDto> findByCustomerRequest(Long requestId) {
+
+        log.debug("finding ticket by customer request");
+
+        return ticketRepository.findByCustomerRequest(requestId)
+                .map(ticketMapper::toDto);
+    }
+    public List<TicketDto> findAllDtos() {
+
+        log.debug("find all tickets");
+
+        return ticketMapper.toTicketDtoList(ticketRepository.findAllForMvc());
+
+    }
+
+    public Optional<TicketDto> findById(Long ticketId) {
+
+        log.debug("find ticket by id");
+
+        return ticketRepository.findById(ticketId)
+                .map(ticketMapper::toDto);
+
+    }
+
     @Override
     protected String getEntityTypeName() {
         return "Ticket";

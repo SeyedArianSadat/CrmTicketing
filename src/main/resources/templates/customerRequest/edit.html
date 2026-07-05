@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head('Edit Customer Request')"></head>
+
+<body>
+
+<div class="container mt-5">
+
+  <div class="card shadow">
+
+    <div class="card-header">
+
+      <h3>Edit Customer Request</h3>
+
+    </div>
+
+    <div class="card-body">
+
+      <form th:action="@{/customerRequests/edit/{id}(id=${customerRequest.requestId})}"
+            th:object="${customerRequest}"
+            method="post">
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Title
+          </label>
+
+          <input
+                  type="text"
+                  class="form-control"
+                  th:field="*{title}">
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Description
+          </label>
+
+          <textarea
+                  class="form-control"
+                  rows="4"
+                  th:field="*{description}">
+                    </textarea>
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Channel
+          </label>
+
+          <select
+                  class="form-select"
+                  th:field="*{channel}">
+
+            <option
+                    th:each="channel : ${channels}"
+                    th:value="${channel}"
+                    th:text="${channel}">
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Request Type
+          </label>
+
+          <select
+                  class="form-select"
+                  th:field="*{requestType}">
+
+            <option
+                    th:each="type : ${types}"
+                    th:value="${type}"
+                    th:text="${type}">
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Request Status
+          </label>
+
+          <select
+                  class="form-select"
+                  th:field="*{requestStatus}">
+
+            <option
+                    th:each="status : ${statuses}"
+                    th:value="${status}"
+                    th:text="${status}">
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="mb-3">
+
+          <label class="form-label">
+            Customer Id
+          </label>
+
+          <input
+                  type="number"
+                  class="form-control"
+                  th:field="*{customerId}">
+
+        </div>
+
+        <button
+                type="submit"
+                class="btn btn-success">
+
+          Update
+
+        </button>
+
+        <a th:href="@{/customerRequests}"
+           class="btn btn-secondary">
+
+          Cancel
+
+        </a>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>

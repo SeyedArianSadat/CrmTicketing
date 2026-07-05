@@ -1,73 +1,971 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="fa" dir="rtl">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>داشبورد - مدیریت کاربران</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>CRM Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+          rel="stylesheet">
+
+    <style>
+
+        body {
+            background: #f5f7fb;
+        }
+
+        .sidebar {
+
+            width: 260px;
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            bottom: 0;
+
+            background: #212529;
+
+            color: white;
+
+            padding-top: 20px;
+
+        }
+
+        .sidebar h3 {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+        .sidebar a {
+
+            color: white;
+
+            text-decoration: none;
+
+            display: block;
+
+            padding: 14px 25px;
+
+            transition: .2s;
+
+        }
+
+        .sidebar a:hover {
+
+            background: #0d6efd;
+
+        }
+
+        .content {
+
+            margin-left: 260px;
+
+            padding: 30px;
+
+        }
+
+        .card-dashboard {
+
+            border: none;
+
+            border-radius: 15px;
+
+            color: white;
+
+            transition: .3s;
+
+        }
+
+        .card-dashboard:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .2);
+
+        }
+
+        .icon {
+
+            font-size: 45px;
+
+            opacity: .3;
+
+            float: right;
+
+        }
+
+        .navbar-custom {
+
+            background: white;
+
+            border-radius: 15px;
+
+            margin-bottom: 25px;
+
+            padding: 20px;
+
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .1);
+
+        }
+
+    </style>
+
 </head>
+
 <body>
-<div class="dashboard-container">
-    <div class="dashboard-header">
-        <h1>📊 داشبورد مدیریت کاربران</h1>
-        <div class="user-info">
-            <span id="currentUser">👤 loading...</span>
-            <button onclick="logout()" class="logout-btn">🚪 خروج</button>
-        </div>
-    </div>
 
-    <div class="stats-cards">
-        <div class="stat-card">
-            <h3>👥 تعداد کاربران</h3>
-            <p id="totalUsers">0</p>
-        </div>
-        <div class="stat-card">
-            <h3>✅ کاربران فعال</h3>
-            <p id="activeUsers">0</p>
-        </div>
-        <div class="stat-card">
-            <h3>🔒 کاربران غیرفعال</h3>
-            <p id="disabledUsers">0</p>
-        </div>
-    </div>
+<div class="sidebar">
 
-    <div class="table-container">
-        <div class="table-header">
-            <h2>📋 لیست کاربران</h2>
-            <div class="filters">
-                <input type="text" id="searchInput" placeholder="🔍 جستجو..." onkeyup="filterTable()">
-                <select id="roleFilter" onchange="filterTable()">
-                    <option value="all">همه نقش‌ها</option>
-                    <option value="ROLE_ADMIN">ادمین</option>
-                    <option value="ROLE_USER">کاربر عادی</option>
-                </select>
-                <button onclick="refreshData()" class="refresh-btn">🔄 بروزرسانی</button>
-            </div>
-        </div>
+    <h3>
 
-        <div style="overflow-x: auto;">
-            <table id="usersTable">
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>نام کاربری</th>
-                    <th>ایمیل</th>
-                    <th>نام کامل</th>
-                    <th>وضعیت</th>
-                    <th>نقش‌ها</th>
-                    <th>عملیات</th>
-                </tr>
-                </thead>
-                <tbody id="usersTableBody">
-                <tr>
-                    <td colspan="7" style="text-align: center;">در حال بارگذاری...</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+        CRM Ticketing
+
+    </h3>
+
+    <a th:href="@{/dashboard}">
+        <i class="bi bi-speedometer2"></i>
+        Dashboard
+    </a>
+
+    <a th:href="@{/customers}">
+        <i class="bi bi-people"></i>
+        Customers
+    </a>
+
+    <a th:href="@{/departments}">
+        <i class="bi bi-building"></i>
+        Departments
+    </a>
+
+    <a th:href="@{/tickets}">
+        <i class="bi bi-ticket"></i>
+        Tickets
+    </a>
+
+    <a th:href="@{/messages}">
+        <i class="bi bi-chat"></i>
+        Messages
+    </a>
+
+    <a th:href="@{/attachments}">
+        <i class="bi bi-paperclip"></i>
+        Attachments
+    </a>
+
+    <a th:href="@{/ticketHistories}">
+        <i class="bi bi-clock-history"></i>
+        Ticket History
+    </a>
+
+    <a th:href="@{/supportAgents}">
+        <i class="bi bi-person-badge"></i>
+        Support Agents
+    </a>
+
+    <a th:href="@{/customerRequests}">
+        <i class="bi bi-envelope"></i>
+        Requests
+    </a>
+
+    <a th:href="@{/slas}">
+        <i class="bi bi-alarm"></i>
+        SLA
+    </a>
+
+    <a href="/logout">
+
+        <i class="bi bi-box-arrow-right"></i>
+
+        Logout
+
+    </a>
+
 </div>
 
-<script th:src="@{/js/app.js}"></script>
+<div class="content">
+
+    <div class="navbar-custom d-flex justify-content-between">
+
+        <div>
+
+            <h3>
+
+                Dashboard
+
+            </h3>
+
+            <p class="text-secondary">
+
+                Welcome to CRM Ticketing System
+
+            </p>
+
+        </div>
+
+        <div>
+
+<span class="badge bg-success fs-6">
+
+Online
+
+</span>
+
+        </div>
+
+    </div>
+
+    <div class="row"><!-- ===================== ROW 1 ===================== -->
+
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card card-dashboard bg-primary">
+
+                <div class="card-body">
+
+                    <i class="bi bi-people-fill icon"></i>
+
+                    <h5>Total Customers</h5>
+
+                    <h2 th:text="${customerCount}">0</h2>
+
+                    <a th:href="@{/customers}"
+                       class="btn btn-light btn-sm mt-3">
+
+                        View Customers
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card card-dashboard bg-success">
+
+                <div class="card-body">
+
+                    <i class="bi bi-ticket-perforated-fill icon"></i>
+
+                    <h5>Total Tickets</h5>
+
+                    <h2 th:text="${ticketCount}">0</h2>
+
+                    <a th:href="@{/tickets}"
+                       class="btn btn-light btn-sm mt-3">
+
+                        View Tickets
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card card-dashboard bg-danger">
+
+                <div class="card-body">
+
+                    <i class="bi bi-chat-left-text-fill icon"></i>
+
+                    <h5>Total Messages</h5>
+
+                    <h2 th:text="${messageCount}">0</h2>
+
+                    <a th:href="@{/messages}"
+                       class="btn btn-light btn-sm mt-3">
+
+                        View Messages
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ===================== ROW 2 ===================== -->
+
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card card-dashboard bg-warning">
+
+                <div class="card-body">
+
+                    <i class="bi bi-building-fill icon"></i>
+
+                    <h5>Departments</h5>
+
+                    <h2 th:text="${departmentCount}">0</h2>
+
+                    <a th:href="@{/departments}"
+                       class="btn btn-light btn-sm mt-3">
+
+                        View Departments
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card card-dashboard bg-info">
+
+                <div class="card-body">
+
+                    <i class="bi bi-person-badge-fill icon"></i>
+
+                    <h5>Support Agents</h5>
+
+                    <h2 th:text="${supportAgentCount}">0</h2>
+
+                    <a th:href="@{/supportAgents}"
+                       class="btn btn-light btn-sm mt-3">
+
+                        View Agents
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-4 col-md-6 mb-4">
+
+            <div class="card card-dashboard bg-dark">
+
+                <div class="card-body">
+
+                    <i class="bi bi-paperclip icon"></i>
+
+                    <h5>Attachments</h5>
+
+                    <h2 th:text="${attachmentCount}">0</h2>
+
+                    <a th:href="@{/attachments}"
+                       class="btn btn-light btn-sm mt-3">
+
+                        View Attachments
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ===================== QUICK ACTIONS ===================== -->
+
+        <div class="col-12 mt-3">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+
+                    <h4>
+
+                        Quick Actions
+
+                    </h4>
+
+                </div>
+
+                <div class="card-body">
+
+                    <a th:href="@{/customers/create}"
+                       class="btn btn-primary me-2 mb-2">
+
+                        <i class="bi bi-person-plus-fill"></i>
+
+                        New Customer
+
+                    </a>
+
+                    <a th:href="@{/tickets/create}"
+                       class="btn btn-success me-2 mb-2">
+
+                        <i class="bi bi-ticket-fill"></i>
+
+                        New Ticket
+
+                    </a>
+
+                    <a th:href="@{/messages/create}"
+                       class="btn btn-warning me-2 mb-2">
+
+                        <i class="bi bi-chat-fill"></i>
+
+                        New Message
+
+                    </a>
+
+                    <a th:href="@{/supportAgents/create}"
+                       class="btn btn-info me-2 mb-2">
+
+                        <i class="bi bi-person-workspace"></i>
+
+                        New Agent
+
+                    </a>
+
+                    <a th:href="@{/departments/create}"
+                       class="btn btn-secondary me-2 mb-2">
+
+                        <i class="bi bi-building-add"></i>
+
+                        New Department
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div><!-- ===================== SYSTEM OVERVIEW ===================== -->
+
+        <div class="row mt-4">
+
+            <div class="col-lg-8">
+
+                <div class="card shadow">
+
+                    <div class="card-header bg-white">
+
+                        <h4>
+
+                            <i class="bi bi-bar-chart-fill"></i>
+
+                            CRM Statistics
+
+                        </h4>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="mb-4">
+
+                            <div class="d-flex justify-content-between">
+
+                                <span>Total Customers</span>
+
+                                <strong th:text="${customerCount}"></strong>
+
+                            </div>
+
+                            <div class="progress mt-2">
+
+                                <div class="progress-bar bg-primary"
+                                     style="width:100%"></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <div class="d-flex justify-content-between">
+
+                                <span>Total Tickets</span>
+
+                                <strong th:text="${ticketCount}"></strong>
+
+                            </div>
+
+                            <div class="progress mt-2">
+
+                                <div class="progress-bar bg-success"
+                                     style="width:90%"></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <div class="d-flex justify-content-between">
+
+                                <span>Messages</span>
+
+                                <strong th:text="${messageCount}"></strong>
+
+                            </div>
+
+                            <div class="progress mt-2">
+
+                                <div class="progress-bar bg-danger"
+                                     style="width:80%"></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <div class="d-flex justify-content-between">
+
+                                <span>Departments</span>
+
+                                <strong th:text="${departmentCount}"></strong>
+
+                            </div>
+
+                            <div class="progress mt-2">
+
+                                <div class="progress-bar bg-warning"
+                                     style="width:70%"></div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="mb-4">
+
+                            <div class="d-flex justify-content-between">
+
+                                <span>Support Agents</span>
+
+                                <strong th:text="${supportAgentCount}"></strong>
+
+                            </div>
+
+                            <div class="progress mt-2">
+
+                                <div class="progress-bar bg-info"
+                                     style="width:75%"></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ===================== RIGHT PANEL ===================== -->
+
+            <div class="col-lg-4">
+
+                <div class="card shadow mb-4">
+
+                    <div class="card-header bg-white">
+
+                        <h5>
+
+                            <i class="bi bi-server"></i>
+
+                            System Information
+
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <table class="table">
+
+                            <tr>
+
+                                <td>Application</td>
+
+                                <td>CRM Ticketing</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>Framework</td>
+
+                                <td>Spring Boot 4</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>Database</td>
+
+                                <td>H2 / MySQL</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>Template</td>
+
+                                <td>Thymeleaf</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>Security</td>
+
+                                <td class="text-success">
+
+                                    Active
+
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="card shadow">
+
+                    <div class="card-header bg-white">
+
+                        <h5>
+
+                            <i class="bi bi-lightning-fill"></i>
+
+                            Quick Summary
+
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <p>
+
+                            <strong>Total Customers :</strong>
+
+                            <span th:text="${customerCount}"></span>
+
+                        </p>
+
+                        <hr>
+
+                        <p>
+
+                            <strong>Total Tickets :</strong>
+
+                            <span th:text="${ticketCount}"></span>
+
+                        </p>
+
+                        <hr>
+
+                        <p>
+
+                            <strong>Total Agents :</strong>
+
+                            <span th:text="${supportAgentCount}"></span>
+
+                        </p>
+
+                        <hr>
+
+                        <p>
+
+                            <strong>Total Departments :</strong>
+
+                            <span th:text="${departmentCount}"></span>
+
+                        </p>
+
+                        <hr>
+
+                        <p>
+
+                            <strong>Total Attachments :</strong>
+
+                            <span th:text="${attachmentCount}"></span>
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div><!-- ===================== MANAGEMENT ===================== -->
+
+        <div class="row mt-4">
+
+            <div class="col-lg-6 mb-4">
+
+                <div class="card shadow">
+
+                    <div class="card-header bg-white">
+
+                        <h5>
+
+                            <i class="bi bi-grid-fill"></i>
+
+                            Management
+
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+
+                                <a th:href="@{/customers}"
+                                   class="btn btn-outline-primary w-100">
+
+                                    Customers
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <a th:href="@{/tickets}"
+                                   class="btn btn-outline-success w-100">
+
+                                    Tickets
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <a th:href="@{/messages}"
+                                   class="btn btn-outline-warning w-100">
+
+                                    Messages
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <a th:href="@{/attachments}"
+                                   class="btn btn-outline-dark w-100">
+
+                                    Attachments
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <a th:href="@{/departments}"
+                                   class="btn btn-outline-info w-100">
+
+                                    Departments
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <a th:href="@{/supportAgents}"
+                                   class="btn btn-outline-secondary w-100">
+
+                                    Agents
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <a th:href="@{/customerRequests}"
+                                   class="btn btn-outline-danger w-100">
+
+                                    Requests
+
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-6">
+
+                                <a th:href="@{/slas}"
+                                   class="btn btn-outline-primary w-100">
+
+                                    SLA
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-lg-6 mb-4">
+
+                <div class="card shadow">
+
+                    <div class="card-header bg-white">
+
+                        <h5>
+
+                            <i class="bi bi-cpu-fill"></i>
+
+                            System Status
+
+                        </h5>
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <table class="table table-bordered">
+
+                            <tr>
+
+                                <th>Application</th>
+
+                                <td>CRM Ticketing</td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Status</th>
+
+                                <td>
+
+                            <span class="badge bg-success">
+
+                                Running
+
+                            </span>
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Security</th>
+
+                                <td>
+
+                                    JWT + Spring Security
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Template Engine</th>
+
+                                <td>
+
+                                    Thymeleaf
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Database</th>
+
+                                <td>
+
+                                    H2 / MySQL
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <th>Framework</th>
+
+                                <td>
+
+                                    Spring Boot 4
+
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <hr class="mt-5">
+
+        <footer class="text-center text-secondary mb-3">
+
+            <strong>
+
+                CRM Ticketing System
+
+            </strong>
+
+            <br>
+
+            Version 1.0
+
+            <br>
+
+            Developed with Spring Boot, Spring Security & Thymeleaf
+
+        </footer>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
+
 </html>

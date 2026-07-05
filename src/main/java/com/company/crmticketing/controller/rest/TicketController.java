@@ -249,4 +249,25 @@ public class TicketController {
         List<TicketDto> ticket = ticketService.findAllWithDepartmentIdWithSla(depId);
         return ResponseEntity.ok(ticket);
     }
+    @Operation(
+            summary = "Get ticket by customer request",
+            description = "Returns the ticket associated with the given customer request"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Ticket found"),
+            @ApiResponse(responseCode = "404", description = "Ticket not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @GetMapping("/customer-request/{requestId}")
+    public ResponseEntity<TicketDto> getTicketByCustomerRequest(
+            @PathVariable Long requestId
+    ) {
+
+        log.debug("REST request to get ticket by customer request {}", requestId);
+
+        Optional<TicketDto> ticket = ticketService.findByCustomerRequest(requestId);
+
+        return ticket.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/layout :: head('Create Attachment')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+
+    <h2>Create Attachment</h2>
+
+    <form th:action="@{/attachments/create}"
+          method="post"
+          th:object="${attachment}">
+
+        <div class="mb-3">
+            <label class="form-label">File Name</label>
+
+            <input type="text"
+                   class="form-control"
+                   th:field="*{fileName}">
+
+            <div class="text-danger"
+                 th:if="${#fields.hasErrors('fileName')}"
+                 th:errors="*{fileName}">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">File Path</label>
+
+            <input type="text"
+                   class="form-control"
+                   th:field="*{filePath}">
+
+            <div class="text-danger"
+                 th:if="${#fields.hasErrors('filePath')}"
+                 th:errors="*{filePath}">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Ticket ID</label>
+
+            <input type="number"
+                   class="form-control"
+                   th:field="*{ticketId}">
+
+            <div class="text-danger"
+                 th:if="${#fields.hasErrors('ticketId')}"
+                 th:errors="*{ticketId}">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            Save
+        </button>
+
+        <a th:href="@{/attachments}" class="btn btn-secondary">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

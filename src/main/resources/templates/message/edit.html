@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/layout :: head('Edit Message')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+
+  <h2>Edit Message</h2>
+
+  <form th:action="@{/messages/edit/{id}(id=${messageId})}"
+        method="post"
+        th:object="${message}">
+
+    <div class="mb-3">
+      <label>Content</label>
+      <textarea class="form-control"
+                th:field="*{content}"></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label>Internal Note</label>
+      <input type="checkbox"
+             th:field="*{internalNote}">
+    </div>
+
+    <div class="mb-3">
+      <label>Request Id</label>
+      <input class="form-control"
+             th:field="*{requestId}">
+    </div>
+
+    <div class="mb-3">
+      <label>Ticket Id</label>
+      <input class="form-control"
+             th:field="*{ticketId}">
+    </div>
+
+    <div class="mb-3">
+      <label>Sender User Id</label>
+      <input class="form-control"
+             th:field="*{senderUserId}">
+    </div>
+
+    <button class="btn btn-warning">
+      Update
+    </button>
+
+  </form>
+
+</div>
+
+</body>
+</html>

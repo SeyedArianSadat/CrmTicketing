@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head('Departments')"></head>
+<body>
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+
+            <h3>Create Ticket</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form th:action="@{/tickets/create}"
+                  th:object="${ticket}"
+                  method="post">
+
+                <div class="mb-3">
+
+                    <label>Title</label>
+
+                    <input class="form-control"
+                           th:field="*{title}">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Priority</label>
+
+                    <select class="form-select"
+                            th:field="*{priority}">
+
+                        <option value="LOW">LOW</option>
+                        <option value="MEDIUM">MEDIUM</option>
+                        <option value="HIGH">HIGH</option>
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Status</label>
+
+                    <select class="form-select"
+                            th:field="*{requestStatus}">
+
+                        <option value="OPEN">OPEN</option>
+                        <option value="IN_PROGRESS">IN_PROGRESS</option>
+                        <option value="RESOLVED">RESOLVED</option>
+                        <option value="CLOSED">CLOSED</option>
+
+                    </select>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Department Id</label>
+
+                    <input type="number"
+                           class="form-control"
+                           th:field="*{departmentId}">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Agent Id</label>
+
+                    <input type="number"
+                           class="form-control"
+                           th:field="*{agentId}">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Sla Id</label>
+
+                    <input type="number"
+                           class="form-control"
+                           th:field="*{slaId}">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>Customer Request Id</label>
+
+                    <input type="number"
+                           class="form-control"
+                           th:field="*{customerRequestId}">
+
+                </div>
+
+                <button class="btn btn-success">
+                    Save
+                </button>
+
+                <a href="/tickets"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

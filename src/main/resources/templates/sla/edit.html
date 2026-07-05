@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/layout :: head('Edit SLA')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+
+    <h2>Edit SLA</h2>
+
+    <form th:action="@{/slas/edit/{id}(id=${slaId})}"
+          th:object="${sla}"
+          method="post">
+
+        <div class="mb-3">
+
+            <label>Priority Level</label>
+
+            <select class="form-select"
+                    th:field="*{priorityLevel}">
+
+                <option value="">Select Priority</option>
+
+                <option th:each="priority : ${T(com.company.crmticketing.model.enums.Priority).values()}"
+                        th:value="${priority}"
+                        th:text="${priority}">
+                </option>
+
+            </select>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Response Time (Minutes)</label>
+
+            <input type="number"
+                   class="form-control"
+                   th:field="*{responseTimeMinutes}">
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Resolution Time (Minutes)</label>
+
+            <input type="number"
+                   class="form-control"
+                   th:field="*{resolutionTimeMinutes}">
+
+        </div>
+
+        <div class="mb-3">
+
+            <label>Description</label>
+
+            <textarea class="form-control"
+                      rows="4"
+                      th:field="*{description}">
+            </textarea>
+
+        </div>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Update
+        </button>
+
+        <a th:href="@{/slas}"
+           class="btn btn-secondary">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

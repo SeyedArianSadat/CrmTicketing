@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head('Create Support Agent')"></head>
+
+<body>
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+
+            <h3>Create Support Agent</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form th:action="@{/agents}"
+                  th:object="${agent}"
+                  method="post">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Agent Name
+                    </label>
+
+                    <input
+                            type="text"
+                            class="form-control"
+                            th:field="*{agentName}">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        User Id
+                    </label>
+
+                    <input
+                            type="number"
+                            class="form-control"
+                            th:field="*{userId}">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Department Id
+                    </label>
+
+                    <input
+                            type="number"
+                            class="form-control"
+                            th:field="*{departmentId}">
+
+                </div>
+
+                <button
+                        type="submit"
+                        class="btn btn-success">
+
+                    Save
+
+                </button>
+
+                <a th:href="@{/agents}"
+                   class="btn btn-secondary">
+
+                    Cancel
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

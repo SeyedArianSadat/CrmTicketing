@@ -4,6 +4,7 @@ package com.company.crmticketing.service;
 import com.company.crmticketing.dto.customer.CustomerCreateDto;
 import com.company.crmticketing.dto.customer.CustomerDto;
 import com.company.crmticketing.dto.customer.CustomerUpdateDto;
+import com.company.crmticketing.dto.department.DepartmentDto;
 import com.company.crmticketing.exception.CustomerNotFoundException;
 import com.company.crmticketing.mapper.CustomerMapper;
 import com.company.crmticketing.model.Customer;
@@ -96,6 +97,12 @@ public class CustomerService extends BaseEntityService<Customer, Long, CustomerD
         }
         softDelete(customerId);
     }
+    public Optional<CustomerDto> findByCustomerId(Long customerId) {
+        log.debug("find customer by id");
+
+        return customerRepository.findById(customerId)
+                .map(customerMapper::toDto);
+    }
 
     public Optional<CustomerDto> findByCustomerName(String customerName) {
         log.debug("find customer with name");
@@ -119,6 +126,14 @@ public class CustomerService extends BaseEntityService<Customer, Long, CustomerD
         log.debug("find all customers with customerRequests");
         List<Customer> customersWithCustomerRequests = customerRepository.findAllCustomersWithCustomerRequests();
         return customerMapper.toCustomerDtoList(customersWithCustomerRequests);
+
+    }
+    public Optional<CustomerDto> findById(Long id) {
+
+        log.debug("find ticket by id");
+
+        return customerRepository.findById(id)
+                .map(customerMapper::toDto);
 
     }
 

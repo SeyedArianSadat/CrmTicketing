@@ -1,68 +1,49 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<body>
+<div th:fragment="sidebar">
 
-<div th:fragment="sidebar"
-     class="bg-dark text-white vh-100 p-3">
+    <div class="sidebar">
 
-    <h4 class="mb-4">
-        CRM Panel
-    </h4>
+        <h3 class="logo">CRM Ticket</h3>
 
-    <ul class="nav flex-column">
+        <a th:href="@{/dashboard}">
+            Dashboard
+        </a>
 
-        <li class="nav-item mb-2">
-            <a class="nav-link text-white"
-               th:href="@{/dashboard}">
-                Dashboard
-            </a>
-        </li>
+        <a th:href="@{/customers}">
+            Customers
+        </a>
 
-        <li class="nav-item mb-2">
-            <a class="nav-link text-white"
-               th:href="@{/ui/tickets}">
-                Tickets
-            </a>
-        </li>
+        <a th:href="@{/tickets}">
+            Tickets
+        </a>
 
-        <li class="nav-item mb-2">
-            <a class="nav-link text-white"
-               th:href="@{/ui/customers}">
-                Customers
-            </a>
-        </li>
+        <a th:href="@{/departments}">
+            Departments
+        </a>
 
-        <li class="nav-item mb-2">
-            <a class="nav-link text-white"
-               th:href="@{/ui/agents}">
-                Support Agents
-            </a>
-        </li>
+        <a th:href="@{/agents}">
+            Agents
+        </a>
 
-        <li class="nav-item mb-2">
-            <a class="nav-link text-white"
-               th:href="@{/ui/departments}">
-                Departments
-            </a>
-        </li>
+        <a th:href="@{/customer-requests}">
+            Requests
+        </a>
 
-        <li class="nav-item mb-2">
-            <a class="nav-link text-white"
-               th:href="@{/ui/slas}">
-                SLA
-            </a>
-        </li>
+        <a th:href="@{/messages}">
+            Messages
+        </a>
 
-        <li class="nav-item mt-4">
-            <a class="nav-link text-danger"
-               th:href="@{/logout}">
-                Logout
-            </a>
-        </li>
+        <a th:href="@{/attachments}">
+            Attachments
+        </a>
 
-    </ul>
+        <a th:href="@{/ticket-history}">
+            Ticket History
+        </a>
+
+        <a th:href="@{/logout}">
+            Logout
+        </a>
+
+    </div>
 
 </div>
-
-</body>
-</html>

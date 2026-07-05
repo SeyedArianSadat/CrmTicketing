@@ -3,7 +3,7 @@ package com.company.crmticketing.dto.sla;
 import com.company.crmticketing.model.enums.Priority;
 
 public record SlaUpdateDto(
-        Priority priority,
+        Priority priorityLevel,
         int responseTimeMinutes,
         int resolutionTimeMinutes,
         String description

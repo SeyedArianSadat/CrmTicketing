@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head('Support Agents')"></head>
+
+<body>
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between mb-4">
+
+        <h2>Support Agents</h2>
+
+        <a th:href="@{/agents/create}"
+           class="btn btn-success">
+            New Agent
+        </a>
+
+    </div>
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <table class="table table-hover">
+
+                <thead class="table-dark">
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>User Id</th>
+                    <th>Department Id</th>
+                    <th>Actions</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="agent : ${agents}">
+
+                    <td th:text="${agent.agentId}"></td>
+
+                    <td th:text="${agent.agentName}"></td>
+
+                    <td th:text="${agent.userId}"></td>
+
+                    <td th:text="${agent.departmentId}"></td>
+
+                    <td>
+
+                        <a class="btn btn-sm btn-primary"
+                           th:href="@{/agents/{id}(id=${agent.agentId})}">
+                            View
+                        </a>
+
+                        <a class="btn btn-sm btn-warning"
+                           th:href="@{/agents/edit/{id}(id=${agent.agentId})}">
+                            Edit
+                        </a>
+
+                        <a class="btn btn-sm btn-danger"
+                           th:href="@{/agents/delete/{id}(id=${agent.agentId})}"
+                           onclick="return confirm('Delete agent?')">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

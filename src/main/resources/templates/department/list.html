@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head('Departments')"></head>
+
+<body>
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between mb-3">
+
+        <h2>Departments</h2>
+
+        <a href="/departments/create"
+           class="btn btn-primary">
+            New Department
+        </a>
+
+    </div>
+
+    <div class="card">
+
+        <div class="card-body">
+
+            <table class="table table-hover">
+
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="department : ${departments}">
+
+                    <td th:text="${department.departmentId}"></td>
+
+                    <td th:text="${department.departmentName}"></td>
+
+                    <td>
+
+                        <a th:href="@{/departments/{id}(id=${department.departmentId})}"
+                           class="btn btn-sm btn-primary">
+                            View
+                        </a>
+
+                        <a th:href="@{/departments/edit/{id}(id=${department.departmentId})}"
+                           class="btn btn-sm btn-warning">
+                            Edit
+                        </a>
+
+                        <a th:href="@{/departments/delete/{id}(id=${department.departmentId})}"
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirm('Delete this department?')">
+                            Delete
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

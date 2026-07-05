@@ -3,6 +3,7 @@ package com.company.crmticketing.repository;
 import com.company.crmticketing.model.Ticket;
 import com.company.crmticketing.model.enums.Priority;
 import com.company.crmticketing.model.enums.RequestStatus;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -60,5 +61,33 @@ public interface TicketRepository extends BaseEntityRepository<Ticket, Long> {
             WHERE t.department.departmentId = :depId""")
     List<Ticket> findByDepartmentIdWithSla(@Param("depId") Long depId);
 
+
+    @Query("""
+       select t
+       from ticketEntity t
+       join fetch t.customerRequest cr
+       where cr.requestId = :requestId
+       """)
+    Optional<Ticket> findByCustomerRequest(@Param("requestId") Long requestId);
+
     boolean existsByTitle(String title);
+
+    @Query("""
+        select t from ticketEntity t
+        left join fetch t.department
+        left join fetch t.agent
+        order by t.createdAt desc
+        """)
+    List<Ticket> findTop5ByOrderByCreatedAtDesc(Pageable pageable);
+
+    long countByRequestStatus(RequestStatus requestStatus);
+
+    @Query("""
+            select distinct t
+            from ticketEntity t
+            left join fetch t.department
+            left join fetch t.agent
+            left join fetch t.customerRequest
+            """)
+    List<Ticket> findAllForMvc();
 }

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head('Customer Details')"></head>
+
+<body>
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+
+            <h3>Customer Details</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table">
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <td th:text="${customer.customerId}"></td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Name</th>
+
+                    <td th:text="${customer.customerName}"></td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Email</th>
+
+                    <td th:text="${customer.email}"></td>
+
+                </tr>
+
+                <tr>
+
+                    <th>Phone</th>
+
+                    <td th:text="${customer.phone}"></td>
+
+                </tr>
+
+                <tr>
+
+                    <th>User Id</th>
+
+                    <td th:text="${customer.userId}"></td>
+
+                </tr>
+
+            </table>
+
+            <a th:href="@{/customers}"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -3,6 +3,7 @@ package com.company.crmticketing.service;
 import com.company.crmticketing.dto.department.DepartmentCreateDto;
 import com.company.crmticketing.dto.department.DepartmentDto;
 import com.company.crmticketing.dto.department.DepartmentUpdateDto;
+import com.company.crmticketing.dto.ticket.TicketDto;
 import com.company.crmticketing.exception.DepartmentNotFoundException;
 import com.company.crmticketing.mapper.DepartmentMapper;
 import com.company.crmticketing.model.Department;
@@ -107,6 +108,14 @@ public class DepartmentService extends BaseEntityService<Department, Long, Depar
         log.debug("finding department with ticket and its agent");
         return departmentRepository.findByIdWithAgentsAndTickets(id)
                 .map(departmentMapper::toDto);
+    }
+    public Optional<DepartmentDto> findById(Long id) {
+
+        log.debug("find ticket by id");
+
+        return departmentRepository.findById(id)
+                .map(departmentMapper::toDto);
+
     }
 
     @Override

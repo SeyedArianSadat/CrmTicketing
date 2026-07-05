@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head('Create Customer Request')"></head>
+
+<body>
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+            <h3>Create Customer Request</h3>
+        </div>
+
+        <div class="card-body">
+
+            <form th:action="@{/customerRequests}"
+                  th:object="${customerRequest}"
+                  method="post">
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Title
+                    </label>
+
+                    <input
+                            type="text"
+                            class="form-control"
+                            th:field="*{title}">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Description
+                    </label>
+
+                    <textarea
+                            class="form-control"
+                            rows="4"
+                            th:field="*{description}">
+                    </textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Request Type
+                    </label>
+
+                    <select
+                            class="form-select"
+                            th:field="*{requestType}">
+
+                        <option
+                                th:each="type : ${types}"
+                                th:value="${type}"
+                                th:text="${type}">
+                        </option>
+
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
+                        Customer Id
+                    </label>
+
+                    <input
+                            type="number"
+                            class="form-control"
+                            th:field="*{customerId}">
+                </div>
+
+                <button
+                        type="submit"
+                        class="btn btn-success">
+
+                    Save
+
+                </button>
+
+                <a
+                        th:href="@{/customerRequests}"
+                        class="btn btn-secondary">
+
+                    Cancel
+
+                </a>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

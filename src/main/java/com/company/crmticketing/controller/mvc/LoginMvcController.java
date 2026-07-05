@@ -1,14 +1,14 @@
-package com.company.crmticketing.controller;
+package com.company.crmticketing.controller.mvc;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class WebController {
+public class LoginMvcController {
 
     @GetMapping("/")
     public String home() {
-        return "index";
+        return "redirect:/dashboard";
     }
 
     @GetMapping("/login")
@@ -16,8 +16,4 @@ public class WebController {
         return "login";
     }
 
-    @GetMapping("/dashboard")
-    public String dashboard() {
-        return "dashboard";
-    }
 }

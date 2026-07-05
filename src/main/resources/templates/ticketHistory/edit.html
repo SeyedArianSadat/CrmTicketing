@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/layout :: head('Edit Ticket History')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+
+    <h2>Edit Ticket History</h2>
+
+    <form th:action="@{/ticketHistories/edit/{id}(id=${ticketHistoryId})}"
+          th:object="${ticketHistory}"
+          method="post">
+
+        <div class="mb-3">
+            <label class="form-label">Field Changed</label>
+
+            <input type="text"
+                   class="form-control"
+                   th:field="*{fieldChanged}">
+
+            <div class="text-danger"
+                 th:if="${#fields.hasErrors('fieldChanged')}"
+                 th:errors="*{fieldChanged}">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Old Value</label>
+
+            <input type="text"
+                   class="form-control"
+                   th:field="*{oldValue}">
+
+            <div class="text-danger"
+                 th:if="${#fields.hasErrors('oldValue')}"
+                 th:errors="*{oldValue}">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">New Value</label>
+
+            <input type="text"
+                   class="form-control"
+                   th:field="*{newValue}">
+
+            <div class="text-danger"
+                 th:if="${#fields.hasErrors('newValue')}"
+                 th:errors="*{newValue}">
+            </div>
+        </div>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Update
+        </button>
+
+        <a th:href="@{/ticketHistories}"
+           class="btn btn-secondary">
+            Cancel
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>

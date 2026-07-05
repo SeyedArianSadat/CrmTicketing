@@ -3,52 +3,26 @@ package com.company.crmticketing.security.config;
 import com.company.crmticketing.security.filter.JwtAuthenticationFilter;
 import com.company.crmticketing.security.handler.CustomAccessDeniedHandler;
 import com.company.crmticketing.security.handler.CustomAuthenticationEntryPoint;
+import com.company.crmticketing.security.handler.CustomLogoutHandler;
 import com.company.crmticketing.security.service.CustomUserDetailsService;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
-import java.util.List;
-
-/**
- * پیکربندی امنیت مدرن Spring Boot 4.0.5
- * شامل: JWT, XSS Protection, CSP, CORS, Session Management
- */
 @Configuration
-@EnableWebSecurity
-@EnableMethodSecurity(
-        prePostEnabled = true,
-        securedEnabled = true,
-        jsr250Enabled = true
-)
-@SecurityScheme(
-        name = "bearerAuth",
-        type = SecuritySchemeType.HTTP,
-        scheme = "bearer",
-        bearerFormat = "JWT",
-        description = "Enter JWT token"
-)
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -56,200 +30,133 @@ public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
-    private final LogoutHandler logoutHandler;
-
-    // =========================================================================
-    // ============================ ENCRYPTION & AUTH ==========================
-    // =========================================================================
+    private final CustomLogoutHandler logoutHandler;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
+    AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration
+    ) throws Exception {
+        return configuration.getAuthenticationManager();
     }
-
-    // =========================================================================
-    // ============================ CORS CONFIGURATION =========================
-    // =========================================================================
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "http://localhost:4200",
-                "http://localhost:8080"
-        ));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList(
-                "Authorization",
-                "Content-Type",
-                "X-Requested-With",
-                "Accept",
-                "Origin",
-                "Access-Control-Request-Method",
-                "Access-Control-Request-Headers"
-        ));
-        configuration.setExposedHeaders(List.of("Authorization"));
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        source.registerCorsConfiguration("/api/**", configuration);
-        return source;
-    }
-
-    // =========================================================================
-    // ============================ SECURITY FILTER CHAIN =======================
-    // =========================================================================
 
     @Bean
     @Order(1)
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain apiSecurity(HttpSecurity http) throws Exception {
+
         http
-                // ==================== DISABLE FEATURES ====================
+
+                .securityMatcher("/api/**")
+
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-                // ==================== SESSION MANAGEMENT ====================
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                        .sessionFixation().changeSessionId()
-                )
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // ==================== SECURITY HEADERS ====================
-                .headers(headers -> headers
-                        // Frame Options (برای H2 Console)
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-
-                        // XSS Protection
-                        .xssProtection(xss -> xss
-                                .headerValue(XXssProtectionHeaderWriter.HeaderValue.ENABLED_MODE_BLOCK)
-                        )
-
-                        // Content Security Policy (CSP)
-                        .contentSecurityPolicy(csp -> csp
-                                .policyDirectives(
-                                        "default-src 'self'; " +
-                                                "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
-                                                "style-src 'self' 'unsafe-inline'; " +
-                                                "img-src 'self' data: https:; " +
-                                                "font-src 'self' data:; " +
-                                                "connect-src 'self' https:; " +
-                                                "frame-ancestors 'none'; " +
-                                                "form-action 'self'; " +
-                                                "base-uri 'self'; " +
-                                                "upgrade-insecure-requests;"
-                                )
-                        )
-
-                        // Content Type Options (MIME sniffing protection)
-                        .contentTypeOptions(HeadersConfigurer.ContentTypeOptionsConfig::disable)
-
-                        // HSTS (HTTP Strict Transport Security)
-                        .httpStrictTransportSecurity(hsts -> hsts
-                                .includeSubDomains(true)
-                                .preload(true)
-                                .maxAgeInSeconds(31536000)
-                        )
-
-                        // Cache Control
-                        .cacheControl(HeadersConfigurer.CacheControlConfig::disable)
-                )
-
-                // ==================== AUTHORIZATION ====================
                 .authorizeHttpRequests(auth -> auth
-                        // Public endpoints (بدون احراز هویت)
+
                         .requestMatchers(
                                 "/api/v1/auth/**",
-                                "/api/v1/users/register",
-                                "/api/v1/users/forgot-password",
-                                "/api/v1/users/reset-password",
-                                "/actuator/health",
-                                "/actuator/info",
-                                "/swagger-ui",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html",
                                 "/v3/api-docs/**",
-                                "/v3/api-docs",
-                                "/h2-console/**",
-                                "/h2-console",
-                                "/h2-console/*",
-                                "/",
-                                "/index",
-                                "/login",
-                                "/dashboard",
-                                "/css/**",
-                                "/js/**",
-                                "/static/**",
-                                "/**/*.css",
-                                "/**/*.js",
-                                "/**/*.html",
-                                "/error",
-                                "/favicon.ico",
-                                "/api/**"
+                                "/swagger-ui/**"
                         ).permitAll()
 
-                        // Admin only
-                        .requestMatchers(
-                                "/api/v1/admin/**",
-                                "/actuator/**"
-                        ).hasRole("ADMIN")
-
-                        // Super Admin only
-                        .requestMatchers(
-                                "/api/v1/super-admin/**"
-                        ).hasRole("SUPER_ADMIN")
-
-                        // Any other request requires authentication
                         .anyRequest().authenticated()
                 )
 
-                // ==================== EXCEPTION HANDLING ====================
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(authenticationEntryPoint)
-                        .accessDeniedHandler(accessDeniedHandler)
+                .exceptionHandling(exception ->
+
+                        exception
+
+                                .authenticationEntryPoint(authenticationEntryPoint)
+
+                                .accessDeniedHandler(accessDeniedHandler)
                 )
 
-                // ==================== LOGOUT ====================
-                .logout(logout -> logout
-                        .logoutUrl("/api/v1/auth/logout")
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            response.setStatus(200);
-                            response.setContentType("application/json");
-                            response.getWriter().write("{\"success\":true,\"message\":\"Logout successful\"}");
-                        })
-                        .addLogoutHandler(logoutHandler)
-                        .clearAuthentication(true)
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                )
-
-                // ==================== AUTHENTICATION ====================
                 .userDetailsService(customUserDetailsService)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }
 
-    // =========================================================================
-    // ============================ REQUEST LOGGING ============================
-    // =========================================================================
-
     @Bean
-    public org.springframework.web.filter.CommonsRequestLoggingFilter requestLoggingFilter() {
-        org.springframework.web.filter.CommonsRequestLoggingFilter loggingFilter =
-                new org.springframework.web.filter.CommonsRequestLoggingFilter();
-        loggingFilter.setIncludeClientInfo(true);
-        loggingFilter.setIncludeQueryString(true);
-        loggingFilter.setIncludePayload(true);
-        loggingFilter.setMaxPayloadLength(1000);
-        loggingFilter.setIncludeHeaders(false);
-        return loggingFilter;
+    @Order(2)
+    SecurityFilterChain mvcSecurity(HttpSecurity http) throws Exception {
+
+        http
+
+                .securityMatcher("/**")
+
+                .authorizeHttpRequests(auth -> auth
+
+                        .requestMatchers(
+                                "/login",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/webjars/**",
+                                "/error",
+                                "/favicon.ico",
+                                "/h2-console/**"
+                        ).permitAll()
+
+                        .requestMatchers("/dashboard")
+                        .authenticated()
+
+                        .anyRequest()
+                        .authenticated()
+                )
+
+                .formLogin(form -> form
+
+                        .loginPage("/login")
+
+                        .loginProcessingUrl("/login")
+
+                        .defaultSuccessUrl("/dashboard", true)
+
+                        .failureUrl("/login?error=true")
+
+                        .permitAll()
+                )
+
+                .logout(logout -> logout
+
+                        .logoutUrl("/logout")
+
+                        .logoutSuccessUrl("/login?logout")
+
+                        .addLogoutHandler(logoutHandler)
+
+                        .invalidateHttpSession(true)
+
+                        .clearAuthentication(true)
+
+                        .deleteCookies("JSESSIONID")
+
+                        .permitAll()
+                )
+
+                .headers(headers ->
+
+                        headers.frameOptions(frame -> frame.sameOrigin())
+                )
+
+                .csrf(csrf ->
+
+                        csrf.ignoringRequestMatchers("/h2-console/**")
+                )
+
+                .userDetailsService(customUserDetailsService);
+
+        return http.build();
     }
 }

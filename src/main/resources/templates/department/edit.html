@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head('Departments')"></head>
+
+<body>
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+
+            <h3>Create Department</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <form th:action="@{/departments/edit/{id}(id=${department.departmentId})}"
+                  th:object="${department}"
+                  method="post">
+
+                <div class="mb-3">
+
+                    <label>Name</label>
+
+                    <input
+                            type="text"
+                            class="form-control"
+                            th:field="*{departmentName}">
+
+                </div>
+
+                <button class="btn btn-warning">
+                    Update
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

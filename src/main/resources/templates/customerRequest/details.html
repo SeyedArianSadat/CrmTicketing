@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout/layout :: head('Customer Request Details')"></head>
+
+<body>
+
+<div class="container mt-5">
+
+    <div class="card shadow">
+
+        <div class="card-header">
+
+            <h3>Customer Request Details</h3>
+
+        </div>
+
+        <div class="card-body">
+
+            <table class="table table-bordered">
+
+                <tr>
+                    <th>ID</th>
+                    <td th:text="${customerRequest.requestId}"></td>
+                </tr>
+
+                <tr>
+                    <th>Title</th>
+                    <td th:text="${customerRequest.title}"></td>
+                </tr>
+
+                <tr>
+                    <th>Description</th>
+                    <td th:text="${customerRequest.description}"></td>
+                </tr>
+
+                <tr>
+                    <th>Channel</th>
+                    <td th:text="${customerRequest.channel}"></td>
+                </tr>
+
+                <tr>
+                    <th>Request Type</th>
+                    <td th:text="${customerRequest.requestType}"></td>
+                </tr>
+
+                <tr>
+                    <th>Request Status</th>
+                    <td th:text="${customerRequest.requestStatus}"></td>
+                </tr>
+
+                <tr>
+                    <th>Customer Id</th>
+                    <td th:text="${customerRequest.customerId}"></td>
+                </tr>
+
+                <tr>
+                    <th>Ticket Id</th>
+                    <td th:text="${customerRequest.ticketId}"></td>
+                </tr>
+
+            </table>
+
+            <a th:href="@{/customerRequests/edit/{id}(id=${customerRequest.requestId})}"
+               class="btn btn-warning">
+
+                Edit
+
+            </a>
+
+            <a th:href="@{/customerRequests}"
+               class="btn btn-secondary">
+
+                Back
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

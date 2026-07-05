@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout/layout :: head('SLA List')}"></head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between mb-3">
+        <h2>SLA List</h2>
+
+        <a th:href="@{/slas/create}" class="btn btn-success">
+            Create SLA
+        </a>
+    </div>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Priority</th>
+            <th>Response Time</th>
+            <th>Resolution Time</th>
+            <th>Description</th>
+            <th width="220">Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="sla : ${slas}">
+
+            <td th:text="${sla.slaId}"></td>
+
+            <td th:text="${sla.priorityLevel}"></td>
+
+            <td th:text="${sla.responseTimeMinutes}"></td>
+
+            <td th:text="${sla.resolutionTimeMinutes}"></td>
+
+            <td th:text="${sla.description}"></td>
+
+            <td>
+
+                <a th:href="@{/slas/{id}(id=${sla.slaId})}"
+                   class="btn btn-info btn-sm">
+                    Details
+                </a>
+
+                <a th:href="@{/slas/edit/{id}(id=${sla.slaId})}"
+                   class="btn btn-warning btn-sm">
+                    Edit
+                </a>
+
+                <form th:action="@{/slas/delete/{id}(id=${sla.slaId})}"
+                      method="post"
+                      style="display:inline;">
+
+                    <button class="btn btn-danger btn-sm"
+                            onclick="return confirm('Delete this SLA?')">
+                        Delete
+                    </button>
+
+                </form>
+
+            </td>
+
+        </tr>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+</html>
