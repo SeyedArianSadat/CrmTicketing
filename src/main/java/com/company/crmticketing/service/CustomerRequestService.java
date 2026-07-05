@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -117,6 +118,23 @@ public class CustomerRequestService extends BaseEntityService<CustomerRequest, L
     public Optional<CustomerRequestDto> findCustomerRequestByIdWithAllDetails(Long customerRequestId) {
         log.debug("finding by id");
         return customerRequestRepository.findCustomerRequestByIdWithAllDetails(customerRequestId).map(customerRequestMapper::toDto);
+    }
+    public Optional<CustomerRequestDto> findById(Long requestId) {
+
+        log.debug("finding customer request by id");
+
+        return customerRequestRepository.findById(requestId)
+                .map(customerRequestMapper::toDto);
+    }
+
+    public List<CustomerRequestDto> findAllDtos() {
+
+        log.debug("finding all customer requests");
+
+        return customerRequestRepository.findAll()
+                .stream()
+                .map(customerRequestMapper::toDto)
+                .toList();
     }
 
     @Override
