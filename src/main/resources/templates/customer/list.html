@@ -6,10 +6,23 @@
 <body>
 
 <div class="container mt-5">
-
     <div class="d-flex justify-content-between align-items-center mb-4">
 
         <h2>Customers</h2>
+
+        <a th:href="@{/dashboard}" class="btn btn-outline-primary">
+
+            <i class="bi bi-house-door-fill"></i>
+
+            Dashboard
+
+        </a>
+
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+
 
         <a th:href="@{/customers/create}"
            class="btn btn-success">

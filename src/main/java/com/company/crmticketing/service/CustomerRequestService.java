@@ -127,7 +127,7 @@ public class CustomerRequestService extends BaseEntityService<CustomerRequest, L
                 .map(customerRequestMapper::toDto);
     }
 
-    public List<CustomerRequestDto> findAllDtos() {
+    public List<CustomerRequestDto> findAll() {
 
         log.debug("finding all customer requests");
 

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/layout :: head(${title})}"></head>
+
+<body>
+
+<!-- Sidebar -->
+<div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+<!-- Navbar -->
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- Main Content -->
+<div class="main-content fade-in">
+
+    <div th:replace="${content}"></div>
+
+</div>
+
+<th:block th:replace="~{layout/layout :: scripts}"></th:block>
+
+</body>
+
+</html>

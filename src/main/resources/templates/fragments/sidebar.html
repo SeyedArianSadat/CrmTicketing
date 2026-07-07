@@ -1,49 +1,172 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
 <div th:fragment="sidebar">
 
-    <div class="sidebar">
+    <div id="sidebar">
 
-        <h3 class="logo">CRM Ticket</h3>
+        <div class="sidebar-header">
 
-        <a th:href="@{/dashboard}">
-            Dashboard
-        </a>
+            <i class="bi bi-ticket-perforated-fill"></i>
 
-        <a th:href="@{/customers}">
-            Customers
-        </a>
+            <span>
 
-        <a th:href="@{/tickets}">
-            Tickets
-        </a>
+                CRM Ticketing
 
-        <a th:href="@{/departments}">
-            Departments
-        </a>
+            </span>
 
-        <a th:href="@{/agents}">
-            Agents
-        </a>
+        </div>
 
-        <a th:href="@{/customer-requests}">
-            Requests
-        </a>
+        <ul class="sidebar-menu">
 
-        <a th:href="@{/messages}">
-            Messages
-        </a>
+            <li>
 
-        <a th:href="@{/attachments}">
-            Attachments
-        </a>
+                <a th:href="@{/dashboard}">
 
-        <a th:href="@{/ticket-history}">
-            Ticket History
-        </a>
+                    <i class="bi bi-speedometer2"></i>
 
-        <a th:href="@{/logout}">
-            Logout
-        </a>
+                    Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/customers}">
+
+                    <i class="bi bi-people-fill"></i>
+
+                    Customers
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/tickets}">
+
+                    <i class="bi bi-ticket-fill"></i>
+
+                    Tickets
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/messages}">
+
+                    <i class="bi bi-chat-left-text-fill"></i>
+
+                    Messages
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/attachments}">
+
+                    <i class="bi bi-paperclip"></i>
+
+                    Attachments
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/ticketHistories}">
+
+                    <i class="bi bi-clock-history"></i>
+
+                    Ticket History
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/supportAgents}">
+
+                    <i class="bi bi-person-workspace"></i>
+
+                    Support Agents
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/departments}">
+
+                    <i class="bi bi-building"></i>
+
+                    Departments
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/customerRequests}">
+
+                    <i class="bi bi-envelope-paper-fill"></i>
+
+                    Customer Requests
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a th:href="@{/slas}">
+
+                    <i class="bi bi-alarm-fill"></i>
+
+                    SLA
+
+                </a>
+
+            </li>
+
+            <hr>
+
+            <li>
+
+                <form th:action="@{/logout}" method="post">
+
+                    <button type="submit"
+                            class="border-0 bg-transparent text-white w-100 text-start"
+                            style="padding:14px 25px;">
+
+                        <i class="bi bi-box-arrow-right"></i>
+
+                        Logout
+
+                    </button>
+
+                </form>
+
+            </li>
+
+        </ul>
 
     </div>
 
 </div>
+
+</body>
+
+</html>

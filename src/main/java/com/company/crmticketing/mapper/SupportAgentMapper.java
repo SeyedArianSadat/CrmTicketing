@@ -18,8 +18,8 @@ public interface SupportAgentMapper {
     @Mapping(target = "user", ignore = true)
     SupportAgent toEntity(SupportAgentCreateDto supportAgentDto);
 
-    @Mapping(target = "departmentId", ignore = true)
-    @Mapping(target = "userId", ignore = true)
+    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "departmentId", source = "department.departmentId")
     SupportAgentDto toDto(SupportAgent supportAgent);
 
     List<SupportAgentDto> toDtoList(List<SupportAgent> supportAgents);

@@ -8,69 +8,79 @@
 <div th:replace="~{fragments/navbar :: navbar}"></div>
 
 <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <h2>Attachments</h2>
+        <h2>Attachment</h2>
 
-    <a th:href="@{/attachments/create}" class="btn btn-primary mb-3">
-        Create Attachment
-    </a>
+        <a th:href="@{/dashboard}" class="btn btn-outline-primary">
 
-    <table class="table table-bordered table-hover">
+            <i class="bi bi-house-door-fill"></i>
 
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>File Name</th>
-            <th>File Path</th>
-            <th>Ticket ID</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
+            Dashboard
 
-        <tbody>
+        </a>
 
-        <tr th:each="attachment : ${attachments}">
 
-            <td th:text="${attachment.attachmentId}"></td>
+        <a th:href="@{/attachments/create}" class="btn btn-primary mb-3">
+            Create Attachment
+        </a>
 
-            <td th:text="${attachment.fileName}"></td>
+        <table class="table table-bordered table-hover">
 
-            <td th:text="${attachment.filePath}"></td>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>File Name</th>
+                <th>File Path</th>
+                <th>Ticket ID</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
 
-            <td th:text="${attachment.ticketId}"></td>
+            <tbody>
 
-            <td>
+            <tr th:each="attachment : ${attachments}">
 
-                <a class="btn btn-info btn-sm"
-                   th:href="@{/attachments/{id}(id=${attachment.attachmentId})}">
-                    Detail
-                </a>
+                <td th:text="${attachment.attachmentId}"></td>
 
-                <a class="btn btn-warning btn-sm"
-                   th:href="@{/attachments/edit/{id}(id=${attachment.attachmentId})}">
-                    Edit
-                </a>
+                <td th:text="${attachment.fileName}"></td>
 
-                <form th:action="@{/attachments/delete/{id}(id=${attachment.attachmentId})}"
-                      method="post"
-                      style="display:inline;">
+                <td th:text="${attachment.filePath}"></td>
 
-                    <button class="btn btn-danger btn-sm"
-                            onclick="return confirm('Delete attachment?')">
-                        Delete
-                    </button>
+                <td th:text="${attachment.ticketId}"></td>
 
-                </form>
+                <td>
 
-            </td>
+                    <a class="btn btn-info btn-sm"
+                       th:href="@{/attachments/{id}(id=${attachment.attachmentId})}">
+                        Detail
+                    </a>
 
-        </tr>
+                    <a class="btn btn-warning btn-sm"
+                       th:href="@{/attachments/edit/{id}(id=${attachment.attachmentId})}">
+                        Edit
+                    </a>
 
-        </tbody>
+                    <form th:action="@{/attachments/delete/{id}(id=${attachment.attachmentId})}"
+                          method="post"
+                          style="display:inline;">
 
-    </table>
+                        <button class="btn btn-danger btn-sm"
+                                onclick="return confirm('Delete attachment?')">
+                            Delete
+                        </button>
 
-</div>
+                    </form>
 
-</body>
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    </body>
 </html>
