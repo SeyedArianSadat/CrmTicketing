@@ -4,7 +4,6 @@ package com.company.crmticketing.service;
 import com.company.crmticketing.dto.customer.CustomerCreateDto;
 import com.company.crmticketing.dto.customer.CustomerDto;
 import com.company.crmticketing.dto.customer.CustomerUpdateDto;
-import com.company.crmticketing.dto.department.DepartmentDto;
 import com.company.crmticketing.exception.CustomerNotFoundException;
 import com.company.crmticketing.mapper.CustomerMapper;
 import com.company.crmticketing.model.Customer;

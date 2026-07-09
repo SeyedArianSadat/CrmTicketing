@@ -20,43 +20,43 @@
 
         </a>
 
-    <h2>Attachment Details</h2>
+        <h2>Attachment Details</h2>
 
-    <table class="table table-bordered">
+        <table class="table table-bordered">
 
-        <tr>
-            <th>ID</th>
-            <td th:text="${attachment.attachmentId}"></td>
-        </tr>
+            <tr>
+                <th>ID</th>
+                <td th:text="${attachment.attachmentId}"></td>
+            </tr>
 
-        <tr>
-            <th>File Name</th>
-            <td th:text="${attachment.fileName}"></td>
-        </tr>
+            <tr>
+                <th>File Name</th>
+                <td th:text="${attachment.fileName}"></td>
+            </tr>
 
-        <tr>
-            <th>File Path</th>
-            <td th:text="${attachment.filePath}"></td>
-        </tr>
+            <tr>
+                <th>File Path</th>
+                <td th:text="${attachment.filePath}"></td>
+            </tr>
 
-        <tr>
-            <th>Ticket ID</th>
-            <td th:text="${attachment.ticketId}"></td>
-        </tr>
+            <tr>
+                <th>Ticket ID</th>
+                <td th:text="${attachment.ticketId}"></td>
+            </tr>
 
-    </table>
+        </table>
 
-    <a th:href="@{/attachments/edit/{id}(id=${attachment.attachmentId})}"
-       class="btn btn-warning">
-        Edit
-    </a>
+        <a th:href="@{/attachments/edit/{id}(id=${attachment.attachmentId})}"
+           class="btn btn-warning">
+            Edit
+        </a>
 
-    <a th:href="@{/attachments}"
-       class="btn btn-secondary">
-        Back
-    </a>
+        <a th:href="@{/attachments}"
+           class="btn btn-secondary">
+            Back
+        </a>
 
-</div>
+    </div>
 
- </body>
+  </body>
 </html>>

@@ -3,7 +3,6 @@ package com.company.crmticketing.service;
 import com.company.crmticketing.dto.department.DepartmentCreateDto;
 import com.company.crmticketing.dto.department.DepartmentDto;
 import com.company.crmticketing.dto.department.DepartmentUpdateDto;
-import com.company.crmticketing.dto.ticket.TicketDto;
 import com.company.crmticketing.exception.DepartmentNotFoundException;
 import com.company.crmticketing.mapper.DepartmentMapper;
 import com.company.crmticketing.model.Department;

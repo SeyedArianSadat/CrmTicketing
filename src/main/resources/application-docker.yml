@@ -16,8 +16,8 @@ spring:
       idle-timeout: 300000
       connection-timeout: 20000
       pool-name: HikariPool
-#      validation-timeout: 5000
-#      leak-detection-threshold: 60000
+  #      validation-timeout: 5000
+  #      leak-detection-threshold: 60000
 
   jpa:
     database: MYSQL
@@ -35,6 +35,21 @@ spring:
         order_updates: true
     open-in-view: false
     defer-datasource-initialization: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+  endpoint:
+    health:
+      show-details: always
+
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 
 app:
   jwt:

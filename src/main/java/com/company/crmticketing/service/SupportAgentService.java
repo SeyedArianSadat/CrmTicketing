@@ -4,7 +4,6 @@ package com.company.crmticketing.service;
 import com.company.crmticketing.dto.supportAgent.SupportAgentCreateDto;
 import com.company.crmticketing.dto.supportAgent.SupportAgentDto;
 import com.company.crmticketing.dto.supportAgent.SupportAgentUpdateDto;
-import com.company.crmticketing.dto.ticket.TicketDto;
 import com.company.crmticketing.exception.DepartmentNotFoundException;
 import com.company.crmticketing.exception.SupportAgentNotFoundException;
 import com.company.crmticketing.exception.UserNotFoundException;
