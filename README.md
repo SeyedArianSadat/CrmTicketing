@@ -40,6 +40,7 @@ Logout Support
 Password Encryption (BCrypt)
 Authorization
 Role Based Authorization
+monitoring
 
 Examples:
 
@@ -228,6 +229,9 @@ The project follows a layered enterprise architecture to ensure maintainability,
 
 ✔ Clean Code Principles
 
+
+✔ full monitoring
+
 🎯 Main Goals
 
 This project was created to demonstrate how a modern Spring Boot application should be structured using enterprise development standards.
@@ -261,6 +265,7 @@ DTO Pattern
 Repository Pattern
 Service Pattern
 Production Ready Structure
+monitoring
 
 ⚡ Technology Stack
 
@@ -354,6 +359,7 @@ Validation
 Error Pages
 Session Authentication
 📚 Swagger
+Monitoring
 
 Interactive API documentation is available.
 
@@ -363,6 +369,41 @@ OpenAPI JSON
 
 http://localhost:8080/v3/api-docs
 ❤️ Actuator
+
+Exposed Metrics
+
+The application exposes metrics through:
+
+http://localhost:8080/actuator/prometheus
+Prometheus
+
+Prometheus collects application metrics every 15 seconds.
+
+http://localhost:9090
+Grafana
+
+Grafana visualizes the collected metrics.
+
+http://localhost:3000
+
+Default login:
+
+Username: admin
+Password: admin
+Dashboard Metrics
+
+The dashboard includes:
+
+CPU Usage
+JVM Heap Memory Usage
+JVM Maximum Heap
+Live Threads
+HTTP Requests per Second
+Application Uptime
+Active Database Connections
+Idle Database Connections
+Run Monitoring Stack
+
 
 Production monitoring endpoints
 
