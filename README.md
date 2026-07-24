@@ -1,502 +1,355 @@
-Enterprise CRM Ticketing Platform
+# 🚀 CRM Ticketing System
 
-Built with clean architecture, enterprise standards and modern Spring ecosystem.
+<p align="center">
 
-Developed by SeyedArianSadat
+Enterprise Customer Relationship Management & Ticketing System built with Spring Boot.
 
-📖 Overview
+Java • Spring Boot • Spring Security • JPA/Hibernate • Thymeleaf • Bootstrap • MySQL/H2
 
-CrmTicketing is a complete CRM Ticket Management platform developed using modern Spring technologies.
+</p>
 
-The project provides both:
+---
 
-Traditional MVC Web Application (Thymeleaf)
-Fully documented REST API
+# 📖 Overview
 
-The application demonstrates enterprise-level software architecture and follows clean coding principles such as:
+CRM Ticketing System is an enterprise-level web application designed to manage customers, support tickets, departments, inventory, attachments, permissions and user authentication in one centralized platform.
 
-Layered Architecture
-DTO Pattern
-Repository Pattern
-Service Layer
-JWT Authentication
-Spring Security
-Validation
-Exception Handling
-Docker Deployment
-Swagger Documentation
-Role & Permission Based Authorization
+The application follows modern Spring Boot architecture and provides secure authentication, role-based authorization, clean layered architecture, validation, exception handling and scalable project organization.
 
-The system is designed to be easily extendable and production-ready.
+---
 
-✨ Key Features
-Authentication
-JWT Access Token
-JWT Refresh Token
-Stateless REST Authentication
-Spring Security Integration
-Login API
-Logout Support
-Password Encryption (BCrypt)
-Authorization
-Role Based Authorization
-monitoring
+# ✨ Features
 
-Examples:
+- Authentication & Authorization
+- Role Based Access Control (RBAC)
+- Customer Management
+- Support Ticket Management
+- Departments
+- Users
+- Roles
+- Permissions
+- Inventory Module
+- Inventory Transactions
+- Product Management
+- SLA Management
+- Attachment Upload
+- Dashboard
+- Search
+- Pagination
+- Validation
+- Soft Delete
+- Optimistic Locking
+- Audit Information
+- Global Exception Handling
+- Responsive UI
 
-ROLE_USER
-ROLE_SUPER_ADMIN
+---
 
-Permission Based Authorization
+# 🛠 Tech Stack
 
-Examples:
+Backend
 
-CREATE_USER
-READ_USER
-UPDATE_USER
-DELETE_USER
-CREATE_ROLE
-UPDATE_ROLE
-DELETE_ROLE
-VIEW_PROFILE
-SYSTEM_CONFIG
+- Java
+- Spring Boot
+- Spring Security
+- Spring MVC
+- Spring Data JPA
+- Hibernate
+- Maven
 
-Supports:
+Frontend
 
-URL Security
-Method Security
-Custom SecurityUser
-Security Context
-CRM Modules
+- Thymeleaf
+- HTML5
+- CSS3
+- Bootstrap
+- JavaScript
 
-The project contains complete CRUD operations for different CRM components.
+Database
 
-Examples include:
+- MySQL
+- H2 Database
 
-Users
-Roles
-Permissions
-Tickets
-Ticket Histories
-Customers
-Support Agents
-Attachments
+Tools
 
-Each module contains:
+- IntelliJ IDEA
+- Git
+- GitHub
+- Maven
 
-MVC Controller
-REST Controller
+---
+
+# 🏗 Architecture
+
+```
+Controller
+      │
+      ▼
 Service
+      │
+      ▼
 Repository
-DTO
-Mapper
-Validation
-Exception Handling
+      │
+      ▼
+Database
+```
 
+Project follows Layered Architecture.
 
-# 📂 Project Structure
+---
 
-CrmTicketing
-│
-├── src
-│   ├── main
-│   │
+# 📁 Project Structure
+
+```
+src
+├── main
 │   ├── java
-│   │   └── com
-│   │       └── company
-│   │           └── crmticketing
-│   │
-│   │               ├── config
-│   │               ├── controller
-│   │               │   ├── mvc
-│   │               │   └── rest
-│   │               │
-│   │               ├── dto
-│   │               │   ├── request
-│   │               │   ├── response
-│   │               │   ├── user
-│   │               │   ├── role
-│   │               │   ├── permission
-│   │               │   ├── customer
-│   │               │   ├── supportagent
-│   │               │   ├── ticket
-│   │               │   ├── tickethistory
-│   │               │   └── attachment
-│   │               │
-│   │               ├── exception
-│   │               ├── mapper
-│   │               ├── model
-│   │               ├── repository
-│   │               ├── security
-│   │               │   ├── config
-│   │               │   ├── filter
-│   │               │   ├── handler
-│   │               │   ├── model
-│   │               │   ├── provider
-│   │               │   └── service
-│   │               │
-│   │               ├── service
-│   │               └── CrmTicketingApplication.java
+│   │    └── com
+│   │         └── company
+│   │              ├── controller
+│   │              ├── service
+│   │              ├── repository
+│   │              ├── entity
+│   │              ├── dto
+│   │              ├── mapper
+│   │              ├── security
+│   │              ├── config
+│   │              ├── exception
+│   │              ├── validation
+│   │              └── util
 │   │
 │   └── resources
-│       ├── static
-│       ├── templates
-│       ├── application.yml
-│       └── init.sql
+│        ├── templates
+│        ├── static
+│        ├── application.yml
+│        └── messages.properties
 │
-├── docker-compose.yml
-├── Dockerfile
-├── pom.xml
-└── README.md
+└── test
+```
 
+---
 
-🏛 Architecture
+# 🔐 Security
 
-The project follows a layered enterprise architecture to ensure maintainability, scalability and clean separation of concerns.
+- Spring Security
+- BCrypt Password Encoder
+- Login Authentication
+- Authorization
+- Role Based Access
+- Session Management
+- CSRF Protection
 
-                Client
+---
 
-        Browser / Swagger UI
+# 📦 Modules
 
-                │
+### Authentication
 
-      Spring Security Filters
+- Login
+- Logout
 
-                │
+### Customer
 
-      REST Controller / MVC Controller
+- Create Customer
+- Edit Customer
+- Delete Customer
+- Search Customer
 
-                │
+### Ticket
 
-           Service Layer
+- Create Ticket
+- Assign Ticket
+- Close Ticket
+- Ticket History
 
-                │
+### Inventory
 
-           MapStruct Mapper
+- Products
+- Inventory Items
+- Transactions
 
-                │
+### Administration
 
-       Spring Data Repository
+- Users
+- Roles
+- Permissions
+- Departments
 
-                │
+---
 
-        Hibernate / JPA
+# 🗄 Database
 
-                │
+Core Entities
 
-      H2 Database / MySQL
+- User
+- Role
+- Permission
+- Customer
+- Ticket
+- Department
+- Attachment
+- SLA
+- Inventory
+- InventoryItem
+- InventoryTransaction
 
+---
 
-🧩 Project Characteristics
+# ⚙ Requirements
 
-✔ Enterprise Structure
+- Java 17+
+- Maven 3.9+
+- MySQL 8+
+- IntelliJ IDEA
 
-✔ DTO Based Design
+---
 
-✔ JWT Authentication
+# 🚀 Installation
 
-✔ Spring Security
+Clone project
 
-✔ MVC + REST
+```bash
+git clone https://github.com/SeyedArianSadat/CrmTicketing.git
+```
 
-✔ Thymeleaf Dashboard
+Go to project
 
-✔ Swagger UI
+```bash
+cd CrmTicketing
+```
 
-✔ Docker Support
+Install dependencies
 
-✔ Docker Compose
-
-✔ H2 Database
-
-✔ MySQL Ready
-
-✔ Validation
-
-✔ Global Exception Handling
-
-✔ Logging
-
-✔ Actuator Monitoring
-
-✔ MapStruct Mapping
-
-✔ Lombok
-
-✔ Maven Build
-
-✔ Layered Architecture
-
-✔ Clean Code Principles
-
-
-✔ full monitoring
-
-🎯 Main Goals
-
-This project was created to demonstrate how a modern Spring Boot application should be structured using enterprise development standards.
-
-The focus is on:
-
-Security
-Maintainability
-Scalability
-Readability
-Separation of Concerns
-Best Practices
-Production Readiness
-📌 Highlights
-Spring Boot 4
-Java 17
-Spring Security 6
-JWT Authentication
-RESTfull APIs
-Thymeleaf MVC
-OpenAPI / Swagger
-Docker Deployment
-MySQL & H2 Support
-Actuator Monitoring
-Validation
-Logging
-Clean Architecture
-Enterprise Coding Standards
-Fully Layered Design
-DTO Pattern
-Repository Pattern
-Service Pattern
-Production Ready Structure
-monitoring
-
-⚡ Technology Stack
-
-| Category         | Technology         |
-| ---------------- | ------------------ |
-| Language         | Java 17            |
-| Framework        | Spring Boot 4      |
-| Security         | Spring Security 6  |
-| Authentication   | JWT                |
-| ORM              | Hibernate          |
-| Persistence      | Spring Data JPA    |
-| Mapping          | MapStruct          |
-| Validation       | Jakarta Validation |
-| Build Tool       | Maven              |
-| Database         | H2 / MySQL         |
-| Template Engine  | Thymeleaf          |
-| Documentation    | Swagger OpenAPI    |
-| Monitoring       | Spring Actuator    |
-| Metrics          | Prometheus         |
-| Containerization | Docker             |
-| IDE              | IntelliJ IDEA      |
-
-🔐 Security
-
-The application implements enterprise-level security using Spring Security and JWT.
-Authentication
-Form Login (MVC)
-JWT Authentication (REST API)
-BCrypt Password Encryption
-Access Token
-Refresh Token
-Authorization
-
-Role Based
-
-ROLE_USER
-ROLE_SUPER_ADMIN
-
-Permission Based
-
-CREATE_USER
-READ_USER
-UPDATE_USER
-DELETE_USER
-CREATE_ROLE
-UPDATE_ROLE
-DELETE_ROLE
-ASSIGN_ROLE
-MANAGE_PERMISSIONS
-VIEW_PROFILE
-VIEW_AUDIT_LOG
-SYSTEM_CONFIG
-Security Components
-SecurityConfig
-JwtAuthenticationFilter
-JwtTokenProvider
-SecurityUser
-CustomUserDetailsService
-AuthenticationEntryPoint
-AccessDeniedHandler
-LogoutHandler
-🌐 REST API
-
-Every module exposes REST endpoints.
-
-Examples
-
-Module	Endpoint
-Authentication	/api/v1/auth
-Users	/api/v1/users
-Roles	/api/v1/roles
-Permissions	/api/v1/permissions
-Customers	/api/v1/customers
-Support Agents	/api/v1/supportAgents
-Tickets	/api/v1/tickets
-Ticket Histories	/api/v1/ticketHistories
-Attachments	/api/v1/attachments
-
-All endpoints are documented using Swagger/OpenAPI.
-
-🖥 MVC
-
-The project also includes a complete server-side rendered web application using Thymeleaf.
-
-Features include
-
-Login Page
-Dashboard
-CRUD Pages
-Validation
-Error Pages
-Session Authentication
-📚 Swagger
-Monitoring
-
-Interactive API documentation is available.
-
-http://localhost:8080/swagger-ui.html
-
-OpenAPI JSON
-
-http://localhost:8080/v3/api-docs
-❤️ Actuator
-
-Exposed Metrics
-
-The application exposes metrics through:
-
-http://localhost:8080/actuator/prometheus
-Prometheus
-
-Prometheus collects application metrics every 15 seconds.
-
-http://localhost:9090
-Grafana
-
-Grafana visualizes the collected metrics.
-
-http://localhost:3000
-
-Default login:
-
-Username: admin
-Password: admin
-Dashboard Metrics
-
-The dashboard includes:
-
-CPU Usage
-JVM Heap Memory Usage
-JVM Maximum Heap
-Live Threads
-HTTP Requests per Second
-Application Uptime
-Active Database Connections
-Idle Database Connections
-Run Monitoring Stack
-
-
-Production monitoring endpoints
-
-/actuator/health
-
-/actuator/info
-
-/actuator/metrics
-
-/actuator/httpexchanges
-🐳 Docker
-
-The application can run entirely inside Docker.
-
-Containers
-
-Spring Boot
-MySQL 8
-
-Features
-
-Health Checks
-Persistent Volumes
-Dedicated Network
-Automatic Startup
-📊 Monitoring
-
-Integrated support for
-
-Spring Boot Actuator
-Prometheus Metrics
-Health Monitoring
-Application Metrics
-✅ Validation
-
-Uses Jakarta Bean Validation.
-
-Examples
-
-@NotBlank
-@Email
-@Size
-@NotNull
-@Positive
-📝 Logging
-
-Uses SLF4J + Logback.
-
-Logging is implemented across
-
-Controllers
-Services
-Security
-JWT Authentication
-Exception Handling
-🗂 Mapping
-
-DTO mapping is handled using MapStruct.
-
-Advantages
-
-Cleaner Code
-Better Performance
-Compile-Time Safety
-📦 Build
-
-Build the project
-
+```bash
 mvn clean install
+```
 
+Run application
 
+```bash
+mvn spring-boot:run
+```
 
-Seyed Arian Sadat
+---
+
+# ▶ Running
+
+```
+http://localhost:8080
+```
+
+---
+
+# 📚 Build
+
+```
+mvn clean package
+```
+
+```
+mvn test
+```
+
+```
+mvn spring-boot:run
+```
+
+---
+
+# 📂 Resources
+
+```
+src/main/resources
+
+application.yml
+templates/
+static/
+messages.properties
+```
+
+---
+
+# 🔍 Validation
+
+- Bean Validation
+- Input Validation
+- Custom Validation
+- Exception Messages
+
+---
+
+# ⚠ Exception Handling
+
+- Global Exception Handler
+- Custom Exceptions
+- Validation Exceptions
+- Database Exceptions
+
+---
+
+# 📈 Future Improvements
+
+- REST API
+- JWT Authentication
+- Docker Support
+- Docker Compose
+- Kafka Integration
+- Redis Cache
+- Elasticsearch
+- Email Notification
+- SMS Notification
+- Grafana
+- Prometheus
+- CI/CD
+- Kubernetes
+- Microservices
+
+---
+
+# 🤝 Contributing
+
+1. Fork Project
+
+2. Create Feature Branch
+
+```
+git checkout -b feature/new-feature
+```
+
+3. Commit
+
+```
+git commit -m "Add feature"
+```
+
+4. Push
+
+```
+git push origin feature/new-feature
+```
+
+5. Open Pull Request
+
+---
+
+# 👨‍💻 Author
+
+**Arian**
+
+Java Backend Developer
 
 GitHub
 
 https://github.com/SeyedArianSadat
 
-📄 License
+---
+
+# 📄 License
 
 This project is released under the MIT License.
 
-Feel free to use, modify and distribute this project.
+---
 
-⭐ Support
+# ⭐ If you like this project
 
-If you found this project useful, consider giving it a ⭐ on GitHub.
-
-It helps the project grow and motivates future development.
-
-
-Thanks for visiting ❤️
-
-Made with Spring Boot • Java • Docker • JWT • Spring Security
-
-
+Give it a ⭐ on GitHub.
