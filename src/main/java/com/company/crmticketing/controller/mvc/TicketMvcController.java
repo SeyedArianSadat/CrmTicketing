@@ -41,7 +41,7 @@ public class TicketMvcController {
 
         model.addAttribute("ticket", ticket);
 
-        return "detail";
+        return "ticket/details";
     }
 
     @GetMapping("/create")
